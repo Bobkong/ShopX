@@ -27,5 +27,12 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("merchantToken", Configs.token)
             startActivity(intent)
         }
+
+        findViewById<TextView>(R.id.retrieve_loyalty_program).setOnClickListener {
+            val intent = Intent(this@MainActivity, LoyaltyActivity::class.java)
+            intent.putExtra("merchantId", Configs.merchantId)
+            intent.putExtra("merchantToken", Configs.token)
+            startActivity(intent)
+        }
     }
 }

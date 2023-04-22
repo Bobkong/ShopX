@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="48dp"
         android:text="Retrieve Information of Merchant with Id: MLYTYTA9NQTP8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,9 +24,22 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
+        android:layout_marginBottom="48dp"
         android:text="Retrieve Items of Merchant with Id: MLYTYTA9NQTP8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/retrieve_merchant"/>
+
+    <TextView
+        android:id="@+id/retrieve_loyalty_program"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginBottom="48dp"
+        android:text="Retrieve Loyalty Program of Merchant with Id: MLYTYTA9NQTP8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/retrieve_items"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

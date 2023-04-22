@@ -33,6 +33,7 @@
         </activity>
         <activity android:name=".activity.RetrieveMerchantActivity" />
         <activity android:name=".activity.AllItemsActivity" />
+        <activity android:name=".activity.LoyaltyActivity" />
     </application>
 
 </manifest>
