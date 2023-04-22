@@ -32,6 +32,7 @@
                 android:value="" />
         </activity>
         <activity android:name=".activity.RetrieveMerchantActivity" />
+        <activity android:name=".activity.AllItemsActivity" />
     </application>
 
 </manifest>

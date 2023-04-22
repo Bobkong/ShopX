@@ -14,13 +14,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         findViewById<TextView>(R.id.retrieve_merchant).setOnClickListener {
-            SquareApiService.getInstance(Configs.token).retrieveMerchant(Configs.merchantId)
-                .subscribe {
-                    //PushUtils.registerPushHandler(new MyFirebaseMessagingService());
-                    val intent = Intent(this@MainActivity, RetrieveMerchantActivity::class.java)
-                    intent.putExtra("merchant", it)
-                    startActivity(intent)
-                }
+            val intent = Intent(this@MainActivity, RetrieveMerchantActivity::class.java)
+            intent.putExtra("merchantId", Configs.merchantId)
+            intent.putExtra("merchantToken", Configs.token)
+            startActivity(intent)
+
+        }
+
+        findViewById<TextView>(R.id.retrieve_items).setOnClickListener {
+            val intent = Intent(this@MainActivity, AllItemsActivity::class.java)
+            intent.putExtra("merchantId", Configs.merchantId)
+            intent.putExtra("merchantToken", Configs.token)
+            startActivity(intent)
         }
     }
 }
