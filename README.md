@@ -1,1 +1,1 @@
-# Shopar
+# EasyShop
