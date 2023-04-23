@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("merchantId", Configs.merchantId)
             intent.putExtra("merchantToken", Configs.token)
             startActivity(intent)
-
         }
 
         findViewById<TextView>(R.id.retrieve_items).setOnClickListener {
@@ -30,6 +29,13 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.retrieve_loyalty_program).setOnClickListener {
             val intent = Intent(this@MainActivity, LoyaltyActivity::class.java)
+            intent.putExtra("merchantId", Configs.merchantId)
+            intent.putExtra("merchantToken", Configs.token)
+            startActivity(intent)
+        }
+
+        findViewById<TextView>(R.id.create_customer).setOnClickListener {
+            val intent = Intent(this@MainActivity, CreateCustomerActivity::class.java)
             intent.putExtra("merchantId", Configs.merchantId)
             intent.putExtra("merchantToken", Configs.token)
             startActivity(intent)

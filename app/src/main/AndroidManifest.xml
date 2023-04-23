@@ -34,6 +34,7 @@
         <activity android:name=".activity.RetrieveMerchantActivity" />
         <activity android:name=".activity.AllItemsActivity" />
         <activity android:name=".activity.LoyaltyActivity" />
+        <activity android:name=".activity.CreateCustomerActivity"/>
     </application>
 
 </manifest>

@@ -1,10 +1,15 @@
 package com.squareup.easyshop.netservice.Exception;
 
 
+import android.util.Log;
+
+import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.squareup.easyshop.model.ErrorResponse;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.net.ConnectException;
 import java.text.ParseException;
 
@@ -37,18 +42,28 @@ public class ExceptionEngine {
         }else if(throwable instanceof HttpException){ //http错误
             HttpException httpException=(HttpException)throwable;
             exception=new ApiException(httpException,HTTP_ERROR);
-            switch (httpException.code()){
-                case UNAUTHORIZED:
-                case FORBIDDEN:
-                case NOT_FOUND:
-                case REQUEST_TIMEOUT:
-                case GATEWAY_TIMEOUT:
-                case INTERNAL_SERVER_ERROR:
-                case BAD_GATEWAY:
-                case SERVICE_UNAVAILABLE:
-                default:
-                    exception.setDisplayMessage("Network Error");
-                    break;
+            Gson g = new Gson();
+            try {
+                ErrorResponse errorResponse = g.fromJson(((HttpException) throwable).response().errorBody().string(), ErrorResponse.class);
+                switch (httpException.code()){
+                    case UNAUTHORIZED:
+                    case FORBIDDEN:
+                    case NOT_FOUND:
+                    case REQUEST_TIMEOUT:
+                    case GATEWAY_TIMEOUT:
+                    case INTERNAL_SERVER_ERROR:
+                    case BAD_GATEWAY:
+                    case SERVICE_UNAVAILABLE:
+                    default:
+                        if (errorResponse.getErrors().size() != 0) {
+                            exception.setDisplayMessage(errorResponse.getErrors().get(0).getDetail());
+                        } else {
+                            exception.setDisplayMessage("Network Error");
+                        }
+                        break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             return exception;
         }else if(throwable instanceof JsonParseException
