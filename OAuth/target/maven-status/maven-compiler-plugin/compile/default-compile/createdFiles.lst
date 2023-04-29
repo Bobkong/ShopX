@@ -1,3 +1,14 @@
+com/squareup/oauthexample/GoogleGeoCoding$GoogleAddress.class
 com/squareup/oauthexample/OAuthHandler$AuthorizeHandler.class
+com/squareup/oauthexample/Merchant.class
+com/squareup/oauthexample/RetrieveMerchant.class
+com/squareup/oauthexample/MerchantResponse.class
+com/squareup/oauthexample/MerchantResponse$Merchant.class
+com/squareup/oauthexample/Merchant$Discount.class
+com/squareup/oauthexample/Merchant$Address.class
+com/squareup/oauthexample/GoogleGeoCoding$Geometry.class
+com/squareup/oauthexample/GoogleGeoCoding.class
+com/squareup/oauthexample/HttpHelper.class
 com/squareup/oauthexample/OAuthHandler.class
+com/squareup/oauthexample/GoogleGeoCoding$LatLng.class
 com/squareup/oauthexample/OAuthHandler$CallbackHandler.class

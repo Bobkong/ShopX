@@ -15,8 +15,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.EasyShop"
-        android:name="com.squareup.easyshop.BaseApplication"
+        android:usesCleartextTraffic="true"
+        android:theme="@style/Theme.ShopX"
+        android:name="com.squareup.shopx.BaseApplication"
         tools:targetApi="31">
         <activity
             android:name=".activity.MainActivity"
@@ -33,13 +34,22 @@
         <activity android:name=".activity.CreateCustomerActivity"/>
         <activity android:name=".activity.LoginActivity"
             android:exported="true">
+
+        </activity>
+        <activity android:name=".activity.SignUpActivity">
+
+        </activity>
+
+        <activity android:name=".activity.SplashActivity"
+            android:exported="true"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SignUpActivity" />
+
     </application>
 
 </manifest>

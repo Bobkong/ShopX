@@ -10,22 +10,35 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:layout_marginBottom="48dp"
-        android:hint="Phone Number"
+        android:layout_marginBottom="90dp"
+        android:inputType="phone"
+        android:hint="Input 10-digit phone number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/verify_phone_button"
+    <EditText
+        android:id="@+id/password_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="48dp"
         android:layout_marginRight="48dp"
-        android:layout_marginBottom="48dp"
-        android:text="Get Verification Code"
+        android:layout_marginBottom="90dp"
+        android:hint="Password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phone_number_input"/>
+
+    <TextView
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginBottom="90dp"
+        android:hint="Login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_input"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

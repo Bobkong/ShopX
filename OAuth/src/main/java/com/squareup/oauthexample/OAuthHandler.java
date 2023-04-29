@@ -20,6 +20,9 @@
 
 package com.squareup.oauthexample;
 
+import com.google.gson.Gson;
+import com.squareup.square.api.LocationsApi;
+import com.squareup.square.api.MerchantsApi;
 import com.squareup.square.exceptions.ApiException;
 import com.squareup.square.api.OAuthApi;
 import com.squareup.square.SquareClient;
@@ -32,13 +35,17 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.List;
 import java.util.LinkedList;
+import java.util.Properties;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+
+import static com.squareup.oauthexample.RetrieveMerchant.uploadMerchantToServer;
 
 public class OAuthHandler {
 
@@ -55,7 +62,8 @@ public class OAuthHandler {
   private static final String APPLICATION_SECRET = "sandbox-sq0csb-w7FAb49UKmFvF5lFPGqpT2LCH_9VV-OVaC5_NVMd100";
   // Modify this list as needed
   private static final String[] SCOPES = { "MERCHANT_PROFILE_READ", "PAYMENTS_WRITE_ADDITIONAL_RECIPIENTS",
-      "PAYMENTS_WRITE", "PAYMENTS_READ", "ITEMS_READ" };
+      "PAYMENTS_WRITE", "PAYMENTS_READ", "ITEMS_READ", "APPOINTMENTS_WRITE", "APPOINTMENTS_ALL_WRITE", "ORDERS_WRITE",
+      "ORDERS_READ", "CUSTOMERS_WRITE", "LOYALTY_READ", "LOYALTY_WRITE", "ORDERS_WRITE", "ORDERS_READ"};
   // Serves the authorize link
 
   static class AuthorizeHandler implements HttpHandler {
@@ -164,6 +172,9 @@ public class OAuthHandler {
           try {
             t.sendResponseHeaders(200, 0);
             t.getResponseBody().close();
+
+
+            uploadMerchantToServer(result.getMerchantId(), result.getAccessToken());
           } catch (IOException e) {
             e.printStackTrace();
           }
@@ -179,6 +190,8 @@ public class OAuthHandler {
       });
     }
   }
+
+
 
   // Start up the server, listening on port 8000
   public static void main(String[] args) {

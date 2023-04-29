@@ -1,1 +1,1 @@
-# EasyShop
+# ShopX

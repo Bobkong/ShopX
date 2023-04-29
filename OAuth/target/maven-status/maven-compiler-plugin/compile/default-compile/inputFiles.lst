@@ -1,1 +1,5 @@
-/Users/konglingshuang/connect-api-examples/connect-examples/oauth/java/src/main/java/com/squareup/oauthexample/OAuthHandler.java
+/Users/konglingshuang/ShopX/OAuth/src/main/java/com/squareup/oauthexample/MerchantResponse.java
+/Users/konglingshuang/ShopX/OAuth/src/main/java/com/squareup/oauthexample/RetrieveMerchant.java
+/Users/konglingshuang/ShopX/OAuth/src/main/java/com/squareup/oauthexample/Merchant.java
+/Users/konglingshuang/ShopX/OAuth/src/main/java/com/squareup/oauthexample/HttpHelper.java
+/Users/konglingshuang/ShopX/OAuth/src/main/java/com/squareup/oauthexample/OAuthHandler.java

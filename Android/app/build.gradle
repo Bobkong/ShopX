@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.squareup.easyshop'
+    namespace 'com.squareup.shopx'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.squareup.easyshop"
+        applicationId "com.squareup.shopx"
         minSdk 21
         targetSdk 32
         versionCode 1
