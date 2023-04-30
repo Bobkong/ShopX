@@ -2,6 +2,7 @@ package com.squareup.shopx.netservice.ShopXAPI;
 
 
 import com.squareup.shopx.model.AddCustomerResponse;
+import com.squareup.shopx.model.AllMerchantsResponse;
 import com.squareup.shopx.model.Customer;
 import com.squareup.shopx.model.GeneralResponse;
 import com.squareup.shopx.model.LoginRequest;
@@ -22,7 +23,8 @@ public class ShopXApiService {
         return instance;
     }
 
-    private final CustomerApi customerApi= ShopXServiceManager.getInstance().create(CustomerApi.class);
+    private final CustomerApi customerApi = ShopXServiceManager.getInstance().create(CustomerApi.class);
+    private final MerchantApi merchantApi = ShopXServiceManager.getInstance().create(MerchantApi.class);
 
     public Observable<AddCustomerResponse> addCustomer(String email, String nickname, String password){
         return customerApi.createCustomer(new ShopXCustomer(email, nickname, 0, password))
@@ -38,6 +40,12 @@ public class ShopXApiService {
 
     public Observable<GeneralResponse> login(String phoneNumber, String password){
         return customerApi.login(new LoginRequest(phoneNumber, password))
+                .onErrorResumeNext(new HttpResultFunc<>())
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<AllMerchantsResponse> getAllMerchants(){
+        return merchantApi.getAllMerchants()
                 .onErrorResumeNext(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io());
     }

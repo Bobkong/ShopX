@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">ShopX</string>
+    <string name="style_json">
+    [
+      {
+        \"featureType\": \"poi.business\",
+        \"elementType\": \"all\",
+        \"stylers\": [
+          {
+            \"visibility\": \"off\"
+          }
+        ]
+      }
+    ]
+    </string>
 </resources>

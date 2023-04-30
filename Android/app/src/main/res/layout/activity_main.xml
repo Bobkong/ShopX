@@ -6,52 +6,70 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
-    <TextView
-        android:id="@+id/retrieve_merchant"
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/map"
+        tools:context=".MapsActivity"
+        android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    <com.exlyo.gmfmt.FloatingMarkerTitlesOverlay
+        android:id="@+id/map_floating_markers_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/merchant_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="48dp"
-        android:text="Retrieve Information of Merchant with Id: MLYTYTA9NQTP8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/distance_filter_input"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="Miles"
+        app:layout_constraintTop_toBottomOf="@id/merchant_list"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="20dp"
+        />
 
     <TextView
-        android:id="@+id/retrieve_items"
-        android:layout_width="match_parent"
+        android:id="@+id/distance_filter"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="48dp"
-        android:text="Retrieve Items of Merchant with Id: MLYTYTA9NQTP8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/retrieve_merchant"/>
+        android:text="Filter Distance"
+        app:layout_constraintBottom_toBottomOf="@+id/distance_filter_input"
+        app:layout_constraintLeft_toRightOf="@+id/distance_filter_input"
+        android:layout_marginLeft="10dp"/>
 
     <TextView
-        android:id="@+id/retrieve_loyalty_program"
+        android:id="@+id/only_see_discount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="48dp"
-        android:text="Retrieve Loyalty Program of Merchant with Id: MLYTYTA9NQTP8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/retrieve_items"/>
+        android:text="See discount merchants only"
+        app:layout_constraintTop_toBottomOf="@id/distance_filter"
+        android:layout_marginTop="20dp"
+        />
 
     <TextView
-        android:id="@+id/create_customer"
+        android:id="@+id/only_see_loyalty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="48dp"
-        android:text="Create Customer for Merchant with Id: MLYTYTA9NQTP8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/retrieve_loyalty_program"/>
+        android:text="See loyalty merchants only"
+        app:layout_constraintTop_toBottomOf="@id/only_see_discount"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/only_see_ar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="See AR enabled merchants only"
+        app:layout_constraintTop_toBottomOf="@id/only_see_loyalty"
+        android:layout_marginTop="20dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

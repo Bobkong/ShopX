@@ -16,4 +16,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Shopar"
-include ':app'
+include ':app', ':googlemapsfloatingmarkertitles'

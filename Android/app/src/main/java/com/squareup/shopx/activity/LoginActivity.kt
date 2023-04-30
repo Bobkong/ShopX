@@ -1,6 +1,5 @@
 package com.squareup.shopx.activity
 
-import android.app.Activity
 import android.content.*
 import android.os.Bundle
 import android.util.Log
@@ -8,12 +7,8 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.phone.SmsRetriever
-import com.google.android.gms.common.api.CommonStatusCodes
-import com.google.android.gms.common.api.Status
 import com.squareup.shopx.R
-import com.squareup.shopx.Util.PreferenceUtils
-import com.squareup.shopx.model.AddCustomerResponse
+import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.model.GeneralResponse
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import io.reactivex.Observer

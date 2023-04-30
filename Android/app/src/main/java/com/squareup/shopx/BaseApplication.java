@@ -3,7 +3,7 @@ package com.squareup.shopx;
 import android.app.Application;
 import android.content.Context;
 
-import com.squareup.shopx.Util.PreferenceUtils;
+import com.squareup.shopx.utils.PreferenceUtils;
 
 public class BaseApplication extends Application {
 

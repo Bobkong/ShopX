@@ -8,8 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.shopx.R
-import com.squareup.shopx.Util.PreferenceUtils
-import com.squareup.shopx.consts.Configs
+import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.model.AddCustomerResponse
 import com.squareup.shopx.model.GeneralResponse
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService

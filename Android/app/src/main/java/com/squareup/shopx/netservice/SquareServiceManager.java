@@ -4,7 +4,7 @@ package com.squareup.shopx.netservice;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.shopx.BaseApplication;
-import com.squareup.shopx.Util.NetworkUtil;
+import com.squareup.shopx.utils.NetworkUtil;
 
 import java.io.File;
 import java.io.IOException;

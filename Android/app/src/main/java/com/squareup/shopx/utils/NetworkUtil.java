@@ -1,4 +1,4 @@
-package com.squareup.shopx.Util;
+package com.squareup.shopx.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

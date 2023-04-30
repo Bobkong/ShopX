@@ -7,7 +7,7 @@ import android.os.Handler;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.squareup.shopx.Util.PreferenceUtils;
+import com.squareup.shopx.utils.PreferenceUtils;
 
 
 public class SplashActivity extends AppCompatActivity {
