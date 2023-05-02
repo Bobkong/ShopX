@@ -48,19 +48,18 @@
         </activity>
 
         <activity android:name=".activity.SplashActivity"
-
+            android:exported="true"
             android:theme="@style/SplashTheme">
-
-        </activity>
-
-        <activity android:name=".activity.ARItemActivity"
-            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activity.ARItemActivity"/>
+        <activity android:name=".activity.MerchantDetailActivity" />
+
 
         <meta-data
             android:name="com.google.android.ar.API_KEY"

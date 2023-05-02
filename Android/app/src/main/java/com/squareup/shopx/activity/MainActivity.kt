@@ -133,7 +133,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
     fun animateCamera(latLng: LatLng) {
         mMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
-                latLng, 13.0f
+                latLng, 14.0f
+            )
+        )
+    }
+
+    fun moveCamera(latLng: LatLng) {
+        mMap.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                latLng, 14.0f
             )
         )
     }
@@ -231,7 +239,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
                     if (itemView != null) {
                         position = recyclerView.getChildAdapterPosition(itemView)
                     }
-                    if (position != currentFocusedMarker && position < AllMerchants.getDisplayMerchants().size - 1) {
+                    if (position != currentFocusedMarker && position < AllMerchants.getDisplayMerchants().size) {
                         Log.i(TAG, position.toString())
                         currentFocusedMarker = position
                         animateCamera(LatLng(
@@ -280,7 +288,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
             addMarkersToMap(AllMerchants.getDisplayMerchants(), 0)
             generateMerchantListView(AllMerchants.getDisplayMerchants())
             // move to the first merchant
-            animateCamera(LatLng(displayMerchants[0].lat.toDouble(),
+            moveCamera(LatLng(displayMerchants[0].lat.toDouble(),
                 displayMerchants[0].lng.toDouble()
             ))
         } else {

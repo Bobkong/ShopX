@@ -5,6 +5,8 @@ import com.squareup.shopx.model.AddCustomerResponse;
 import com.squareup.shopx.model.AllMerchantsResponse;
 import com.squareup.shopx.model.Customer;
 import com.squareup.shopx.model.GeneralResponse;
+import com.squareup.shopx.model.GetMerchantDetailRequest;
+import com.squareup.shopx.model.GetMerchantDetailResponse;
 import com.squareup.shopx.model.LoginRequest;
 import com.squareup.shopx.model.ShopXCustomer;
 import com.squareup.shopx.model.VerifyPhoneRequest;
@@ -46,6 +48,12 @@ public class ShopXApiService {
 
     public Observable<AllMerchantsResponse> getAllMerchants(){
         return merchantApi.getAllMerchants()
+                .onErrorResumeNext(new HttpResultFunc<>())
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<GetMerchantDetailResponse> getMerchantDetail(String accessToken, String contact){
+        return merchantApi.getMerchantDetail(new GetMerchantDetailRequest(accessToken, contact))
                 .onErrorResumeNext(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io());
     }

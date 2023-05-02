@@ -88,5 +88,16 @@ object AllMerchants {
         return results[0] / 1609.0
     }
 
+    fun getMerchant(accessToken: String?): ShopXMerchant? {
+        accessToken?.let {
+            for (merchant in allMerchants) {
+                if (merchant.accessToken == accessToken) {
+                    return merchant
+                }
+            }
+        }
+        return null
+    }
+
 
 }

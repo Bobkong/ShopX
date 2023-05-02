@@ -1,6 +1,7 @@
 package com.squareup.shopx.viewholder;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.squareup.shopx.R;
+import com.squareup.shopx.activity.MerchantDetailActivity;
 import com.squareup.shopx.model.AllMerchantsResponse;
 import com.squareup.shopx.utils.MerchantAddressGenerator;
 import com.squareup.shopx.utils.UIUtils;
@@ -42,6 +44,12 @@ public class MerchantViewHolder extends RecyclerView.ViewHolder {
             RecyclerView.LayoutParams layoutParam =(RecyclerView.LayoutParams)itemView.getLayoutParams();
             layoutParam.rightMargin = (UIUtils.getWidth(activity) - UIUtils.dp2px(activity, 300)) / 2;
         }
+
+        itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(activity, MerchantDetailActivity.class);
+            intent.putExtra("accessToken", merchant.getAccessToken());
+            activity.startActivity(intent);
+        });
 
 
     }
