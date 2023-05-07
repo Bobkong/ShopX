@@ -26,7 +26,7 @@ import androidx.core.content.ContextCompat
 
 /** Helper to ask camera permission.  */
 object GeoPermissionsHelper {
-  private val PERMISSIONS = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+  private val PERMISSIONS = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.POST_NOTIFICATIONS)
 
   /** Check to see we have the necessary permissions for this app.  */
   fun hasGeoPermissions(activity: Activity): Boolean {

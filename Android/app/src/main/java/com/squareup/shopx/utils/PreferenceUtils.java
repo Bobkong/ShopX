@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 public class PreferenceUtils {
 
     private static final String PREFERENCE_KEY_PHONE = "PREFERENCE_KEY_PHONE";
+    private static final String PREFERENCE_KEY_FIRST_USE = "PREFERENCE_KEY_FIRST_USE";
     @SuppressLint("StaticFieldLeak")
     private static Context context;
 
@@ -36,6 +37,17 @@ public class PreferenceUtils {
     public static String getUserPhone() {
         final String result = getSharedPreferences().getString(PREFERENCE_KEY_PHONE, "");
         return result == null ? "" : result;
+    }
+
+    public static void setFirstUse(@NonNull Boolean firstUse) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.putBoolean(PREFERENCE_KEY_FIRST_USE, firstUse).apply();
+    }
+
+    @NonNull
+    public static Boolean getFirstUse() {
+        final Boolean result = getSharedPreferences().getBoolean(PREFERENCE_KEY_FIRST_USE, true);
+        return result;
     }
 
     public static void clearAll() {

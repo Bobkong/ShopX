@@ -15,19 +15,11 @@
  */
 package com.squareup.shopx.map
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.util.Log
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.*
-import com.squareup.shopx.R
-import com.squareup.shopx.activity.MainActivity
+import com.squareup.shopx.activity.MainFragment
 
 
-open class MapView(val activity: MainActivity, val googleMap: GoogleMap) {
+open class MapView(val activity: MainFragment, val googleMap: GoogleMap) {
 
   var setInitialCameraPosition = false
   var cameraIdle = true

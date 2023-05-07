@@ -18,11 +18,14 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         new Handler().postDelayed(() -> {
-            if (PreferenceUtils.getUserPhone().length() == 0){
-                startActivity(new Intent(SplashActivity.this, SignUpActivity.class));
-            }else {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-            }
+//            if (PreferenceUtils.getFirstUse()) {
+//                startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+//            } if (PreferenceUtils.getUserPhone().length() == 0){
+//                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+//            }else {
+//                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+//            }
+            startActivity(new Intent(SplashActivity.this, GuideActivity.class));
 
             finish();
         }, 300);

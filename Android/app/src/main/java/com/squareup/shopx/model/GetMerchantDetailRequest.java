@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class GetMerchantDetailRequest implements Serializable {
-    @SerializedName("accessToken")
+    @SerializedName("access_token")
     String accessToken;
 
     @SerializedName("contact")

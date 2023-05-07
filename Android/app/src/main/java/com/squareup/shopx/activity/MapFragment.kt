@@ -1,16 +1,23 @@
 package com.squareup.shopx.activity
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +30,10 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.ar.core.codelabs.arlocalizer.helpers.GeoPermissionsHelper
 import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
@@ -31,14 +41,14 @@ import com.squareup.shopx.adapter.MerchantListAdapter
 import com.squareup.shopx.model.AllMerchantsResponse
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
+import com.squareup.shopx.utils.BroadcastReceiverPage
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import org.w3c.dom.Text
 
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback{
+class MapFragment : Fragment(), OnMapReadyCallback{
 
-    private val TAG = "MainActivity"
+    private val TAG = "MapFragment"
     private lateinit var mMap: GoogleMap
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var floatingMarkersOverlay: FloatingMarkerTitlesOverlay? = null
@@ -50,34 +60,40 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
     private var onlySeeLoyalty: TextView? = null
     private var onlySeeAREnable: TextView? = null
     private val snapHelper = PagerSnapHelper()
+    val introFragment = IntroFragment()
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         super.onCreate(savedInstanceState)
-        setContentView(com.squareup.shopx.R.layout.activity_main)
+        val view = inflater.inflate(R.layout.fragment_map, null)
 
         // The app must have been given the Location permission. If we don't have it yet, request it.
-        if (!GeoPermissionsHelper.hasGeoPermissions(this)) {
-            GeoPermissionsHelper.requestPermissions(this)
-            return
+        if (!GeoPermissionsHelper.hasGeoPermissions(requireActivity())) {
+            GeoPermissionsHelper.requestPermissions(activity)
+            return view
         }
 
-        distanceFilterInput = findViewById(R.id.distance_filter_input)
-        distanceFilterButton = findViewById(R.id.distance_filter)
-        onlySeeDiscount = findViewById(R.id.only_see_discount)
-        onlySeeLoyalty = findViewById(R.id.only_see_loyalty)
-        onlySeeAREnable = findViewById(R.id.only_see_ar)
+        distanceFilterInput = view.findViewById(R.id.distance_filter_input)
+        distanceFilterButton = view.findViewById(R.id.distance_filter)
+        onlySeeDiscount = view.findViewById(R.id.only_see_discount)
+        onlySeeLoyalty = view.findViewById(R.id.only_see_loyalty)
+        onlySeeAREnable = view.findViewById(R.id.only_see_ar)
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        merchantListView = findViewById(R.id.merchant_list)
-        merchantListView?.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        merchantListView = view.findViewById(R.id.merchant_list)
+        merchantListView?.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.HORIZONTAL, false)
         snapHelper.attachToRecyclerView(merchantListView)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(com.squareup.shopx.R.id.map) as SupportMapFragment
+        val mapFragment = SupportMapFragment()
+        val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
+        transaction.add(R.id.map_container, mapFragment).commit()
         mapFragment.getMapAsync(this)
 
+        return view
     }
 
     /**
@@ -99,16 +115,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
             )
         )
 
-        floatingMarkersOverlay = findViewById<FloatingMarkerTitlesOverlay>(R.id.map_floating_markers_overlay)
+        floatingMarkersOverlay = view?.findViewById<FloatingMarkerTitlesOverlay>(R.id.map_floating_markers_overlay)
         floatingMarkersOverlay?.setSource(mMap)
 
         // Add a marker in Sydney and move the camera
 
+        if (context == null) {
+            return
+        }
         if (ActivityCompat.checkSelfPermission(
-                this,
+                requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
+                requireContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
@@ -117,7 +136,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
         mMap.isMyLocationEnabled = true
 
         fusedLocationClient!!.lastLocation
-            .addOnSuccessListener(this) { location ->
+            .addOnSuccessListener(requireActivity()) { location ->
                 // Got last known location. In some rare situations this can be null.
                 if (location != null) {
 
@@ -125,7 +144,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
                     AllMerchants.myLng = location.longitude.toFloat()
                     requestAllMerchants()
                 } else {
-                    Toast.makeText(this@MainActivity, "Loading location failed. Please try later", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Loading location failed. Please try later", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -133,7 +152,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
     fun animateCamera(latLng: LatLng) {
         mMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
-                latLng, 14.0f
+                latLng, 15.0f
             )
         )
     }
@@ -141,7 +160,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
     fun moveCamera(latLng: LatLng) {
         mMap.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
-                latLng, 14.0f
+                latLng, 15.0f
             )
         )
     }
@@ -150,7 +169,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
         mMap.clear()
         floatingMarkersOverlay?.clearMarkers()
         for (i in merchants.indices) {
-            val id: Long = i.toLong()
+            val id: Long = i.toLong() + 1
             val latLng = LatLng(merchants[i].lat.toDouble(), merchants[i].lng.toDouble())
             val title = merchants[i].businessName
             val mi = MarkerInfo(latLng, title, Color.BLACK)
@@ -158,7 +177,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
                 i == focusedPosition
             ))))
             floatingMarkersOverlay?.addMarker(id, mi)
-            Log.i(TAG, floatingMarkersOverlay.toString())
         }
     }
 
@@ -179,15 +197,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
         results: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, results)
-        if (!GeoPermissionsHelper.hasGeoPermissions(this)) {
+        if (!GeoPermissionsHelper.hasGeoPermissions( requireActivity())) {
             // Use toast instead of snackbar here since the activity will exit.
-            Toast.makeText(this, "Camera and location permissions are needed to run this application", Toast.LENGTH_LONG)
+            Toast.makeText( requireActivity(), "Camera and location permissions are needed to run this application", Toast.LENGTH_LONG)
                 .show()
-            if (!GeoPermissionsHelper.shouldShowRequestPermissionRationale(this)) {
+            if (!GeoPermissionsHelper.shouldShowRequestPermissionRationale(requireActivity())) {
                 // Permission denied with checking "Do not ask again".
-                GeoPermissionsHelper.launchPermissionSettings(this)
+                GeoPermissionsHelper.launchPermissionSettings(requireActivity())
             }
-            finish()
+            requireActivity().finish()
         }
     }
 
@@ -199,21 +217,27 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
                 }
 
                 override fun onNext(value: AllMerchantsResponse?) {
-                    value?.merchants?.let {
-                        if (it.size > 0) {
-                            AllMerchants.allMerchants = it
-                            runOnUiThread {
+
+                    requireActivity().runOnUiThread {
+                        if (value?.code == 1) {
+                            Toast.makeText( requireActivity(), value.msg, Toast.LENGTH_SHORT).show()
+                            return@runOnUiThread
+                        }
+
+                        value?.merchants?.let {
+                            if (it.size > 0) {
+                                AllMerchants.allMerchants = it
                                 generateDisplayMerchants()
                                 setFilterListeners()
-
                             }
                         }
                     }
+
                 }
 
                 override fun onError(e: Throwable?) {
-                    runOnUiThread {
-                        Toast.makeText(this@MainActivity, e?.message, Toast.LENGTH_SHORT).show()
+                    requireActivity().runOnUiThread {
+                        Toast.makeText( requireActivity(), e?.message, Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -227,7 +251,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
     fun generateMerchantListView(merchants: List<ShopXMerchant>) {
 
 
-        val merchantAdapter = MerchantListAdapter(merchants, this)
+        val merchantAdapter = MerchantListAdapter(merchants, requireActivity())
         merchantListView?.adapter = merchantAdapter
 
         merchantListView?.addOnScrollListener(object : OnScrollListener() {
@@ -272,13 +296,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
         }
 
         onlySeeLoyalty?.setOnClickListener {
-            AllMerchants.onlySeeLoyalty = !AllMerchants.onlySeeLoyalty
-            generateDisplayMerchants()
+//            AllMerchants.onlySeeLoyalty = !AllMerchants.onlySeeLoyalty
+//            generateDisplayMerchants()
+            val intent = Intent(requireActivity(), LoyaltyActivity::class.java)
+            this@MapFragment.startActivity(intent)
         }
 
         onlySeeAREnable?.setOnClickListener {
-            AllMerchants.onlySeeAREnable = !AllMerchants.onlySeeAREnable
-            generateDisplayMerchants()
+//            AllMerchants.onlySeeAREnable = !AllMerchants.onlySeeAREnable
+//            generateDisplayMerchants()
+            createNotification()
         }
     }
 
@@ -297,6 +324,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback{
         }
     }
 
+    private fun createNotification() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel =
+                NotificationChannel("Notify", "ShopX", NotificationManager.IMPORTANCE_DEFAULT)
+            channel.description = "ShopX Discount Notification"
+            val notificationManager = requireActivity().getSystemService(NotificationManager::class.java)
+            notificationManager?.createNotificationChannel(channel)
+
+            val intent = Intent(requireActivity(), BroadcastReceiverPage::class.java)
+            requireActivity().sendBroadcast(intent)
+        }
+    }
 
 
 }

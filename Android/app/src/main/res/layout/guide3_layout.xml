@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+
+    <ImageView
+        android:id="@+id/guide_image"
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/temp_image"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/guide_title"
+        android:text="Unlock Rewards"
+        android:textSize="@dimen/headline_large"
+        android:fontFamily="@font/cambon_bold"
+        android:layout_marginTop="32dp"
+        android:textColor="@color/black_0"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        app:layout_constraintTop_toBottomOf="@+id/guide_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="Join our loyalty program and start earning rewards for every purchase you make. Enjoy exclusive rewards for being a loyal customer!"
+        android:textSize="@dimen/body_large"
+        android:fontFamily="@font/manrope_regular"
+        android:textColor="@color/black_40"
+        app:layout_constraintTop_toBottomOf="@+id/guide_title"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_height="wrap_content" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.MainFragment">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/map"
-        tools:context=".MapsActivity"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
+        android:id="@+id/map_container" />
 
     <com.exlyo.gmfmt.FloatingMarkerTitlesOverlay
         android:id="@+id/map_floating_markers_overlay"
@@ -71,5 +70,6 @@
         app:layout_constraintTop_toBottomOf="@id/only_see_loyalty"
         android:layout_marginTop="20dp"
         />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

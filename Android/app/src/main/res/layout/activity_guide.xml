@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="52dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:id="@+id/ll_dots_layout">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="8dp"
+            android:src="@drawable/dot"
+            android:id="@+id/dot_1"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"/>
+
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:src="@drawable/dot"
+            android:id="@+id/dot_2"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/dot_1"
+            android:layout_marginRight="8dp"/>
+
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:src="@drawable/dot"
+            android:id="@+id/dot_3"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/dot_2"
+            android:layout_marginRight="8dp"/>
+
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:src="@drawable/dot"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/dot_3"
+            android:id="@+id/dot_4"/>
+
+        <ImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/guide_continue_button"
+            android:id="@+id/guide_continue"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

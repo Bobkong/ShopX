@@ -63,7 +63,7 @@ public class OAuthHandler {
   // Modify this list as needed
   private static final String[] SCOPES = { "MERCHANT_PROFILE_READ", "PAYMENTS_WRITE_ADDITIONAL_RECIPIENTS",
       "PAYMENTS_WRITE", "PAYMENTS_READ", "ITEMS_READ", "APPOINTMENTS_WRITE", "APPOINTMENTS_ALL_WRITE", "ORDERS_WRITE",
-      "ORDERS_READ", "CUSTOMERS_WRITE", "LOYALTY_READ", "LOYALTY_WRITE", "ORDERS_WRITE", "ORDERS_READ"};
+      "ORDERS_READ", "CUSTOMERS_WRITE", "LOYALTY_READ", "LOYALTY_WRITE", "ORDERS_WRITE", "ORDERS_READ", "CUSTOMERS_READ", "CUSTOMERS_WRITE"};
   // Serves the authorize link
 
   static class AuthorizeHandler implements HttpHandler {

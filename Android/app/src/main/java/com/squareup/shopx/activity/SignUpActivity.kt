@@ -43,7 +43,7 @@ class SignUpActivity : AppCompatActivity() {
                     override fun onNext(value: GeneralResponse?) {
                         runOnUiThread {
                             if (value?.code == 1) {
-                                Toast.makeText(this@SignUpActivity, value?.msg, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(this@SignUpActivity, value.msg, Toast.LENGTH_SHORT).show()
                             } else {
                                 Toast.makeText(this@SignUpActivity, "The verification code has been sent. Please view you SMS inbox.", Toast.LENGTH_SHORT).show()
                                 findViewById<TextView>(R.id.verify).setOnClickListener {
@@ -82,10 +82,18 @@ class SignUpActivity : AppCompatActivity() {
                 }
 
                 override fun onNext(value: AddCustomerResponse?) {
-                    Log.i("SignUpActivity", value?.msg ?: "")
-                    PreferenceUtils.setUserPhone(phone)
-                    val intent = Intent(this@SignUpActivity, MainActivity::class.java)
-                    startActivity(intent)
+                    runOnUiThread {
+                        if (value?.code == 1) {
+                            Toast.makeText(this@SignUpActivity, value.msg, Toast.LENGTH_SHORT).show()
+                            return@runOnUiThread
+                        }
+
+                        Log.i("SignUpActivity", value?.msg ?: "")
+                        PreferenceUtils.setUserPhone(phone)
+                        val intent = Intent(this@SignUpActivity, HomeActivity::class.java)
+                        startActivity(intent)
+                    }
+
                 }
 
                 override fun onError(e: Throwable?) {

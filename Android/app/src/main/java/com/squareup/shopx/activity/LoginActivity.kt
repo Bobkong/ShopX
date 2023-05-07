@@ -41,8 +41,8 @@ class LoginActivity : AppCompatActivity() {
                                 Toast.makeText(this@LoginActivity, value.msg, Toast.LENGTH_SHORT).show()
                             } else {
                                 Log.i("SignUpActivity", value?.msg ?: "")
-                                PreferenceUtils.setUserPhone(phone)
-                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                PreferenceUtils.setUserPhone("+1$phone")
+                                val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                                 startActivity(intent)
                             }
 

@@ -48,6 +48,7 @@ public class MerchantViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(view -> {
             Intent intent = new Intent(activity, MerchantDetailActivity.class);
             intent.putExtra("accessToken", merchant.getAccessToken());
+            intent.putExtra("ifLoyalty", merchant.getIfLoyalty());
             activity.startActivity(intent);
         });
 
