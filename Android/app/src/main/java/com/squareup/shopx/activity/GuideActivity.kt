@@ -48,7 +48,7 @@ class GuideActivity: AppCompatActivity(), ViewPager.OnPageChangeListener {
             if (mLastPosition + 1 != mDotList?.size) {
                 mViewPager?.currentItem = mLastPosition + 1
             } else {
-                startSignUpActivity()
+                StartAppIntroActivity()
             }
         }
         PreferenceUtils.setFirstUse(false)
@@ -56,11 +56,12 @@ class GuideActivity: AppCompatActivity(), ViewPager.OnPageChangeListener {
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+
         if (mLastPosition + 1 == mDotList?.size && isDragPage && positionOffsetPixels == 0) {   //当前页是最后一页，并且是拖动状态，并且像素偏移量为0
 
             if (!jumpToSignup) {
                 jumpToSignup = true
-                startSignUpActivity()
+                StartAppIntroActivity()
             }
         }
 
@@ -68,6 +69,20 @@ class GuideActivity: AppCompatActivity(), ViewPager.OnPageChangeListener {
 
     override fun onPageSelected(position: Int) {
         setCurrentDotPosition(position)
+        when (position) {
+            0 -> {
+                mContinueButton?.setImageDrawable(resources.getDrawable(R.drawable.guide_continue_button))
+            }
+            1 -> {
+                mContinueButton?.setImageDrawable(resources.getDrawable(R.drawable.guide_continue_button_yello))
+            }
+            2 -> {
+                mContinueButton?.setImageDrawable(resources.getDrawable(R.drawable.guide_continue_button_pink))
+            }
+            3 -> {
+                mContinueButton?.setImageDrawable(resources.getDrawable(R.drawable.guide_continue_button_light_blue))
+            }
+        }
     }
 
     private fun setCurrentDotPosition(position: Int) {
@@ -167,9 +182,10 @@ class GuideActivity: AppCompatActivity(), ViewPager.OnPageChangeListener {
         mDotList?.get(0)?.isEnabled = true
     }
 
-    private fun startSignUpActivity() {
-        val intent = Intent(this@GuideActivity, SignUpActivity::class.java)
+    private fun StartAppIntroActivity() {
+        val intent = Intent(this@GuideActivity, AppIntroActivity::class.java)
         startActivity(intent)
+        overridePendingTransition(R.anim.from_right,R.anim.out_left);
         finish()
     }
 

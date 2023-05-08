@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_chouti"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="test"/>
+
+
+
+    <com.squareup.shopx.widget.BottomSheetRL
+        android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_container" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_marginTop="500dp"
+        android:layout_alignParentBottom="true">
+        <com.squareup.shopx.widget.RadiusCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:rcv_topLeftRadiu="40dp"
+            app:rcv_topRightRadiu="40dp">
+
+            <include layout="@layout/map_container" />
+
+        </com.squareup.shopx.widget.RadiusCardView>
+    </com.squareup.shopx.widget.BottomSheetRL>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+

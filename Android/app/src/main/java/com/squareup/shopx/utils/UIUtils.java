@@ -28,4 +28,5 @@ public class UIUtils {
             return (int) (dpValue * scale + 0.5f);
     }
 
+
 }

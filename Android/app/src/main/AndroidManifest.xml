@@ -78,6 +78,9 @@
             android:theme="@style/NoActionBar"/>
         <activity android:name=".activity.GuideActivity"
             android:theme="@style/NoActionBar"/>
+
+        <activity android:name=".activity.AppIntroActivity"
+            android:theme="@style/NoActionBar"/>
     </application>
 
 </manifest>

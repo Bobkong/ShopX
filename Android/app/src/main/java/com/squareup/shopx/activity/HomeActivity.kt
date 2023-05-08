@@ -60,22 +60,4 @@ class HomeActivity : AppCompatActivity(), BottomNavigationBar.OnTabSelectedListe
     override fun onTabReselected(position: Int) {
     }
 
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if (event!!.action === MotionEvent.ACTION_DOWN) {
-            x1 = event!!.x
-            y1 = event.y
-        }
-        if (event!!.action === MotionEvent.ACTION_UP) {
-            x2 = event!!.x
-            y2 = event.y
-            if (y2 - y1 > 50 && navigationBarView.currentSelectedPosition == 0 && mainFragment?.currentFragment == 0) {
-                mainFragment?.changeToMap()
-            } else if (y1 - y2 > 50 && navigationBarView.currentSelectedPosition == 0 && mainFragment?.currentFragment == 1) {
-                mainFragment?.changeToIntro()
-            }
-        }
-        return super.onTouchEvent(event)
-    }
-
 }
