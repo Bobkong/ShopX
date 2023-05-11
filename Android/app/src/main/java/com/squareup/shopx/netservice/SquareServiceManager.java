@@ -107,7 +107,7 @@ public class SquareServiceManager {
     }
 
     public void setAuthorizationToken(String authorizationToken) {
-        this.authorizationToken = authorizationToken;
+        this.authorizationToken = "Bearer " + authorizationToken;
     }
 
     //获取对应service

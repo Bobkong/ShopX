@@ -1,10 +1,13 @@
 package com.squareup.shopx.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.google.android.gms.auth.api.signin.SignInAccount
 import com.squareup.shopx.R
 import com.squareup.shopx.utils.Transparent
 import com.squareup.shopx.utils.UIUtils
@@ -18,6 +21,18 @@ class AppIntroActivity : AppCompatActivity() {
         Transparent.transparentNavBar(this)
         Transparent.transparentStatusBar(this)
         setGuideImageHeight()
+
+        findViewById<TextView>(R.id.sign_up).setOnClickListener {
+            val intent = Intent(this@AppIntroActivity, SignUpActivity::class.java)
+            startActivity(intent)
+        }
+
+        findViewById<TextView>(R.id.sign_in).setOnClickListener {
+            val intent = Intent(this@AppIntroActivity, SignInAccount::class.java)
+            startActivity(intent)
+        }
+
+
     }
 
     private fun setGuideImageHeight() {

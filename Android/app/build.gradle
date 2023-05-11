@@ -75,6 +75,9 @@ dependencies {
     // bottom navigation bar
     implementation 'com.ashokvarma.android:bottom-navigation-bar:1.2.0'
 
+    // eventbus
+    implementation "org.greenrobot:eventbus:3.2.0"
+
 }
 
 apply plugin: 'com.google.gms.google-services'

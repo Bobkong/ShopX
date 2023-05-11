@@ -55,7 +55,7 @@ public class RetrieveMerchant {
                     result.getLocation().getAddress().getPostalCode());
 
 
-            Merchant merchant = new Merchant(merchantId, client.getAccessToken(), result.getLocation().getBusinessName(), result.getLocation().getLogoUrl(), address, googleGeoCoding.getResults().get(0).geometry.location.lat, googleGeoCoding.getResults().get(0).geometry.location.lng);
+            Merchant merchant = new Merchant(merchantId, client.getAccessToken(), result.getLocation().getBusinessName(), result.getLocation().getLogoUrl(), address, googleGeoCoding.getResults().get(0).geometry.location.lat, googleGeoCoding.getResults().get(0).geometry.location.lng, result.getLocation().getId());
             getLoyaltyProgram(client, merchant);
 
         }).exceptionally(exception -> {

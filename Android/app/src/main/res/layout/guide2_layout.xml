@@ -23,8 +23,7 @@
     <TextView
         android:id="@+id/guide_title"
         android:text="Experience AR Magic"
-        android:textSize="@dimen/headline_large"
-        android:fontFamily="@font/cambon_bold"
+        style="@style/headline_large"
         android:layout_marginTop="32dp"
         android:textColor="@color/black_0"
         android:layout_marginLeft="24dp"
@@ -35,8 +34,7 @@
 
     <TextView
         android:text="Explore your favorite stores in a whole new way with augmented reality. See products come to life and make better-informed decisions before you buy!"
-        android:textSize="@dimen/body_large"
-        android:fontFamily="@font/manrope_regular"
+        style="@style/body_large"
         android:textColor="@color/black_30"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"

@@ -4,90 +4,194 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <EditText
-        android:id="@+id/phone_number_input"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="90dp"
-        android:inputType="phone"
-        android:hint="Please input 10-digit US phone number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="200dp"
+        android:src="@drawable/temp_img"
+        android:id="@+id/top_img"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toTopOf="parent"/>
 
-    <EditText
-        android:id="@+id/nickname_input"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="90dp"
-        android:hint="Nickname"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phone_number_input"/>
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="44dp"
+        android:id="@+id/information_cl"
+        app:layout_constraintTop_toBottomOf="@+id/top_img">
 
-    <EditText
-        android:id="@+id/password_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="90dp"
-        android:hint="Password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nickname_input"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/username_head"
+            style="@style/title_medium"
+            android:textColor="@color/black_0"
+            android:text="Username"/>
 
-    <EditText
-        android:id="@+id/verify_code_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="90dp"
-        android:hint="Phone Verification Code"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_input"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/label_large"
+            android:textColor="@color/error_orange_50"
+            app:layout_constraintLeft_toRightOf="@+id/username_head"
+            app:layout_constraintTop_toTopOf="@+id/username_head"
+            android:layout_marginLeft="2dp"
+            android:text="*"/>
+
+        <EditText
+            android:id="@+id/username_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter username"
+            style="@style/title_medium"
+            android:paddingLeft="18dp"
+            android:textColor="@color/black_50"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/black_95_long_button_r10"
+            app:layout_constraintLeft_toLeftOf="@+id/username_head"
+            app:layout_constraintTop_toBottomOf="@+id/username_head"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/username_input"
+            android:id="@+id/phone_number_head"
+            android:layout_marginTop="20dp"
+            style="@style/title_medium"
+            android:textColor="@color/black_0"
+            android:text="Phone number"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/label_large"
+            android:layout_marginLeft="2dp"
+            android:textColor="@color/error_orange_50"
+            app:layout_constraintLeft_toRightOf="@+id/phone_number_head"
+            app:layout_constraintTop_toTopOf="@+id/phone_number_head"
+            android:text="*"/>
+
+        <EditText
+            android:id="@+id/phone_number_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your mobile number"
+            style="@style/title_medium"
+            android:paddingLeft="18dp"
+            android:background="@drawable/black_95_long_button_r10"
+            android:textColor="@color/black_50"
+            android:layout_marginTop="8dp"
+            app:layout_constraintLeft_toLeftOf="@+id/phone_number_head"
+            app:layout_constraintTop_toBottomOf="@+id/phone_number_head"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone_number_input"
+            android:id="@+id/create_password_head"
+            style="@style/title_medium"
+            android:textColor="@color/black_0"
+            android:layout_marginTop="20dp"
+            android:text="Create your password"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/label_large"
+            android:layout_marginLeft="2dp"
+            android:textColor="@color/error_orange_50"
+            app:layout_constraintLeft_toRightOf="@+id/create_password_head"
+            app:layout_constraintTop_toTopOf="@+id/create_password_head"
+            android:text="*"/>
+
+        <EditText
+            android:id="@+id/create_password_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter password"
+            style="@style/title_medium"
+            android:paddingLeft="18dp"
+            android:background="@drawable/black_95_long_button_r10"
+            android:textColor="@color/black_50"
+            android:layout_marginTop="8dp"
+            app:layout_constraintLeft_toLeftOf="@+id/create_password_head"
+            app:layout_constraintTop_toBottomOf="@+id/create_password_head"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/create_password_input"
+            android:id="@+id/confirm_password_head"
+            style="@style/title_medium"
+            android:textColor="@color/black_0"
+            android:layout_marginTop="20dp"
+            android:text="Confirm your password"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/label_large"
+            android:layout_marginLeft="2dp"
+            android:textColor="@color/error_orange_50"
+            app:layout_constraintLeft_toRightOf="@+id/confirm_password_head"
+            app:layout_constraintTop_toTopOf="@+id/confirm_password_head"
+            android:text="*"/>
+
+        <EditText
+            android:id="@+id/confirm_password_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter password again"
+            style="@style/title_medium"
+            android:background="@drawable/black_95_long_button_r10"
+            android:textColor="@color/black_50"
+            android:paddingLeft="18dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintLeft_toLeftOf="@+id/confirm_password_head"
+            app:layout_constraintTop_toBottomOf="@+id/confirm_password_head"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/get_verification_code"
+        android:id="@+id/sign_up_continue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="90dp"
-        android:text="Get Verification Code"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/verify_code_input"/>
+        app:layout_constraintTop_toBottomOf="@+id/information_cl"
+        style="@style/title_medium"
+        android:textColor="@color/white"
+        android:text="Continue"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:textAlignment="center"/>
 
-    <TextView
-        android:id="@+id/verify"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="90dp"
-        android:text="Verify and Sign Up"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/get_verification_code"/>
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_continue"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:gravity="center"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/title_small"
+            android:textColor="@color/black_50"
+            android:text="Don't have an account?"/>
 
-    <TextView
-        android:id="@+id/sign_in"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="48dp"
-        android:layout_marginBottom="90dp"
-        android:text="Sign In"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/verify"/>
-
+        <TextView
+            android:id="@+id/sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/label_large"
+            android:layout_marginLeft="4dp"
+            android:textColor="@color/primary_blue_50"
+            android:text="Sign in"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,26 +12,26 @@ import com.squareup.shopx.R;
 import com.squareup.shopx.model.AllMerchantsResponse;
 import com.squareup.shopx.model.GetMerchantDetailResponse;
 import com.squareup.shopx.viewholder.ItemViewHolder;
+import com.squareup.shopx.viewholder.OrderItemViewHolder;
 
 import java.util.List;
 
-public class ItemListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+public class OrderItemListAdapter extends RecyclerView.Adapter<OrderItemViewHolder> {
 
     private final List<GetMerchantDetailResponse.Item> mData;
     private final Activity mActivity;
-    private final GetMerchantDetailResponse mMerchantItems;
     private final AllMerchantsResponse.ShopXMerchant mMerchantInfo;
     @NonNull
     @Override
-    public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_merchant_item, parent, false);
-        return new ItemViewHolder(v);
+    public OrderItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.order_item_merchant_item, parent, false);
+        return new OrderItemViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrderItemViewHolder holder, int position) {
         boolean isLastOne = position == mData.size() - 1;
-        holder.setData(mData.get(position), mActivity, mMerchantItems, mMerchantInfo);
+        holder.setData(mData.get(position), mActivity, mMerchantInfo);
     }
 
     @Override
@@ -39,10 +39,9 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         return mData.size();
     }
 
-    public ItemListAdapter(List<GetMerchantDetailResponse.Item> data, Activity activity, GetMerchantDetailResponse merchantDetail, AllMerchantsResponse.ShopXMerchant merchantInfo) {
+    public OrderItemListAdapter(List<GetMerchantDetailResponse.Item> data, Activity activity, AllMerchantsResponse.ShopXMerchant merchantInfo) {
         this.mData = data;
         this.mActivity = activity;
-        this.mMerchantItems = merchantDetail;
         this.mMerchantInfo = merchantInfo;
     }
 }

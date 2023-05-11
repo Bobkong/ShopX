@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AllMerchantsResponse implements Serializable {
     @SerializedName("code")
@@ -84,6 +85,9 @@ public class AllMerchantsResponse implements Serializable {
 
         @SerializedName("arEnable")
         int arEnable;
+
+        @SerializedName("locationId")
+        String locationId;
 
         public String getMerchantId() {
             return merchantId;
@@ -203,6 +207,27 @@ public class AllMerchantsResponse implements Serializable {
 
         public void setArEnable(int arEnable) {
             this.arEnable = arEnable;
+        }
+
+        public String getLocationId() {
+            return locationId;
+        }
+
+        public void setLocationId(String locationId) {
+            this.locationId = locationId;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ShopXMerchant that = (ShopXMerchant) o;
+            return accessToken.equals(that.accessToken);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(accessToken);
         }
     }
 }

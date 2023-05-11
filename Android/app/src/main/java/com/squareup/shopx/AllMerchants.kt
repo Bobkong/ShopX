@@ -3,6 +3,8 @@ package com.squareup.shopx
 import android.location.Location
 import android.util.Log
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
+import com.squareup.shopx.model.GetMerchantDetailResponse.Item
+import com.squareup.shopx.model.MerchantCart
 
 object AllMerchants {
 
@@ -15,6 +17,8 @@ object AllMerchants {
 
     var myLat: Float = 0.0F
     var myLng: Float = 0.0F
+
+    var allMerchantCarts = ArrayList<MerchantCart>()
 
     fun getDisplayMerchants(): List<ShopXMerchant> {
         var displayMerchants = ArrayList<ShopXMerchant>()
@@ -97,6 +101,45 @@ object AllMerchants {
             }
         }
         return null
+    }
+
+    fun addToCart(merchant: ShopXMerchant, item: Item) {
+        for (merchantCart in allMerchantCarts) {
+            if (merchantCart.merchant.equals(merchant)) {
+                merchantCart.addToCart(item)
+                return
+            }
+        }
+        val merchantCart = MerchantCart(merchant)
+        merchantCart.addToCart(item)
+        allMerchantCarts.add(merchantCart)
+    }
+
+    fun deleteFromCart(merchant: ShopXMerchant, item: Item) {
+        for (merchantCart in allMerchantCarts) {
+            if (merchantCart.merchant.equals(merchant)) {
+                merchantCart.deleteFromCart(item)
+                return
+            }
+        }
+    }
+
+    fun getPrice(merchant: ShopXMerchant): Float {
+        for (merchantCart in allMerchantCarts) {
+            if (merchantCart.merchant.equals(merchant)) {
+                return merchantCart.price
+            }
+        }
+        return 0F
+    }
+
+    fun getCartItems(merchant: ShopXMerchant): ArrayList<Item> {
+        for (merchantCart in allMerchantCarts) {
+            if (merchantCart.merchant.equals(merchant)) {
+                return merchantCart.cartItems
+            }
+        }
+        return ArrayList()
     }
 
 

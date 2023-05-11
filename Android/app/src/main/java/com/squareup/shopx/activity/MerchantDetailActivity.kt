@@ -1,7 +1,7 @@
 package com.squareup.shopx.activity
 
+import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -13,43 +13,78 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
 import com.squareup.shopx.adapter.ItemListAdapter
-import com.squareup.shopx.model.GeneralResponse
-import com.squareup.shopx.model.GetLoyaltyInfoResponse
-import com.squareup.shopx.model.GetMerchantDetailResponse
-import com.squareup.shopx.model.LoyaltyProgramResponse
+import com.squareup.shopx.model.*
+import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
-import com.squareup.shopx.netservice.SquareAPI.SquareApiService
 import com.squareup.shopx.utils.PreferenceUtils
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+
 
 class MerchantDetailActivity : AppCompatActivity() {
 
     private val TAG = "MerchantDetailActivity"
     private var itemList: RecyclerView? = null
+    private lateinit var merchantInfo: ShopXMerchant
+    private lateinit var cartInfo: TextView
+    private var customerLoyaltyResponse: GetLoyaltyInfoResponse? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_merchant_detail)
 
+        cartInfo = findViewById(R.id.cart_info)
+        cartInfo.setOnClickListener {
+            val intent = Intent(this@MerchantDetailActivity, OrderActivity::class.java)
+            intent.putExtra("merchant", merchantInfo)
+
+            if (merchantInfo.ifLoyalty == 1 && customerLoyaltyResponse != null && customerLoyaltyResponse!!.isEnrolled == 1) {
+                intent.putExtra("loyalty", customerLoyaltyResponse)
+            }
+            startActivity(intent)
+        }
+
         itemList = findViewById(R.id.item_list)
         itemList?.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
-        requestMerchantDetail(intent.extras?.getString("accessToken"))
+        merchantInfo = intent.extras?.getSerializable("merchant") as ShopXMerchant
+        requestMerchantDetail(merchantInfo.accessToken)
 
-        if (intent.extras?.getInt("ifLoyalty") == 1) {
-            requestLoyaltyInfo(intent.extras?.getString("accessToken"))
+        if (merchantInfo.ifLoyalty == 1) {
+            requestLoyaltyInfo(merchantInfo.accessToken)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this);
+    }
+
+    override fun onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCartUpdateEvent(event: CartUpdateEvent) {
+        if (event.accessToken == merchantInfo.accessToken) {
+            cartInfo.text = AllMerchants.getPrice(merchantInfo).toString()
         }
     }
 
     private fun requestLoyaltyInfo(accessToken: String?) {
-        ShopXApiService.getInstance().getLoyaltyinfo(accessToken, PreferenceUtils.getUserPhone())
+        // todo: change the test code
+        ShopXApiService.getInstance().getLoyaltyinfo(accessToken, "+18583190000")
             .subscribe(object: Observer<GetLoyaltyInfoResponse> {
             override fun onSubscribe(d: Disposable?) {
             }
 
             override fun onNext(value: GetLoyaltyInfoResponse?) {
+                customerLoyaltyResponse = value
                 runOnUiThread {
 
                     if (value?.code == 1) {
@@ -95,13 +130,14 @@ class MerchantDetailActivity : AppCompatActivity() {
     }
 
     private fun enrollLoyaltyProgram(accessToken: String?, programId: String?) {
-        ShopXApiService.getInstance().enrollLoyalty(accessToken, PreferenceUtils.getUserPhone(), programId)
-            .subscribe(object: Observer<GeneralResponse> {
+        // todo: change the test code
+        ShopXApiService.getInstance().enrollLoyalty(accessToken, "+18583190000", programId)
+            .subscribe(object: Observer<EnrollLoyaltyResponse> {
                 override fun onSubscribe(d: Disposable?) {
 
                 }
 
-                override fun onNext(value: GeneralResponse?) {
+                override fun onNext(value: EnrollLoyaltyResponse?) {
                     runOnUiThread {
 
                         if (value?.code == 1) {
@@ -115,6 +151,9 @@ class MerchantDetailActivity : AppCompatActivity() {
                         enrollLoyalty.visibility = View.GONE
                         loyaltyPoints.visibility = View.VISIBLE
                         loyaltyPoints.text = "0 points"
+
+                        customerLoyaltyResponse?.isEnrolled = 1
+                        customerLoyaltyResponse?.loyaltyAccount = value?.loyaltyAccount
 
                         Toast.makeText(this@MerchantDetailActivity, "Enroll Successfully!", Toast.LENGTH_SHORT).show()
                     }
@@ -148,7 +187,7 @@ class MerchantDetailActivity : AppCompatActivity() {
                         }
 
                         value?.let {
-                            itemList?.adapter = ItemListAdapter(it.items, this@MerchantDetailActivity, value)
+                            itemList?.adapter = ItemListAdapter(it.items, this@MerchantDetailActivity, value, merchantInfo)
                         }
                     }
 

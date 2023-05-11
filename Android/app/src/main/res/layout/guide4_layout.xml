@@ -23,8 +23,7 @@
     <TextView
         android:id="@+id/guide_title"
         android:text="Share with Friends"
-        android:textSize="@dimen/headline_large"
-        android:fontFamily="@font/cambon_bold"
+        style="@style/headline_large"
         android:layout_marginTop="32dp"
         android:textColor="@color/black_0"
         android:layout_marginLeft="24dp"
@@ -35,8 +34,7 @@
 
     <TextView
         android:text="Spread the word about great deals at your favorite stores by sharing your favorite AR finds with friends and followers on social media."
-        android:textSize="@dimen/body_large"
-        android:fontFamily="@font/manrope_regular"
+        style="@style/body_large"
         android:textColor="@color/black_30"
         app:layout_constraintTop_toBottomOf="@+id/guide_title"
         android:layout_width="match_parent"

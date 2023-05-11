@@ -5,6 +5,7 @@ import com.squareup.shopx.model.AddCustomerResponse;
 import com.squareup.shopx.model.AllMerchantsResponse;
 import com.squareup.shopx.model.Customer;
 import com.squareup.shopx.model.EnrollLoyaltyRequest;
+import com.squareup.shopx.model.EnrollLoyaltyResponse;
 import com.squareup.shopx.model.GeneralResponse;
 import com.squareup.shopx.model.GetAllLoyaltyRecordsRequest;
 import com.squareup.shopx.model.GetAllLoyaltyRecordsResponse;
@@ -70,7 +71,7 @@ public class ShopXApiService {
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<GeneralResponse> enrollLoyalty(String accessToken, String contact, String programId){
+    public Observable<EnrollLoyaltyResponse> enrollLoyalty(String accessToken, String contact, String programId){
         return loyaltyApi.enrollLoyaltyResponse(new EnrollLoyaltyRequest(contact, accessToken, programId))
                 .onErrorResumeNext(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io());

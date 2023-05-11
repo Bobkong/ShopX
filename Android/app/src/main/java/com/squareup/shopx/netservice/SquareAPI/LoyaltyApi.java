@@ -1,6 +1,8 @@
 package com.squareup.shopx.netservice.SquareAPI;
 
 
+import com.squareup.shopx.model.CreateLoyaltyRewardRequest;
+import com.squareup.shopx.model.CreateLoyaltyRewardResponse;
 import com.squareup.shopx.model.LoyaltyProgramResponse;
 
 import io.reactivex.Observable;
@@ -11,17 +13,10 @@ import retrofit2.http.Path;
 
 public interface LoyaltyApi {
 
-    //retrieve loyalty program
-    @GET("v2/loyalty/programs/{program_id}")
-    Observable<LoyaltyProgramResponse> retrieveLoyaltyProgram(
-            @Path("program_id")
-            String programId
-    );
-
     //create a loyalty account
-    @POST("v2/loyalty/accounts")
-    Observable<LoyaltyProgramResponse> createLoyaltyAccount(
-            @Body String programId
+    @POST("v2/loyalty/rewards")
+    Observable<CreateLoyaltyRewardResponse> createLoyaltyReward(
+            @Body CreateLoyaltyRewardRequest createLoyaltyRewardRequest
     );
 }
 

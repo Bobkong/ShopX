@@ -28,29 +28,13 @@
         app:layout_constraintLeft_toLeftOf="@id/name"
         app:layout_constraintTop_toBottomOf="@+id/name"/>
 
-    <TextView
-        android:id="@+id/original_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="@id/description"
-        app:layout_constraintTop_toBottomOf="@+id/description"/>
 
     <TextView
         android:id="@+id/discount_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        app:layout_constraintLeft_toLeftOf="@id/original_price"
-        app:layout_constraintTop_toBottomOf="@+id/original_price"/>
-
-    <TextView
-        android:id="@+id/add_to_cart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="Add to Cart"
-        app:layout_constraintLeft_toLeftOf="@id/discount_price"
-        app:layout_constraintTop_toBottomOf="@+id/discount_price"/>
+        app:layout_constraintLeft_toLeftOf="@id/description"
+        app:layout_constraintTop_toBottomOf="@+id/description"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

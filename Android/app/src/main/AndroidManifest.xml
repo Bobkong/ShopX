@@ -64,6 +64,10 @@
 
 
         <meta-data
+            android:name="sqip.SQUARE_APPLICATION_ID"
+            android:value="sandbox-sq0idb-jqdx9ffRfMFmrClej1aF8A"/>
+
+        <meta-data
             android:name="com.google.android.ar.API_KEY"
             android:value="AIzaSyBHWMoxz8l5prXUSRnjRCIBGh_veejxFNM"/>
 
@@ -80,6 +84,9 @@
             android:theme="@style/NoActionBar"/>
 
         <activity android:name=".activity.AppIntroActivity"
+            android:theme="@style/NoActionBar"/>
+
+        <activity android:name=".activity.OrderActivity"
             android:theme="@style/NoActionBar"/>
     </application>
 

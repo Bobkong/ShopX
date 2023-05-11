@@ -20,6 +20,17 @@ public class GetLoyaltyInfoResponse implements Serializable {
     @SerializedName("points")
     int points;
 
+    @SerializedName("loyalty_account")
+    String loyaltyAccount;
+
+    public String getLoyaltyAccount() {
+        return loyaltyAccount;
+    }
+
+    public void setLoyaltyAccount(String loyaltyAccount) {
+        this.loyaltyAccount = loyaltyAccount;
+    }
+
     public int getCode() {
         return code;
     }

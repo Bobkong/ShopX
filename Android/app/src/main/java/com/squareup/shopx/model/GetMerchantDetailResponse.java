@@ -1,9 +1,14 @@
 package com.squareup.shopx.model;
 
+import android.view.View;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class GetMerchantDetailResponse implements Serializable {
     @SerializedName("code")
@@ -39,7 +44,7 @@ public class GetMerchantDetailResponse implements Serializable {
         this.msg = msg;
     }
 
-    public static class Item  implements Serializable {
+    public static class Item implements Serializable {
         @SerializedName("itemName")
         String itemName;
 
@@ -50,7 +55,7 @@ public class GetMerchantDetailResponse implements Serializable {
         String itemId;
 
         @SerializedName("itemPrice")
-        String itemPrice;
+        int itemPrice;
 
         @SerializedName("itemImage")
         String itemImage;
@@ -60,6 +65,9 @@ public class GetMerchantDetailResponse implements Serializable {
 
         @SerializedName("pricingType")
         String pricingType;
+
+        @SerializedName("itemVariationId")
+        String itemVariationId;
 
         public String getItemName() {
             return itemName;
@@ -85,11 +93,11 @@ public class GetMerchantDetailResponse implements Serializable {
             this.itemId = itemId;
         }
 
-        public String getItemPrice() {
+        public int getItemPrice() {
             return itemPrice;
         }
 
-        public void setItemPrice(String itemPrice) {
+        public void setItemPrice(int itemPrice) {
             this.itemPrice = itemPrice;
         }
 
@@ -115,6 +123,42 @@ public class GetMerchantDetailResponse implements Serializable {
 
         public void setPricingType(String pricingType) {
             this.pricingType = pricingType;
+        }
+
+        public String getItemVariationId() {
+            return itemVariationId;
+        }
+
+        public void setItemVariationId(String itemVariationId) {
+            this.itemVariationId = itemVariationId;
+        }
+
+        public float getItemDiscountPrice(AllMerchantsResponse.ShopXMerchant merchantInfo) {
+            List<String> discountItems = Arrays.asList(merchantInfo.getDiscountProducts().split("\\|"));
+
+            if (merchantInfo.getDiscountType() == null || merchantInfo.getDiscountType().isEmpty() || !discountItems.contains(getItemId())) {
+                return getItemPrice();
+            } else {
+                if (merchantInfo.getDiscountType().equals("FIXED_PERCENTAGE")) {
+                    return getItemPrice() * (100 - merchantInfo.getDiscountAmount()) / 100F;
+                } else if (merchantInfo.getDiscountType().equals("FIXED_AMOUNT")) {
+                   return getItemPrice() - merchantInfo.getDiscountAmount();
+                }
+            }
+            return 0F;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Item item = (Item) o;
+            return itemId.equals(item.itemId);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(itemId);
         }
     }
 

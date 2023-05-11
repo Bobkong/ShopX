@@ -24,26 +24,52 @@
             app:layout_constraintLeft_toLeftOf="parent"/>
 
         <TextView
-            android:id="@+id/enroll_button"
+            android:id="@+id/create_rewards"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enroll Loyalty Program"
-            app:layout_constraintTop_toTopOf="@+id/loyal_points"
+            android:text="Create Rewards for This Order"
+            app:layout_constraintTop_toBottomOf="@+id/loyal_points"
             app:layout_constraintLeft_toLeftOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/item_list"
+        android:id="@+id/order_item_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/loyalty_cl"/>
 
+
     <TextView
-        android:id="@+id/cart_info"
+        android:id="@+id/original_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/order_item_list"/>
+
+    <TextView
+        android:id="@+id/discount_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/original_price"/>
+
+    <TextView
+        android:id="@+id/final_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/discount_price"/>
+
+    <TextView
+        android:id="@+id/pay_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Pay Order"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

@@ -10,4 +10,77 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
     </style>
+    
+    <style name="display_medium">
+        <item name="android:textSize">36sp</item>
+        <item name="android:fontFamily">@font/cambon_medium</item>
+    </style>
+
+    <style name="display_large">
+        <item name="android:textSize">45sp</item>
+        <item name="android:fontFamily">@font/cambon_bold</item>
+    </style>
+
+    <style name="headline_large">
+        <item name="android:textSize">32sp</item>
+        <item name="android:fontFamily">@font/cambon_bold</item>
+    </style>
+
+    <style name="headline_medium">
+        <item name="android:textSize">28sp</item>
+        <item name="android:fontFamily">@font/cambon_medium</item>
+    </style>
+
+    <style name="headline_small">
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily">@font/cambon_regular</item>
+    </style>
+
+    <style name="title_large">
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/manrope_medium</item>
+    </style>
+
+    <style name="title_medium">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/manrope_medium</item>
+    </style>
+
+    <style name="title_small">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/manrope_medium</item>
+    </style>
+
+    <style name="label_large">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/manrope_semibold</item>
+    </style>
+
+    <style name="label_medium">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/manrope_semibold</item>
+    </style>
+
+    <style name="label_small">
+        <item name="android:textSize">11sp</item>
+        <item name="android:fontFamily">@font/manrope_semibold</item>
+    </style>
+
+    <style name="body_large">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/manrope_regular</item>
+    </style>
+
+    <style name="body_medium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/manrope_regular</item>
+    </style>
+
+    <style name="body_small">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/manrope_regular</item>
+    </style>
+
+
+
 </resources>

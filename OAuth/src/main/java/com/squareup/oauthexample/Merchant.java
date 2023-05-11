@@ -37,8 +37,11 @@ public class Merchant implements Serializable {
     @SerializedName("discount")
     Discount discount;
 
+    @SerializedName("locationId")
+    String locationId;
 
-    public Merchant(String merchantId, String accessToken, String businessName, String logo, Address location, Float lat, Float lng) {
+
+    public Merchant(String merchantId, String accessToken, String businessName, String logo, Address location, Float lat, Float lng, String locationId) {
         this.merchantId = merchantId;
         this.accessToken = accessToken;
         this.businessName = businessName;
@@ -50,6 +53,7 @@ public class Merchant implements Serializable {
         this.address = location;
         this.lat = lat;
         this.lng = lng;
+        this.locationId = locationId;
     }
 
     public static class Address implements Serializable {

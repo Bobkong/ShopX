@@ -53,6 +53,9 @@ public class LoyaltyProgramResponse implements Serializable {
     }
 
     public static class RewardTier implements Serializable {
+        @SerializedName("id")
+        String id;
+
         @SerializedName("points")
         int points;
 
@@ -61,6 +64,14 @@ public class LoyaltyProgramResponse implements Serializable {
 
         @SerializedName("definition")
         Definition definition;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         public int getPoints() {
             return points;

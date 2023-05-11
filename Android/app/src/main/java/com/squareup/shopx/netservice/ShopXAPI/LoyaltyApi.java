@@ -2,6 +2,7 @@ package com.squareup.shopx.netservice.ShopXAPI;
 
 import com.squareup.shopx.model.AddCustomerResponse;
 import com.squareup.shopx.model.EnrollLoyaltyRequest;
+import com.squareup.shopx.model.EnrollLoyaltyResponse;
 import com.squareup.shopx.model.GeneralResponse;
 import com.squareup.shopx.model.GetAllLoyaltyRecordsRequest;
 import com.squareup.shopx.model.GetAllLoyaltyRecordsResponse;
@@ -23,7 +24,7 @@ public interface LoyaltyApi {
     );
 
     @POST("/enrollLoyalty")
-    Observable<GeneralResponse> enrollLoyaltyResponse(
+    Observable<EnrollLoyaltyResponse> enrollLoyaltyResponse(
             @Body EnrollLoyaltyRequest request
     );
 
@@ -31,7 +32,6 @@ public interface LoyaltyApi {
     Observable<GetAllLoyaltyRecordsResponse> getAllLoyaltyRecords(
             @Body GetAllLoyaltyRecordsRequest request
     );
-
 
 }
 
