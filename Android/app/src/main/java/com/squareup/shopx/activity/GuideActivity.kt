@@ -2,14 +2,10 @@ package com.squareup.shopx.activity
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.annotation.NonNull
@@ -31,7 +27,7 @@ class GuideActivity: AppCompatActivity(), ViewPager.OnPageChangeListener {
     private var mDotList:ArrayList<ImageView>? = null
     private var mLastPosition: Int = 0
     private var mContinueButton: ImageView? = null
-    private var jumpToSignup = false
+    private var jumpToAppIntro = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,8 +55,8 @@ class GuideActivity: AppCompatActivity(), ViewPager.OnPageChangeListener {
 
         if (mLastPosition + 1 == mDotList?.size && isDragPage && positionOffsetPixels == 0) {   //当前页是最后一页，并且是拖动状态，并且像素偏移量为0
 
-            if (!jumpToSignup) {
-                jumpToSignup = true
+            if (!jumpToAppIntro) {
+                jumpToAppIntro = true
                 StartAppIntroActivity()
             }
         }

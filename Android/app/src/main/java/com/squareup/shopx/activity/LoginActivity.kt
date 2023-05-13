@@ -11,13 +11,16 @@ import com.squareup.shopx.R
 import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.model.GeneralResponse
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
+import com.squareup.shopx.widget.VerifyCodeView
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var verifyCodeView: VerifyCodeView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        verifyCodeView = findViewById(R.id.verify_code_view)
 
         findViewById<TextView>(R.id.login_button).setOnClickListener {
             val phone = findViewById<EditText>(R.id.phone_number_input).text.toString()

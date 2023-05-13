@@ -2,24 +2,36 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="24dp"
+    android:layout_marginRight="24dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/temp_img"
-        android:id="@+id/top_img"
-        android:scaleType="fitXY"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:id="@+id/back_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="86dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/black_back_button"/>
 
+    <TextView
+        android:id="@+id/sign_up_headline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/back_button"
+        android:layout_marginTop="20dp"
+        style="@style/headline_large"
+        android:text="Create Your Account"
+        android:textColor="@color/black_0"
+        />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="40dp"
         android:id="@+id/information_cl"
-        app:layout_constraintTop_toBottomOf="@+id/top_img">
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_headline">
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,20 +59,34 @@
             android:layout_height="wrap_content"
             android:hint="Enter username"
             style="@style/title_medium"
-            android:paddingLeft="18dp"
-            android:textColor="@color/black_50"
+            android:textColor="@color/black_0"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:textCursorDrawable="@drawable/edittext_cursor"
             android:layout_marginTop="8dp"
             android:background="@drawable/black_95_long_button_r10"
             app:layout_constraintLeft_toLeftOf="@+id/username_head"
             app:layout_constraintTop_toBottomOf="@+id/username_head"/>
 
         <TextView
+            android:id="@+id/username_warning"
+            style="@style/label_small"
+            android:textColor="@color/error_orange_40"
+            android:text="Required"
+            app:layout_constraintTop_toBottomOf="@+id/username_input"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username_input"
+            app:layout_constraintTop_toBottomOf="@+id/username_warning"
             android:id="@+id/phone_number_head"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             style="@style/title_medium"
             android:textColor="@color/black_0"
             android:text="Phone number"/>
@@ -75,28 +101,58 @@
             app:layout_constraintTop_toTopOf="@+id/phone_number_head"
             android:text="*"/>
 
-        <EditText
-            android:id="@+id/phone_number_input"
+        <LinearLayout
+            android:id="@+id/phone_number_input_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your mobile number"
-            style="@style/title_medium"
-            android:paddingLeft="18dp"
             android:background="@drawable/black_95_long_button_r10"
-            android:textColor="@color/black_50"
             android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="@+id/phone_number_head"
-            app:layout_constraintTop_toBottomOf="@+id/phone_number_head"/>
+            app:layout_constraintTop_toBottomOf="@+id/phone_number_head">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/body_large"
+                android:textColor="@color/black_0"
+                android:text="+1"
+                android:layout_marginRight="12dp"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/phone_number_input"
+                android:hint="Enter your mobile number"
+                style="@style/title_medium"
+                android:singleLine="true"
+                android:maxLines="1"
+                android:textCursorDrawable="@drawable/edittext_cursor"
+                android:background="@null"
+                android:inputType="phone"
+                android:textColor="@color/black_0" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/phone_number_warning"
+            style="@style/label_small"
+            android:textColor="@color/error_orange_40"
+            android:text="Required"
+            app:layout_constraintTop_toBottomOf="@+id/phone_number_input_ll"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phone_number_input"
+            app:layout_constraintTop_toBottomOf="@+id/phone_number_warning"
             android:id="@+id/create_password_head"
             style="@style/title_medium"
             android:textColor="@color/black_0"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:text="Create your password"/>
 
         <TextView
@@ -115,22 +171,36 @@
             android:layout_height="wrap_content"
             android:hint="Enter password"
             style="@style/title_medium"
-            android:paddingLeft="18dp"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/edittext_cursor"
+            android:maxLines="1"
             android:background="@drawable/black_95_long_button_r10"
-            android:textColor="@color/black_50"
+            android:textColor="@color/black_0"
             android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="@+id/create_password_head"
             app:layout_constraintTop_toBottomOf="@+id/create_password_head"/>
 
         <TextView
+            android:id="@+id/create_password_warning"
+            style="@style/label_small"
+            android:textColor="@color/error_orange_40"
+            android:text="Required"
+            app:layout_constraintTop_toBottomOf="@+id/create_password_input"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/create_password_input"
+            app:layout_constraintTop_toBottomOf="@+id/create_password_warning"
             android:id="@+id/confirm_password_head"
             style="@style/title_medium"
             android:textColor="@color/black_0"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:text="Confirm your password"/>
 
         <TextView
@@ -149,34 +219,47 @@
             android:layout_height="wrap_content"
             android:hint="Enter password again"
             style="@style/title_medium"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/edittext_cursor"
+            android:maxLines="1"
             android:background="@drawable/black_95_long_button_r10"
-            android:textColor="@color/black_50"
-            android:paddingLeft="18dp"
+            android:textColor="@color/black_0"
             android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="@+id/confirm_password_head"
             app:layout_constraintTop_toBottomOf="@+id/confirm_password_head"/>
+
+        <TextView
+            android:id="@+id/confirm_password_warning"
+            style="@style/label_small"
+            android:textColor="@color/error_orange_40"
+            android:text="Required"
+            app:layout_constraintTop_toBottomOf="@+id/confirm_password_input"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/sign_up_continue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/information_cl"
         style="@style/title_medium"
+        android:background="@drawable/black_0_long_button_r16"
         android:textColor="@color/white"
         android:text="Continue"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/sign_in_ll"
+        android:layout_marginBottom="20dp"
         android:textAlignment="center"/>
 
     <LinearLayout
+        android:id="@+id/sign_in_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_continue"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:gravity="center"
-        >
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="48dp"
+        android:gravity="center">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
