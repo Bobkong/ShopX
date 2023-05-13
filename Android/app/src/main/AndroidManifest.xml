@@ -88,6 +88,10 @@
 
         <activity android:name=".activity.OrderActivity"
             android:theme="@style/NoActionBar"/>
+
+        <activity android:name=".activity.VerificationCodeActivity"
+            android:windowSoftInputMode="stateVisible"
+            android:theme="@style/NoActionBar"/>
     </application>
 
 </manifest>

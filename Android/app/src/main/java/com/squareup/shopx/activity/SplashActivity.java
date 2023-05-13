@@ -17,16 +17,15 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        new Handler().postDelayed(() -> {
-//            if (PreferenceUtils.getFirstUse()) {
-//                startActivity(new Intent(SplashActivity.this, GuideActivity.class));
-//            } if (PreferenceUtils.getUserPhone().length() == 0){
-//                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-//            }else {
-//                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-//            }
-//            finish();
-//        }, 300);
-        startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+        new Handler().postDelayed(() -> {
+            if (PreferenceUtils.getFirstUse()) {
+                startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+            } if (PreferenceUtils.getUserPhone().length() == 0){
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+            }else {
+                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+            }
+            finish();
+        }, 300);
     }
 }

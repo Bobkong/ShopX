@@ -35,8 +35,14 @@ public class ShopXApiService {
     private final MerchantApi merchantApi = ShopXServiceManager.getInstance().create(MerchantApi.class);
     private final LoyaltyApi loyaltyApi = ShopXServiceManager.getInstance().create(LoyaltyApi.class);
 
-    public Observable<AddCustomerResponse> addCustomer(String email, String nickname, String password){
-        return customerApi.createCustomer(new ShopXCustomer(email, nickname, 0, password))
+    public Observable<AddCustomerResponse> addCustomer(String phone, String nickname, String password){
+        return customerApi.createCustomer(new ShopXCustomer(phone, nickname, 0, password))
+                .onErrorResumeNext(new HttpResultFunc<>())
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<GeneralResponse> checkCustomer(String phone){
+        return customerApi.checkCustomer(new ShopXCustomer(phone, null, 0, null))
                 .onErrorResumeNext(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io());
     }

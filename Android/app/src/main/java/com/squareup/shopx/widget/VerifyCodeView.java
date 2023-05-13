@@ -35,6 +35,9 @@ public class VerifyCodeView extends RelativeLayout {
         textViews[2] = (TextView) findViewById(R.id.tv_2);
         textViews[3] = (TextView) findViewById(R.id.tv_3);
         editText = (EditText) findViewById(R.id.edit_text_view);
+        editText.setFocusable(true);
+        editText.setFocusableInTouchMode(true);
+        editText.requestFocus();
 
         editText.setCursorVisible(false);//隐藏光标
         setEditTextListener();
@@ -71,6 +74,13 @@ public class VerifyCodeView extends RelativeLayout {
                     } else {
                         textViews[i].setText("");
                     }
+
+                    if (i == inputContent.length() && i < MAX) {
+                        textViews[i].setBackground(getResources().getDrawable(R.drawable.verfication_code_selected));
+                    } else {
+                        textViews[i].setBackground(getResources().getDrawable(R.drawable.verfication_code_not_selected));
+                    }
+
                 }
             }
         });

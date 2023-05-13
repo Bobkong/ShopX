@@ -27,6 +27,11 @@ public interface CustomerApi {
             @Body LoginRequest loginRequest
     );
 
+    @POST("/checkCustomer")
+    Observable<GeneralResponse> checkCustomer(
+            @Body ShopXCustomer customer
+    );
+
 
 }
 

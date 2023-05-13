@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/verify_code_view_rl"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -12,20 +13,46 @@
 
         <TextView
             android:id="@+id/tv_0"
-            style="@style/textview_style" />
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:textColor="@color/black_0"
+            style="@style/headline_large_secondary"
+            android:gravity="center"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/verfication_code_selected"
+            />
 
         <TextView
             android:id="@+id/tv_1"
-            style="@style/textview_style" />
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:textColor="@color/black_0"
+            style="@style/headline_large_secondary"
+            android:gravity="center"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/verfication_code_not_selected"
+            />
 
         <TextView
             android:id="@+id/tv_2"
-            style="@style/textview_style" />
-
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:textColor="@color/black_0"
+            style="@style/headline_large_secondary"
+            android:gravity="center"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/verfication_code_not_selected"
+            />
 
         <TextView
             android:id="@+id/tv_3"
-            style="@style/textview_style" />
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:textColor="@color/black_0"
+            style="@style/headline_large_secondary"
+            android:gravity="center"
+            android:background="@drawable/verfication_code_not_selected"
+            />
 
 
     </LinearLayout>

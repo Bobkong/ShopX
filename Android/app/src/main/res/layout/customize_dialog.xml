@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/dialog_background"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        style="@style/title_large"
+        android:textColor="@color/black_0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:id="@+id/dialog_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/body_medium"
+        android:textColor="@color/black_30"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_desc">
+        <TextView
+            android:id="@+id/action_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/label_medium"
+            android:textColor="@color/primary_blue_50"
+            android:text="Cancel"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/primary_long_button_r32_stroke"/>
+
+        <TextView
+            android:id="@+id/action_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/label_medium"
+            android:textColor="@color/white"
+            android:text="Confirm"
+            android:background="@drawable/primary_long_button_r32_solid"/>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

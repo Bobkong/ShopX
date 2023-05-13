@@ -3,11 +3,13 @@ package com.squareup.shopx.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.shopx.R
 import com.squareup.shopx.utils.PreferenceUtils
@@ -15,6 +17,7 @@ import com.squareup.shopx.model.AddCustomerResponse
 import com.squareup.shopx.model.GeneralResponse
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.utils.Transparent
+import com.squareup.shopx.widget.CustomDialog
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import org.w3c.dom.Text
@@ -127,26 +130,28 @@ class SignUpActivity : AppCompatActivity() {
             confirmPasswordEditText.background = resources.getDrawable(R.drawable.black_95_long_button_r10)
         }
 
-        signUp(phone, nickname, password)
+        checkCustomer(phone, nickname, password)
+
     }
 
-    fun signUp(phone: String, nickname: String, password: String) {
-        ShopXApiService.getInstance().addCustomer(phone, nickname, password)
-            .subscribe(object: Observer<AddCustomerResponse> {
+    fun checkCustomer(phone: String, nickname: String, password: String) {
+        ShopXApiService.getInstance().checkCustomer("+1$phone")
+            .subscribe(object: Observer<GeneralResponse> {
                 override fun onSubscribe(d: Disposable?) {
 
                 }
 
-                override fun onNext(value: AddCustomerResponse?) {
+                override fun onNext(value: GeneralResponse?) {
                     runOnUiThread {
                         if (value?.code == 1) {
-                            Toast.makeText(this@SignUpActivity, value.msg, Toast.LENGTH_SHORT).show()
+                            showDialog(value.msg)
                             return@runOnUiThread
                         }
 
-                        Log.i("SignUpActivity", value?.msg ?: "")
-                        PreferenceUtils.setUserPhone(phone)
-                        val intent = Intent(this@SignUpActivity, HomeActivity::class.java)
+                        val intent = Intent(this@SignUpActivity, VerificationCodeActivity::class.java)
+                        intent.putExtra("phone", "+1$phone")
+                        intent.putExtra("password", password)
+                        intent.putExtra("nickname", nickname)
                         startActivity(intent)
                     }
 
@@ -162,6 +167,23 @@ class SignUpActivity : AppCompatActivity() {
                 }
 
             })
+    }
+
+    fun showDialog(msg: String) {
+        val customDialog = CustomDialog(this, R.layout.customize_dialog)
+        val dialogTitle = customDialog.findViewById<TextView>(R.id.dialog_title)
+        val dialogDesc = customDialog.findViewById<TextView>(R.id.dialog_desc)
+        val rightAction = customDialog.findViewById<TextView>(R.id.action_right)
+        val leftActivity = customDialog.findViewById<TextView>(R.id.action_left)
+        leftActivity.visibility = View.GONE
+        rightAction.text = "OK"
+        dialogTitle.text = "Sign Up Failed"
+        dialogDesc.text = msg
+        customDialog.show()
+
+        rightAction.setOnClickListener {
+            customDialog.dismiss()
+        }
     }
 
 }

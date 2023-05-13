@@ -78,7 +78,7 @@ dependencies {
     // eventbus
     implementation "org.greenrobot:eventbus:3.2.0"
 
-    // shadow
+    // card view
     implementation 'androidx.cardview:cardview:1.0.0'
 
 }

@@ -26,6 +26,11 @@
         <item name="android:fontFamily">@font/cambon_bold</item>
     </style>
 
+    <style name="headline_large_secondary">
+        <item name="android:textSize">32sp</item>
+        <item name="android:fontFamily">@font/manrope_extrabold</item>
+    </style>
+
     <style name="headline_medium">
         <item name="android:textSize">28sp</item>
         <item name="android:fontFamily">@font/cambon_medium</item>
@@ -38,17 +43,27 @@
 
     <style name="title_large">
         <item name="android:textSize">22sp</item>
-        <item name="android:fontFamily">@font/manrope_medium</item>
+        <item name="android:fontFamily">@font/manrope_bold</item>
     </style>
 
     <style name="title_medium">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/manrope_bold</item>
+    </style>
+
+    <style name="title_medium_secondary">
         <item name="android:textSize">16sp</item>
         <item name="android:fontFamily">@font/manrope_medium</item>
     </style>
 
     <style name="title_small">
         <item name="android:textSize">14sp</item>
-        <item name="android:fontFamily">@font/manrope_medium</item>
+        <item name="android:fontFamily">@font/manrope_bold</item>
+    </style>
+
+    <style name="title_small_secondary">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/manrope_semibold</item>
     </style>
 
     <style name="label_large">
@@ -81,16 +96,22 @@
         <item name="android:fontFamily">@font/manrope_regular</item>
     </style>
 
-    <style name="textview_style">
-        <item name="android:layout_height">54dp</item>
-        <item name="android:layout_width">54dp</item>
-        <item name="android:background">@color/black_95</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/black_0</item>
-        <item name="android:textSize">30dp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginRight">12dp</item>
+    <style name="custom_dialog" parent="@android:style/Theme.Dialog">
+        <!-- 边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 模糊 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 遮罩层 -->
+        <item name="android:backgroundDimAmount">0.5</item>
     </style>
-
 
 </resources>
