@@ -46,6 +46,8 @@ public class BottomSheetRL extends RelativeLayout {
                 currentMS = System.currentTimeMillis();//long currentMS     获取系统时间
                 break;
             case MotionEvent.ACTION_MOVE:
+                if (mainFragment == null)
+                    break;
                 moveY += event.getY() - DownY;//y轴距离
                 if (!isExpanded && moveY < 0 && moveY > -30) {
                     mainFragment.moveMapView(moveY);
@@ -56,6 +58,8 @@ public class BottomSheetRL extends RelativeLayout {
                 DownY = event.getY();
                 break;
             case MotionEvent.ACTION_UP:
+                if (mainFragment == null)
+                    break;
                 long moveTime = System.currentTimeMillis() - currentMS;//移动时间
                 //判断是否继续传递信号
                 if(moveTime>100 && moveY < -30 && !isExpanded){

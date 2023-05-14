@@ -2,11 +2,13 @@ package com.squareup.shopx.viewholder;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -30,42 +32,51 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
     private Activity activity;
     private final ImageView logo;
     private final TextView name;
-    private final TextView description;
     private final TextView originalPrice;
     private final TextView discountPrice;
-    private final TextView addToCart;
+    private final TextView fullMenuHeader;
 
     public ItemViewHolder(@NonNull View itemView) {
         super(itemView);
-        logo = itemView.findViewById(R.id.image);
-        name = itemView.findViewById(R.id.name);
-        description = itemView.findViewById(R.id.description);
+        logo = itemView.findViewById(R.id.item_image);
+        name = itemView.findViewById(R.id.item_name);
         originalPrice = itemView.findViewById(R.id.original_price);
         discountPrice = itemView.findViewById(R.id.discount_price);
-        addToCart = itemView.findViewById(R.id.add_to_cart);
+        fullMenuHeader = itemView.findViewById(R.id.menu_header);
     }
 
-    public void setData(GetMerchantDetailResponse.Item item, Activity activity, GetMerchantDetailResponse merchantItems, AllMerchantsResponse.ShopXMerchant merchantInfo) {
+    public void setData(GetMerchantDetailResponse.Item item, Activity activity, int position, AllMerchantsResponse.ShopXMerchant merchantInfo) {
         this.activity = activity;
+
+        if (position == 0) {
+            fullMenuHeader.setVisibility(View.VISIBLE);
+        } else {
+            fullMenuHeader.setVisibility(View.GONE);
+        }
         Glide.with(activity)
                 .load(item.getItemImage())
                 .into(logo);
 
         name.setText(item.getItemName());
-        description.setText(item.getItemDescription());
-        originalPrice.setText(String.valueOf(item.getItemPrice()));
+        originalPrice.setText("$" + String.format("%.2f", item.getItemPrice() / 100.0));
 
         if (item.getItemDiscountPrice(merchantInfo) == item.getItemPrice()) {
             discountPrice.setVisibility(View.GONE);
+            originalPrice.setTextColor(activity.getResources().getColor(R.color.black_0));
+            originalPrice.setTextAppearance(activity, R.style.title_small);
+            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) originalPrice.getLayoutParams();
+            params.leftMargin = UIUtils.dp2px(activity, 24f);
+            originalPrice.setLayoutParams(params);
         } else {
+            originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             discountPrice.setVisibility(View.VISIBLE);
-            discountPrice.setText(String.valueOf(item.getItemDiscountPrice(merchantInfo)));
+            discountPrice.setText("$" + String.format("%.2f", item.getItemDiscountPrice(merchantInfo) / 100.0));
         }
 
-        addToCart.setOnClickListener(view -> {
-            AllMerchants.INSTANCE.addToCart(merchantInfo, item);
-            EventBus.getDefault().post(new CartUpdateEvent(merchantInfo.getAccessToken()));
-        });
+//        addToCart.setOnClickListener(view -> {
+//            AllMerchants.INSTANCE.addToCart(merchantInfo, item);
+//            EventBus.getDefault().post(new CartUpdateEvent(merchantInfo.getAccessToken()));
+//        });
 //        if (item.getARLink().isEmpty()) {
 //            ARlink.setVisibility(View.GONE);
 //        } else {

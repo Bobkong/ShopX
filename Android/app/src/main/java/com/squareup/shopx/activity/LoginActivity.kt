@@ -20,7 +20,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        verifyCodeView = findViewById(R.id.verify_code_view)
 
         findViewById<TextView>(R.id.login_button).setOnClickListener {
             val phone = findViewById<EditText>(R.id.phone_number_input).text.toString()

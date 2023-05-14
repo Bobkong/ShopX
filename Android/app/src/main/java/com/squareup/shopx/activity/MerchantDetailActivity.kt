@@ -3,7 +3,7 @@ package com.squareup.shopx.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
-import com.squareup.shopx.adapter.ItemListAdapter
+import com.squareup.shopx.adapter.MerchantDetailAdapter
 import com.squareup.shopx.model.*
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
-import com.squareup.shopx.utils.PreferenceUtils
+import com.squareup.shopx.utils.Transparent
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
@@ -29,13 +29,26 @@ class MerchantDetailActivity : AppCompatActivity() {
     private val TAG = "MerchantDetailActivity"
     private var itemList: RecyclerView? = null
     private lateinit var merchantInfo: ShopXMerchant
+    private lateinit var merchantLogo: ImageView
     private lateinit var cartInfo: TextView
     private var customerLoyaltyResponse: GetLoyaltyInfoResponse? = null
+    private var merchantItemsResponse: GetMerchantDetailResponse? = null
+    private lateinit var backButton: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_merchant_detail)
+
+        Transparent.transparentNavBar(this)
+        Transparent.transparentStatusBar(this)
+
+        backButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            finish()
+        }
+
+        merchantInfo = intent.extras?.getSerializable("merchant") as ShopXMerchant
 
         cartInfo = findViewById(R.id.cart_info)
         cartInfo.setOnClickListener {
@@ -51,12 +64,9 @@ class MerchantDetailActivity : AppCompatActivity() {
         itemList = findViewById(R.id.item_list)
         itemList?.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
 
-        merchantInfo = intent.extras?.getSerializable("merchant") as ShopXMerchant
         requestMerchantDetail(merchantInfo.accessToken)
 
-        if (merchantInfo.ifLoyalty == 1) {
-            requestLoyaltyInfo(merchantInfo.accessToken)
-        }
+
     }
 
     override fun onStart() {
@@ -86,34 +96,12 @@ class MerchantDetailActivity : AppCompatActivity() {
             override fun onNext(value: GetLoyaltyInfoResponse?) {
                 customerLoyaltyResponse = value
                 runOnUiThread {
-
-                    if (value?.code == 1) {
-                        Log.i(TAG, value.msg)
-                        return@runOnUiThread
-                    }
-
-                    val loyaltyCL = findViewById<ConstraintLayout>(R.id.loyalty_cl)
-                    val loyaltyPoints = findViewById<TextView>(R.id.loyal_points)
-                    val enrollLoyalty = findViewById<TextView>(R.id.enroll_button)
-
-                    if (value?.loyaltyInfo == null) {
-                        loyaltyCL.visibility = View.GONE
-                    } else {
-                        loyaltyCL.visibility = View.VISIBLE
-
-                        if (value.isEnrolled == 1) {
-                            enrollLoyalty.visibility = View.GONE
-                            loyaltyPoints.visibility = View.VISIBLE
-                            loyaltyPoints.text = "${value.points} points"
-                        } else {
-                            enrollLoyalty.visibility = View.VISIBLE
-                            loyaltyPoints.visibility = View.GONE
-
-                            enrollLoyalty.setOnClickListener {
-                                enrollLoyaltyProgram(accessToken, value.loyaltyInfo.program.id)
-                            }
-                        }
-                    }
+                    itemList?.adapter = MerchantDetailAdapter(
+                        this@MerchantDetailActivity,
+                        merchantItemsResponse,
+                        merchantInfo,
+                        customerLoyaltyResponse
+                    )
                 }
             }
 
@@ -145,18 +133,7 @@ class MerchantDetailActivity : AppCompatActivity() {
                             return@runOnUiThread
                         }
 
-                        val loyaltyPoints = findViewById<TextView>(R.id.loyal_points)
-                        val enrollLoyalty = findViewById<TextView>(R.id.enroll_button)
-
-                        enrollLoyalty.visibility = View.GONE
-                        loyaltyPoints.visibility = View.VISIBLE
-                        loyaltyPoints.text = "0 points"
-
-                        customerLoyaltyResponse?.isEnrolled = 1
-                        customerLoyaltyResponse?.loyaltyAccount = value?.loyaltyAccount
-
-                        Toast.makeText(this@MerchantDetailActivity, "Enroll Successfully!", Toast.LENGTH_SHORT).show()
-                    }
+                     }
                 }
 
                 override fun onError(e: Throwable?) {
@@ -179,7 +156,7 @@ class MerchantDetailActivity : AppCompatActivity() {
                 }
 
                 override fun onNext(value: GetMerchantDetailResponse?) {
-
+                    merchantItemsResponse = value
                     runOnUiThread {
                         if (value?.code == 1) {
                             Toast.makeText(this@MerchantDetailActivity, value.msg, Toast.LENGTH_SHORT).show()
@@ -187,7 +164,17 @@ class MerchantDetailActivity : AppCompatActivity() {
                         }
 
                         value?.let {
-                            itemList?.adapter = ItemListAdapter(it.items, this@MerchantDetailActivity, value, merchantInfo)
+                            if (merchantInfo.ifLoyalty == 1) {
+                                requestLoyaltyInfo(merchantInfo.accessToken)
+                            } else {
+                                itemList?.adapter = MerchantDetailAdapter(
+                                    this@MerchantDetailActivity,
+                                    value,
+                                    merchantInfo,
+                                    null
+                                )
+                            }
+
                         }
                     }
 

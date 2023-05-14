@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/merchant_logo"
+        />
+
+    <com.squareup.shopx.widget.shadow.ShadowLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="160dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shadowRadius="8dp"
+        app:xOffset="0dp"
+        app:yOffset="10dp"
+        app:blurRadius="16dp"
+        app:shadowColor="#0D000000"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/white_r16"
+            android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/merchant_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                style="@style/title_large"
+                android:textColor="@color/black_0"
+                android:text="Blaze Pizza"/>
+
+            <TextView
+                android:id="@+id/merchant_open_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/merchant_name"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="8dp"
+                style="@style/label_large"
+                android:textColor="@color/black_40"
+                android:text="Open • 8 AM - 9 PM • 0.5 mile"/>
+
+            <TextView
+                android:id="@+id/merchant_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/merchant_open_distance"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="6dp"
+                style="@style/label_large"
+                android:textColor="@color/black_40"
+                android:text="1809 Shattuck Ave, Berkeley, 94709"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_marginTop="18dp"
+                app:layout_constraintTop_toBottomOf="@id/merchant_location"
+                android:gravity="center_horizontal">
+                <TextView
+                    android:id="@+id/discount_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/yellow_50_r12"
+                    android:text="20% Off"
+                    style="@style/label_small"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:textColor="@color/black_0"/>
+
+                <TextView
+                    android:id="@+id/loyalty_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/pink_70_r12"
+                    android:text="Rewards"
+                    style="@style/label_small"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:textColor="@color/black_0"/>
+
+                <TextView
+                    android:id="@+id/AR_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/black_r12"
+                    android:text="AR"
+                    style="@style/label_small"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </com.squareup.shopx.widget.shadow.ShadowLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -155,7 +155,7 @@ public class RetrieveMerchant {
 
                     for (CatalogObject catalogObject :
                             result.getRelatedObjects()) {
-                        if (catalogObject.getType().equals("PRODUCT_SET")) {
+                        if (catalogObject.getType().equals("PRODUCT_SET") && catalogObject.getProductSetData() != null && catalogObject.getProductSetData().getProductIdsAny() != null) {
                             StringBuilder discountProducts = new StringBuilder();
                             for (String id:
                                     catalogObject.getProductSetData().getProductIdsAny()) {

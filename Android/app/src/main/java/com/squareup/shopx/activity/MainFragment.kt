@@ -79,11 +79,7 @@ class MainFragment : Fragment(), OnMapReadyCallback {
     ): View? {
         super.onCreate(savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_main, null)
-        // The app must have been given the Location permission. If we don't have it yet, request it.
-        if (!GeoPermissionsHelper.hasGeoPermissions(requireActivity())) {
-            GeoPermissionsHelper.requestPermissions(activity)
-            return view
-        }
+
         bottomSheet = view.findViewById(R.id.bottom_sheet)
         bottomSheet?.mainFragment = this
         maskRL = view.findViewById(R.id.mask_rl)
@@ -245,23 +241,6 @@ class MainFragment : Fragment(), OnMapReadyCallback {
     }
 
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        results: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, results)
-        if (!GeoPermissionsHelper.hasGeoPermissions( requireActivity())) {
-            // Use toast instead of snackbar here since the activity will exit.
-            Toast.makeText( requireActivity(), "Camera and location permissions are needed to run this application", Toast.LENGTH_LONG)
-                .show()
-            if (!GeoPermissionsHelper.shouldShowRequestPermissionRationale(requireActivity())) {
-                // Permission denied with checking "Do not ask again".
-                GeoPermissionsHelper.launchPermissionSettings(requireActivity())
-            }
-            requireActivity().finish()
-        }
-    }
 
     private fun requestAllMerchants() {
         ShopXApiService.getInstance().getAllMerchants()

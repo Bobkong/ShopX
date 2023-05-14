@@ -7,6 +7,7 @@ import android.os.Handler;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.ar.core.codelabs.arlocalizer.helpers.GeoPermissionsHelper;
 import com.squareup.shopx.utils.PreferenceUtils;
 
 
@@ -20,9 +21,9 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             if (PreferenceUtils.getFirstUse()) {
                 startActivity(new Intent(SplashActivity.this, GuideActivity.class));
-            } if (PreferenceUtils.getUserPhone().length() == 0){
+            } else if (PreferenceUtils.getUserPhone().length() == 0){
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-            }else {
+            } else {
                 startActivity(new Intent(SplashActivity.this, HomeActivity.class));
             }
             finish();

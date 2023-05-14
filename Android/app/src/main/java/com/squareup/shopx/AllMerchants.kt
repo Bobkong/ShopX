@@ -83,7 +83,7 @@ object AllMerchants {
         return merchantsIn50Miles.plus(merchantsNotIn50Miles)
     }
 
-    private fun calculateDistance(merchantLat: Float, merchantLng: Float): Double {
+    fun calculateDistance(merchantLat: Float, merchantLng: Float): Double {
         val results = FloatArray(1)
         Location.distanceBetween(
             myLat.toDouble(), myLng.toDouble(),

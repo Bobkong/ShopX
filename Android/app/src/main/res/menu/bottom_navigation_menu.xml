@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/tab_1"
         android:enabled="true"
-        android:icon="@drawable/marker_normal"
-        android:title="Tab 1"/>
+        android:icon="@drawable/home_tab_icon"
+        tools:ignore="MenuTitle" />
 
     <item
         android:id="@+id/tab_2"
         android:enabled="true"
-        android:icon="@drawable/marker_normal"
-        android:title="Tab 2"/>
+        android:icon="@drawable/loyalty_tab_icon"
+        tools:ignore="MenuTitle" />
 
     <item
         android:id="@+id/tab_3"
         android:enabled="true"
-        android:icon="@drawable/marker_normal"
-        android:title="Tab 3"/>
+        android:icon="@drawable/order_tab_icon"
+        tools:ignore="MenuTitle" />
 
     <item
         android:id="@+id/tab_4"
         android:enabled="true"
-        android:icon="@drawable/marker_normal"
-        android:title="Tab 4"/>
+        android:icon="@drawable/profile_tab_icon"
+        tools:ignore="MenuTitle" />
 
 </menu>

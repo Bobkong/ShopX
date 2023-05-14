@@ -114,4 +114,8 @@
         <item name="android:backgroundDimAmount">0.5</item>
     </style>
 
+    <declare-styleable name="RoundRectImageView">
+        <attr name="radius" format="dimension"/>
+    </declare-styleable>
+
 </resources>
