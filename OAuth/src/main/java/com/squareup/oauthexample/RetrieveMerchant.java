@@ -84,6 +84,9 @@ public class RetrieveMerchant {
                         System.out.print("The merchant doesn't have loyalty program.");
                         merchant.setIfLoyalty(false);
                     }
+                    for (String rule : loyalPricingRules) {
+                        System.out.print("loyalty rule: " + rule);
+                    }
                     getPricingRules(client, merchant, loyalPricingRules);
 
                 }).exceptionally(exception -> {
@@ -116,6 +119,10 @@ public class RetrieveMerchant {
                                 discountId.add(pricingRule.getId());
                             }
                         }
+                    }
+
+                    for (String discount : discountId) {
+                        System.out.print("discount rule: " + discount);
                     }
 
                     if (discountId.size() == 0) {
@@ -163,13 +170,18 @@ public class RetrieveMerchant {
                             }
                             merchant.setDiscountProducts(discountProducts.toString());
                         }
-                        if (catalogObject.getType().equals("DISCOUNT")) {
+                    }
+
+                    for (CatalogObject catalogObject :
+                            result.getRelatedObjects()) {
+                        if (catalogObject.getType().equals("DISCOUNT") && merchant.discountProducts!= null && !merchant.discountProducts.isEmpty()) {
                             Merchant.Discount discount = null;
                             if (catalogObject.getDiscountData().getDiscountType().equals("FIXED_AMOUNT")) {
                                 discount = new Merchant.Discount("FIXED_AMOUNT", (float) (catalogObject.getDiscountData().getAmountMoney().getAmount() / 100.0));
                             } else if (catalogObject.getDiscountData().getDiscountType().equals("FIXED_PERCENTAGE")) {
                                 discount = new Merchant.Discount("FIXED_PERCENTAGE", Float.parseFloat(catalogObject.getDiscountData().getPercentage()));
                             }
+                            System.out.print("set discount");
                             merchant.setDiscount(discount);
                         }
                     }

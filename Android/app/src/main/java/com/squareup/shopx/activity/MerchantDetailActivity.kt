@@ -2,14 +2,19 @@ package com.squareup.shopx.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
 import com.squareup.shopx.adapter.MerchantDetailAdapter
@@ -17,6 +22,7 @@ import com.squareup.shopx.model.*
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.utils.Transparent
+import com.squareup.shopx.widget.CustomDialog
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
@@ -84,6 +90,35 @@ class MerchantDetailActivity : AppCompatActivity() {
         if (event.accessToken == merchantInfo.accessToken) {
             cartInfo.text = AllMerchants.getPrice(merchantInfo).toString()
         }
+    }
+
+    fun showItemBottomSheet(item: GetMerchantDetailResponse.Item) {
+        val bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialogStyle)
+        val dialogView = layoutInflater.inflate(R.layout.merchant_item_bottom_sheet, null, false)
+        bottomSheetDialog.setContentView(dialogView)
+
+        try {
+            // hack bg color of the BottomSheetDialog
+            val parent = dialogView!!.parent as ViewGroup
+            parent.setBackgroundResource(android.R.color.transparent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        val itemImage = dialogView.findViewById<ImageView>(R.id.item_image)
+        val itemName = dialogView.findViewById<TextView>(R.id.item_name)
+        val itemDesc = dialogView.findViewById<TextView>(R.id.item_desc)
+        Glide.with(this)
+            .load(item.itemImage)
+            .into(itemImage)
+        itemName.text = item.itemName
+        if (item.itemDescription.isNullOrEmpty()) {
+            itemDesc.visibility = View.GONE
+        } else {
+            itemDesc.text = item.itemDescription
+            itemDesc.visibility = View.VISIBLE
+        }
+        bottomSheetDialog.show()
     }
 
     private fun requestLoyaltyInfo(accessToken: String?) {
@@ -175,6 +210,13 @@ class MerchantDetailActivity : AppCompatActivity() {
                                 )
                             }
 
+                            for (item in it.items) {
+                                if (item.pricingType != "FIXED_PRICING") {
+                                    showBookingDialog()
+                                    break
+                                }
+                            }
+
                         }
                     }
 
@@ -191,5 +233,22 @@ class MerchantDetailActivity : AppCompatActivity() {
 
             })
 
+    }
+
+    private fun showBookingDialog() {
+        val customDialog = CustomDialog(this, R.layout.customize_dialog)
+        val dialogTitle = customDialog.findViewById<TextView>(R.id.dialog_title)
+        val dialogDesc = customDialog.findViewById<TextView>(R.id.dialog_desc)
+        val rightAction = customDialog.findViewById<TextView>(R.id.action_right)
+        val leftActivity = customDialog.findViewById<TextView>(R.id.action_left)
+        leftActivity.visibility = View.GONE
+        rightAction.text = "OK"
+        dialogTitle.text = "Reminder"
+        dialogDesc.text = "Please note that only booking is currently available for this service. Kindly visit the store in-person to complete your transaction. Thank you!"
+        customDialog.show()
+
+        rightAction.setOnClickListener {
+            customDialog.dismiss()
+        }
     }
 }

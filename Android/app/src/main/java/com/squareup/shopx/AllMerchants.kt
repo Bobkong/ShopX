@@ -10,7 +10,7 @@ object AllMerchants {
 
     val TAG = "AllMerchants"
     var allMerchants = ArrayList<ShopXMerchant>()
-    var distanceLimit = 50.0F
+    var distanceLimit = 15.0F
     var onlySeeAREnable = false
     var onlySeeDiscount = false
     var onlySeeLoyalty = false

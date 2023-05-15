@@ -58,20 +58,37 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
                 .into(logo);
 
         name.setText(item.getItemName());
-        originalPrice.setText("$" + String.format("%.2f", item.getItemPrice() / 100.0));
 
-        if (item.getItemDiscountPrice(merchantInfo) == item.getItemPrice()) {
+        if (item.getPricingType().equals("FIXED_PRICING")) {
+            originalPrice.setText("$" + String.format("%.2f", item.getItemPrice() / 100.0));
+
+            if (item.getItemDiscountPrice(merchantInfo) == item.getItemPrice()) {
+                discountPrice.setVisibility(View.GONE);
+                originalPrice.setTextColor(activity.getResources().getColor(R.color.black_0));
+                originalPrice.setTextAppearance(activity, R.style.title_small);
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) originalPrice.getLayoutParams();
+                params.leftMargin = UIUtils.dp2px(activity, 24f);
+                originalPrice.setLayoutParams(params);
+            } else {
+                originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                discountPrice.setVisibility(View.VISIBLE);
+                discountPrice.setText("$" + String.format("%.2f", item.getItemDiscountPrice(merchantInfo) / 100.0));
+            }
+        } else {
             discountPrice.setVisibility(View.GONE);
             originalPrice.setTextColor(activity.getResources().getColor(R.color.black_0));
             originalPrice.setTextAppearance(activity, R.style.title_small);
             ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) originalPrice.getLayoutParams();
             params.leftMargin = UIUtils.dp2px(activity, 24f);
             originalPrice.setLayoutParams(params);
-        } else {
-            originalPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            discountPrice.setVisibility(View.VISIBLE);
-            discountPrice.setText("$" + String.format("%.2f", item.getItemDiscountPrice(merchantInfo) / 100.0));
+            originalPrice.setText("Variable Price");
+
         }
+
+        itemView.setOnClickListener(v -> {
+            ((MerchantDetailActivity) activity).showItemBottomSheet(item);
+        });
+
 
 //        addToCart.setOnClickListener(view -> {
 //            AllMerchants.INSTANCE.addToCart(merchantInfo, item);

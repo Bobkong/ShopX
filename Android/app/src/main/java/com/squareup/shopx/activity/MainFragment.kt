@@ -39,16 +39,19 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.ar.core.codelabs.arlocalizer.helpers.GeoPermissionsHelper
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
 import com.squareup.shopx.adapter.MerchantListAdapter
 import com.squareup.shopx.model.AllMerchantsResponse
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
-import com.squareup.shopx.widget.BottomSheetRL
 import com.squareup.shopx.utils.BroadcastReceiverPage
-import com.squareup.shopx.widget.MaskRL
 import com.squareup.shopx.utils.UIUtils
+import com.squareup.shopx.widget.BottomSheetRL
+import com.squareup.shopx.widget.MaskRL
+import com.squareup.shopx.widget.customizedseekbar.IndicatorSeekBar
+import com.squareup.shopx.widget.customizedseekbar.OnSeekChangeListener
+import com.squareup.shopx.widget.customizedseekbar.SeekParams
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
@@ -321,8 +324,9 @@ class MainFragment : Fragment(), OnMapReadyCallback {
     fun setFilterListeners() {
 
         distanceFilterButton?.setOnClickListener {
-            AllMerchants.distanceLimit = distanceFilterInput?.text.toString().toFloat()
-            generateDisplayMerchants()
+
+            showDistanceFilter()
+
         }
 
         onlySeeDiscount?.setOnClickListener {
@@ -344,6 +348,66 @@ class MainFragment : Fragment(), OnMapReadyCallback {
 
             //behavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
             collapseMapView()
+        }
+    }
+
+    private fun showDistanceFilter() {
+        val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogStyle)
+        val dialogView = layoutInflater.inflate(R.layout.distance_filter_bottom_sheet, null, false)
+        bottomSheetDialog.setContentView(dialogView)
+
+        try {
+            // hack bg color of the BottomSheetDialog
+            val parent = dialogView!!.parent as ViewGroup
+            parent.setBackgroundResource(android.R.color.transparent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+
+        val seekBar = dialogView.findViewById<IndicatorSeekBar>(R.id.distance_filter)
+        seekBar.setProgress(AllMerchants.distanceLimit)
+        setDistanceFilterTextColor(AllMerchants.distanceLimit, dialogView)
+
+        seekBar.onSeekChangeListener = object : OnSeekChangeListener {
+            override fun onSeeking(seekParams: SeekParams?) {
+            }
+
+            override fun onStartTrackingTouch(seekBar: IndicatorSeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: IndicatorSeekBar?) {
+                setDistanceFilterTextColor(seekBar!!.progress.toFloat(), dialogView)
+
+                AllMerchants.distanceLimit = seekBar.progress.toFloat()
+                generateDisplayMerchants()
+            }
+
+        }
+        bottomSheetDialog.show()
+    }
+
+    fun setDistanceFilterTextColor(progress: Float, dialogView: View) {
+        val thirtyMi = dialogView.findViewById<TextView>(R.id.distance_filter_30)
+        val fortyFiveMi = dialogView.findViewById<TextView>(R.id.distance_filter_45)
+        val sixtyMi = dialogView.findViewById<TextView>(R.id.distance_filter_60)
+
+        if (progress < 23) {
+            thirtyMi.setTextColor(resources.getColor(R.color.black_80))
+            fortyFiveMi.setTextColor(resources.getColor(R.color.black_80))
+            sixtyMi.setTextColor(resources.getColor(R.color.black_80))
+        } else if (progress < 38) {
+            thirtyMi.setTextColor(resources.getColor(R.color.black_0))
+            fortyFiveMi.setTextColor(resources.getColor(R.color.black_80))
+            sixtyMi.setTextColor(resources.getColor(R.color.black_80))
+        } else if (progress < 53) {
+            thirtyMi.setTextColor(resources.getColor(R.color.black_0))
+            fortyFiveMi.setTextColor(resources.getColor(R.color.black_0))
+            sixtyMi.setTextColor(resources.getColor(R.color.black_80))
+        } else if (progress >= 53) {
+            thirtyMi.setTextColor(resources.getColor(R.color.black_0))
+            fortyFiveMi.setTextColor(resources.getColor(R.color.black_0))
+            sixtyMi.setTextColor(resources.getColor(R.color.black_0))
         }
     }
 

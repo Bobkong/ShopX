@@ -13,6 +13,7 @@ import com.squareup.shopx.model.AddCustomerResponse
 import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.model.GeneralResponse
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
+import com.squareup.shopx.utils.Transparent
 import com.squareup.shopx.widget.VerifyCodeView
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -24,6 +25,10 @@ class VerificationCodeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_verification_code)
+
+        Transparent.transparentNavBar(this)
+        Transparent.transparentStatusBar(this)
+
         verifyCodeView = findViewById(R.id.verify_code_view)
         codeWarning = findViewById(R.id.code_warning)
         verifyCodeView.setInputCompleteListener(object: VerifyCodeView.InputCompleteListener {

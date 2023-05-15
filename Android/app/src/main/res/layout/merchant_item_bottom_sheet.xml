@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_sheet_bg"
+        android:paddingBottom="20dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:src="@drawable/bottom_sheet_bar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="12dp"/>
+
+        <com.squareup.shopx.widget.RoundRectImageView
+            app:radius="24dp"
+            android:id="@+id/item_image"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="36dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_image"
+            android:layout_marginTop="40dp"
+            android:id="@+id/item_name"
+            style="@style/title_large"
+            android:textColor="@color/black_0"
+            android:text="Blaze Pizza"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_name"
+            android:layout_marginTop="20dp"
+            android:id="@+id/item_desc"
+            style="@style/body_medium"
+            android:textColor="@color/black_40"
+            android:text="Blaze Pizza"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_desc"
+            android:layout_marginTop="40dp"
+            android:id="@+id/add_to_cart"
+            android:background="@drawable/primary_long_button_r24"
+            style="@style/title_medium"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:text="Add to Cart"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

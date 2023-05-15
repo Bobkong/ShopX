@@ -61,7 +61,7 @@ public class MerchantHeaderViewHolder extends RecyclerView.ViewHolder {
         } else {
             discountTag.setVisibility(View.VISIBLE);
             if (Objects.equals(merchantInfo.getDiscountType(), "FIXED_PERCENTAGE")) {
-                discountTag.setText((int)merchantInfo.getDiscountAmount() + " % Off");
+                discountTag.setText((int)merchantInfo.getDiscountAmount() + "% Off");
             } else {
                 discountTag.setText("$" + (int)merchantInfo.getDiscountAmount() + " Off EA");
             }
