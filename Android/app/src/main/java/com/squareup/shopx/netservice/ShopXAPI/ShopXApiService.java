@@ -53,8 +53,8 @@ public class ShopXApiService {
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<GeneralResponse> login(String phoneNumber, String password){
-        return customerApi.login(new LoginRequest(phoneNumber, password))
+    public Observable<GeneralResponse> login(String phoneNumber){
+        return customerApi.login(new LoginRequest(phoneNumber))
                 .onErrorResumeNext(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io());
     }

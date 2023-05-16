@@ -78,20 +78,35 @@
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-    <com.squareup.shopx.widget.MaskRL
-        android:id="@+id/mask_rl"
+    <com.squareup.shopx.widget.MapMaskCL
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:id="@+id/pull_up_cl">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
+            android:src="@drawable/map_fragment_gradient"
+            android:scaleType="fitXY"/>
+
+        <ImageView
+            android:layout_width="62dp"
+            android:layout_height="48dp"
+            android:src="@drawable/pull_up_map_icon"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/mask"/>
-    </com.squareup.shopx.widget.MaskRL>
-
-
+            android:id="@+id/pull_up_icon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/label_medium"
+            android:textColor="@color/black_0"
+            android:text="Discover  nearby offers by pulling up the map"
+            android:src="@drawable/pull_up_map_icon"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pull_up_icon"/>
+    </com.squareup.shopx.widget.MapMaskCL>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

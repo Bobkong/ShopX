@@ -20,7 +20,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -46,9 +45,10 @@ import com.squareup.shopx.adapter.MerchantListAdapter
 import com.squareup.shopx.model.AllMerchantsResponse
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.utils.BroadcastReceiverPage
+import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.utils.UIUtils
 import com.squareup.shopx.widget.BottomSheetRL
-import com.squareup.shopx.widget.MaskRL
+import com.squareup.shopx.widget.MapMaskCL
 import com.squareup.shopx.widget.customizedseekbar.IndicatorSeekBar
 import com.squareup.shopx.widget.customizedseekbar.OnSeekChangeListener
 import com.squareup.shopx.widget.customizedseekbar.SeekParams
@@ -70,10 +70,13 @@ class MainFragment : Fragment(), OnMapReadyCallback {
     private var distanceFilterInput: EditText? = null
     private var distanceFilterButton: TextView? = null
     private var onlySeeDiscount: TextView? = null
-    private var maskRL: MaskRL? = null
     private var onlySeeLoyalty: TextView? = null
     private var onlySeeAREnable: TextView? = null
     private val snapHelper = PagerSnapHelper()
+    private var mapMaskCL: MapMaskCL? = null
+
+    private lateinit var homepageHeader: TextView
+    private lateinit var userName: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,10 +88,24 @@ class MainFragment : Fragment(), OnMapReadyCallback {
 
         bottomSheet = view.findViewById(R.id.bottom_sheet)
         bottomSheet?.mainFragment = this
-        maskRL = view.findViewById(R.id.mask_rl)
-        maskRL?.setOnClickListener {
-            Log.i(TAG, "just test")
+        val layoutParams = bottomSheet!!.layoutParams as ConstraintLayout.LayoutParams
+        layoutParams.topMargin = getDefaultMapTopMargin()
+        bottomSheet?.layoutParams = layoutParams
+
+        mapMaskCL = view.findViewById(R.id.pull_up_cl)
+
+
+        homepageHeader = view.findViewById(R.id.homepage_header)
+        userName = view.findViewById(R.id.user_name)
+
+        homepageHeader.text = "Hello " + PreferenceUtils.getUsername()
+        var nameString = if (PreferenceUtils.getUsername().length > 1) {
+            PreferenceUtils.getUsername().substring(0, 2)
+        } else {
+            PreferenceUtils.getUsername().substring(0, 1)
         }
+        nameString = nameString.toUpperCase()
+        userName.text = nameString
 
         mapContent = view.findViewById(R.id.map_content)
         distanceFilterInput = view.findViewById(R.id.distance_filter_input)
@@ -110,18 +127,22 @@ class MainFragment : Fragment(), OnMapReadyCallback {
         return view
     }
 
+    fun getDefaultMapTopMargin(): Int {
+        return UIUtils.getHeight(requireContext()) - UIUtils.dp2px(requireContext(), 124f)
+    }
+
     fun expandMapView() {
-        val currentParams = bottomSheet!!.layoutParams as CoordinatorLayout.LayoutParams
+        mapMaskCL?.visibility = View.GONE
+        val currentParams = bottomSheet!!.layoutParams as ConstraintLayout.LayoutParams
         val animator: ValueAnimator = ValueAnimator.ofInt(currentParams.topMargin, 0)
         animator.duration = 180
         animator.interpolator = AccelerateInterpolator()
         animator.addUpdateListener {
-            val layoutParams = bottomSheet!!.layoutParams as CoordinatorLayout.LayoutParams
+            val layoutParams = bottomSheet!!.layoutParams as ConstraintLayout.LayoutParams
             layoutParams.topMargin = it.animatedValue as Int
             bottomSheet!!.layoutParams = layoutParams
 
             if ((it.animatedValue as Int) == 0) {
-                maskRL?.visibility = View.GONE
                 mapContent?.visibility = View.VISIBLE
                 requestAllMerchants()
             }
@@ -130,18 +151,18 @@ class MainFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun collapseMapView() {
-        val animator: ValueAnimator = ValueAnimator.ofInt(0, UIUtils.dp2px(requireContext(), 500f))
+        val animator: ValueAnimator = ValueAnimator.ofInt(0, getDefaultMapTopMargin())
         animator.duration = 180
         animator.interpolator = AccelerateInterpolator()
         animator.addUpdateListener {
-            val layoutParams = bottomSheet!!.layoutParams as CoordinatorLayout.LayoutParams
+            val layoutParams = bottomSheet!!.layoutParams as ConstraintLayout.LayoutParams
             layoutParams.topMargin = it.animatedValue as Int
             bottomSheet!!.layoutParams = layoutParams
 
-            if ((it.animatedValue as Int) == UIUtils.dp2px(requireContext(), 500f)) {
-                maskRL?.visibility = View.VISIBLE
+            if ((it.animatedValue as Int) == getDefaultMapTopMargin()) {
                 mapContent?.visibility = View.GONE
                 bottomSheet?.isExpanded = false
+                mapMaskCL?.visibility = View.VISIBLE
             }
         }
         animator.start()
@@ -442,8 +463,8 @@ class MainFragment : Fragment(), OnMapReadyCallback {
     }
 
     fun moveMapView(moveY: Float) {
-        val layoutParams = bottomSheet!!.layoutParams as CoordinatorLayout.LayoutParams
-        layoutParams.topMargin = (UIUtils.dp2px(requireContext(), 500f) + moveY).toInt()
+        val layoutParams = bottomSheet!!.layoutParams as ConstraintLayout.LayoutParams
+        layoutParams.topMargin = (getDefaultMapTopMargin() + moveY).toInt()
         bottomSheet!!.layoutParams = layoutParams
     }
 

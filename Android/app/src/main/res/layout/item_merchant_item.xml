@@ -70,8 +70,7 @@
                 style="@style/title_small_secondary"
                 android:textColor="@color/black_70"
                 app:layout_constraintLeft_toRightOf="@+id/discount_price"
-                app:layout_constraintTop_toTopOf="@+id/discount_price"
-                app:layout_constraintBottom_toBottomOf="@+id/discount_price"/>
+                app:layout_constraintBottom_toBottomOf="@+id/item_image"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.squareup.shopx.widget.shadow.ShadowLayout>

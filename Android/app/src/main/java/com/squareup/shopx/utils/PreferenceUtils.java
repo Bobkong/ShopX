@@ -13,6 +13,7 @@ public class PreferenceUtils {
 
     private static final String PREFERENCE_KEY_PHONE = "PREFERENCE_KEY_PHONE";
     private static final String PREFERENCE_KEY_FIRST_USE = "PREFERENCE_KEY_FIRST_USE";
+    private static final String PREFERENCE_KEY_USERNAME = "PREFERENCE_KEY_USERNAME";
     @SuppressLint("StaticFieldLeak")
     private static Context context;
 
@@ -36,6 +37,17 @@ public class PreferenceUtils {
     @NonNull
     public static String getUserPhone() {
         final String result = getSharedPreferences().getString(PREFERENCE_KEY_PHONE, "");
+        return result == null ? "" : result;
+    }
+
+    public static void setUsername(@NonNull String username) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.putString(PREFERENCE_KEY_USERNAME, username).apply();
+    }
+
+    @NonNull
+    public static String getUsername() {
+        final String result = getSharedPreferences().getString(PREFERENCE_KEY_USERNAME, "");
         return result == null ? "" : result;
     }
 

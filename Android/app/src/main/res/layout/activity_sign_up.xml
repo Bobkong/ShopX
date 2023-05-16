@@ -265,7 +265,7 @@
             android:layout_height="wrap_content"
             style="@style/title_small"
             android:textColor="@color/black_50"
-            android:text="Don't have an account?"/>
+            android:text="Already't have an account?"/>
 
         <TextView
             android:id="@+id/sign_in"

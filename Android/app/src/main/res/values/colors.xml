@@ -53,6 +53,10 @@
     <color name="error_orange_95">#FFFCDF</color>
     <color name="error_orange_100">#FFFFFF</color>
 
+    <color name="pink_30">#FFF0F2</color>
+    <color name="pink_20">#FFCED5</color>
+    <color name="pink_10">#F13B44</color>
+
     <color name="black_0">#000000</color>
     <color name="black_10">#1D1B20</color>
     <color name="black_20">#4B4B4B</color>

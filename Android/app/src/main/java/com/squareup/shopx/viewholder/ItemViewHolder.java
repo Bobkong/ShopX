@@ -77,11 +77,12 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         } else {
             discountPrice.setVisibility(View.GONE);
             originalPrice.setTextColor(activity.getResources().getColor(R.color.black_0));
-            originalPrice.setTextAppearance(activity, R.style.title_small);
+            originalPrice.setTextAppearance(activity, R.style.title_small_secondary);
             ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) originalPrice.getLayoutParams();
             params.leftMargin = UIUtils.dp2px(activity, 24f);
             originalPrice.setLayoutParams(params);
-            originalPrice.setText("Variable Price");
+            originalPrice.setText("Ask merchants for price");
+            originalPrice.setTextColor(activity.getResources().getColor(R.color.black_70));
 
         }
 

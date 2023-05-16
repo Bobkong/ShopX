@@ -3,25 +3,24 @@ package com.squareup.shopx.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.widget.RelativeLayout;
 
-import com.squareup.shopx.activity.MainFragment;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class MaskRL extends RelativeLayout {
+public class MapMaskCL extends ConstraintLayout {
 
-    public MaskRL(Context context) {
+    public MapMaskCL(Context context) {
         super(context);
     }
 
-    public MaskRL(Context context, AttributeSet attrs) {
+    public MapMaskCL(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public MaskRL(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MapMaskCL(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public MaskRL(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public MapMaskCL(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

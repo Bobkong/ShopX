@@ -37,7 +37,12 @@ class VerificationCodeActivity : AppCompatActivity() {
                     codeWarning.visibility = View.VISIBLE
                     codeWarning.text = "Incorrect code"
                 } else {
-                    saveCustomer()
+
+                    if (intent.getStringExtra("nickname").isNullOrEmpty()) {
+                        login()
+                    } else {
+                        saveCustomer()
+                    }
 
                 }
             }
@@ -72,6 +77,39 @@ class VerificationCodeActivity : AppCompatActivity() {
             })
     }
 
+    private fun login() {
+        ShopXApiService.getInstance().login(intent.getStringExtra("phone"))
+            .subscribe(object : Observer<GeneralResponse> {
+                override fun onSubscribe(d: Disposable?) {
+
+                }
+
+                override fun onNext(value: GeneralResponse?) {
+                    if (value?.code == 0) {
+                        PreferenceUtils.setUserPhone(intent.getStringExtra("phone")!!)
+                        PreferenceUtils.setUsername(value.msg)
+                        val intent = Intent(this@VerificationCodeActivity, HomeActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        runOnUiThread {
+                            Toast.makeText(this@VerificationCodeActivity, value?.msg, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+
+                override fun onError(e: Throwable?) {
+                    runOnUiThread {
+                        Toast.makeText(this@VerificationCodeActivity, e?.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onComplete() {
+                }
+
+            })
+    }
+
     private fun saveCustomer() {
         ShopXApiService.getInstance().addCustomer(intent.getStringExtra("phone")!!, intent.getStringExtra("nickname")!!, intent.getStringExtra("password")!!)
             .subscribe(object : Observer<AddCustomerResponse> {
@@ -81,6 +119,7 @@ class VerificationCodeActivity : AppCompatActivity() {
                 override fun onNext(value: AddCustomerResponse?) {
                     if (value?.code == 0) {
                         PreferenceUtils.setUserPhone(intent.getStringExtra("phone")!!)
+                        PreferenceUtils.setUsername(intent.getStringExtra("nickname")!!)
                         val intent = Intent(this@VerificationCodeActivity, HomeActivity::class.java)
                         startActivity(intent)
                         finish()

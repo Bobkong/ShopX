@@ -8,11 +8,8 @@ public class LoginRequest implements Serializable {
     @SerializedName("contact")
     String phoneNumber;
 
-    @SerializedName("password")
-    String password;
 
-    public LoginRequest(String phoneNumber, String password) {
+    public LoginRequest(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-        this.password = password;
     }
 }
