@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bottom_sheet_bg"
+        android:paddingBottom="20dp"
+        android:id="@+id/bottom_sheet_cl"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:src="@drawable/bottom_sheet_bar"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="12dp"/>
+
+    <TextView
+        android:id="@+id/offer_type_filter_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/display_medium"
+        android:textColor="@color/black_0"
+        android:layout_marginTop="40dp"
+        android:text="Offer Type"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/offer_types"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/offer_type_filter_header"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="24dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/label_small"
+            android:textColor="@color/black_0"
+            android:text="Discount"
+            android:background="@drawable/map_filter_unselected_background"
+            android:id="@+id/discount_type"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/label_small"
+            android:textColor="@color/black_0"
+            android:text="Loyalty"
+            android:background="@drawable/map_filter_unselected_background"
+            android:id="@+id/loyalty_type"
+            app:layout_constraintLeft_toRightOf="@+id/discount_type"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/label_small"
+            android:textColor="@color/black_0"
+            android:text="Discount &amp; Loyalty"
+            android:background="@drawable/map_filter_unselected_background"
+            android:id="@+id/discount_loyalty_type"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintLeft_toRightOf="@+id/loyalty_type"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/offer_types"
+        android:layout_marginTop="24dp"
+        android:id="@+id/view_distance_result"
+        android:background="@drawable/primary_long_button_r24"
+        style="@style/title_medium"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:text="View Results"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_distance_result"
+        android:layout_marginTop="20dp"
+        android:id="@+id/reset_distance"
+        style="@style/title_medium"
+        android:textAlignment="center"
+        android:textColor="@color/black_0"
+        android:text="Reset"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,11 +14,131 @@
         android:layout_height="match_parent"
         android:id="@+id/map_container" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/map_view_header"
+        android:paddingTop="64dp"
+        android:paddingBottom="16dp"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="20dp"
+            android:id="@+id/back"
+            android:src="@drawable/black_back_button"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/map_search"
+            app:layout_constraintBottom_toBottomOf="@id/map_search"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/map_search"
+            android:id="@+id/map_search"
+            android:scaleType="centerCrop"
+            android:layout_marginLeft="84dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:scrollbars="none"
+            app:layout_constraintTop_toBottomOf="@+id/map_search">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingRight="24dp">
+
+                <TextView
+                    android:id="@+id/open_now_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/map_filter_unselected_background"
+                    android:text="Open Now"
+                    style="@style/label_small"
+                    android:textColor="@color/black_0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="24dp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/map_filter_unselected_background"
+                    app:layout_constraintLeft_toRightOf="@+id/open_now_filter"
+                    android:layout_marginLeft="12dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/offer_type_filter">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Offer Type"
+                        android:id="@+id/offer_type_filter_text"
+                        style="@style/label_small"
+                        android:textColor="@color/black_0"/>
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:id="@+id/offer_type_triangle"
+                        android:src="@drawable/filter_triangle" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/map_filter_unselected_background"
+                    app:layout_constraintLeft_toRightOf="@+id/offer_type_filter"
+                    android:layout_marginLeft="12dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/distance_filter">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Distance"
+                        android:id="@+id/distance_filter_text"
+                        style="@style/label_small"
+                        android:textColor="@color/black_0"/>
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:id="@+id/distance_triangle"
+                        android:src="@drawable/filter_triangle" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/ar_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/map_filter_unselected_background"
+                    android:text="AR-Enabled"
+                    style="@style/label_small"
+                    android:textColor="@color/black_0"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/distance_filter"
+                    android:layout_marginLeft="12dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </HorizontalScrollView>
+
+        
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/map_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        app:layout_constraintTop_toBottomOf="@+id/map_view_header"
+        android:layout_height="wrap_content">
         <com.exlyo.gmfmt.FloatingMarkerTitlesOverlay
             android:id="@+id/map_floating_markers_overlay"
             android:layout_width="match_parent"
@@ -29,53 +149,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
             android:layout_marginTop="20dp"/>
 
-        <EditText
-            android:id="@+id/distance_filter_input"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:hint="Miles"
-            app:layout_constraintTop_toBottomOf="@id/merchant_list"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginTop="20dp"
-            />
-
-        <TextView
-            android:id="@+id/distance_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Filter Distance"
-            app:layout_constraintBottom_toBottomOf="@+id/distance_filter_input"
-            app:layout_constraintLeft_toRightOf="@+id/distance_filter_input"
-            android:layout_marginLeft="10dp"/>
-
-        <TextView
-            android:id="@+id/only_see_discount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="See discount merchants only"
-            app:layout_constraintTop_toBottomOf="@id/distance_filter"
-            android:layout_marginTop="20dp"
-            />
-
-        <TextView
-            android:id="@+id/only_see_loyalty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="See loyalty merchants only"
-            app:layout_constraintTop_toBottomOf="@id/only_see_discount"
-            android:layout_marginTop="20dp"
-            />
-
-        <TextView
-            android:id="@+id/only_see_ar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Exit Map"
-            app:layout_constraintTop_toBottomOf="@id/only_see_loyalty"
-            android:layout_marginTop="20dp"
-            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.squareup.shopx.widget.MapMaskCL

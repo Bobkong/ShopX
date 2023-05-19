@@ -1,9 +1,11 @@
 package com.squareup.shopx.activity
 
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -18,6 +20,7 @@ class HomeActivity : AppCompatActivity() {
     lateinit var loyaltyTabIcon: ImageView
     lateinit var orderTabIcon: ImageView
     lateinit var profileTabIcon: ImageView
+    lateinit var navigationBar: ConstraintLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +31,7 @@ class HomeActivity : AppCompatActivity() {
         loyaltyTabIcon = findViewById(R.id.loyalty_tab)
         orderTabIcon = findViewById(R.id.order_tab)
         profileTabIcon = findViewById(R.id.profile_tab)
+        navigationBar = findViewById(R.id.navigation_bar)
 
         Transparent.transparentNavBar(this)
         Transparent.transparentStatusBar(this)
@@ -120,5 +124,12 @@ class HomeActivity : AppCompatActivity() {
         transaction.commit()
     }
 
+    public fun hideNavigationBar() {
+        navigationBar.visibility = View.GONE
+    }
+
+    public fun showNavigationBar() {
+        navigationBar.visibility = View.VISIBLE
+    }
 
 }

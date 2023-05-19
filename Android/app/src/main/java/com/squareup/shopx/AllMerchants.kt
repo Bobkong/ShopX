@@ -9,11 +9,14 @@ import com.squareup.shopx.model.MerchantCart
 object AllMerchants {
 
     val TAG = "AllMerchants"
+    const val OFFER_SEE_ALL = 0
+    const val OFFER_SEE_DISCOUNT = 1
+    const val OFFER_SEE_LOYALTY = 2
+    const val OFFER_SEE_DISCOUNT_LOYALTY = 3
     var allMerchants = ArrayList<ShopXMerchant>()
     var distanceLimit = 15.0F
+    var offerType = OFFER_SEE_ALL
     var onlySeeAREnable = false
-    var onlySeeDiscount = false
-    var onlySeeLoyalty = false
 
     var myLat: Float = 0.0F
     var myLng: Float = 0.0F
@@ -23,6 +26,7 @@ object AllMerchants {
     fun getDisplayMerchants(): List<ShopXMerchant> {
         var displayMerchants = ArrayList<ShopXMerchant>()
         for (merchant in allMerchants) {
+            // filter distance
             if (distanceLimit != Float.MAX_VALUE) {
                 val distance = calculateDistance(merchant.lat, merchant.lng)
                 Log.i(TAG, "distance from " + merchant.businessName + " is: " + distance + " miles.")
@@ -30,18 +34,21 @@ object AllMerchants {
                     continue
             }
 
+            // filter ar
             if (onlySeeAREnable) {
                 if (merchant.arEnable == 0)
                     continue
             }
 
-            if (onlySeeDiscount) {
+            // filter offers type
+            if (offerType == OFFER_SEE_LOYALTY) {
+                if (merchant.ifLoyalty == 0)
+                    continue
+            } else if (offerType == OFFER_SEE_DISCOUNT) {
                 if (merchant.discountType.isEmpty())
                     continue
-            }
-
-            if (onlySeeLoyalty) {
-                if (merchant.ifLoyalty == 0)
+            } else if (offerType == OFFER_SEE_DISCOUNT_LOYALTY) {
+                if (merchant.discountType.isEmpty() || merchant.ifLoyalty == 0)
                     continue
             }
 

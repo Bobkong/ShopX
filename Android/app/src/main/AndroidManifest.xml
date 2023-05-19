@@ -30,25 +30,32 @@
         android:name="com.squareup.shopx.BaseApplication"
         tools:targetApi="31">
         <activity android:name=".activity.RetrieveMerchantActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.AllItemsActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.LoyaltyActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.CreateCustomerActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.LoginActivity"
             android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"
             android:exported="true">
 
         </activity>
         <activity android:name=".activity.SignUpActivity"
-            android:theme="@style/NoActionBar">
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <activity android:name=".activity.SplashActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -58,9 +65,11 @@
         </activity>
 
         <activity android:name=".activity.ARItemActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.MerchantDetailActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
 
 
         <meta-data
@@ -79,19 +88,24 @@
         <meta-data android:name="com.google.ar.core" android:value="required" />
         <receiver android:name=".utils.BroadcastReceiverPage"/>
         <activity android:name=".activity.HomeActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.GuideActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".activity.AppIntroActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".activity.OrderActivity"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".activity.VerificationCodeActivity"
             android:windowSoftInputMode="stateVisible"
-            android:theme="@style/NoActionBar"/>
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

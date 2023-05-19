@@ -19,6 +19,7 @@
         android:layout_marginBottom="48dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
+        android:id="@+id/navigation_bar"
         android:background="@drawable/bottom_nav_background"
         app:layout_constraintBottom_toBottomOf="parent">
 
