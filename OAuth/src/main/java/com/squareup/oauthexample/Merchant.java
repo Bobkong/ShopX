@@ -116,9 +116,13 @@ public class Merchant implements Serializable {
         @SerializedName("amount")
         float amount;
 
-        public Discount(String discountType, float amount) {
+        @SerializedName("discountName")
+        String discountName;
+
+        public Discount(String discountType, float amount, String discountName) {
             this.discountType = discountType;
             this.amount = amount;
+            this.discountName = discountName;
         }
     }
 

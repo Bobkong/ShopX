@@ -132,7 +132,8 @@ public class RetrieveMerchant {
                         String sendPost = HttpHelper.sendPost("http://172.190.15.5:8900/saveMerchant", json);
                         System.out.print(sendPost);
                     } else {
-                        getDiscountObject(client, merchant, discountId.get(0));
+                        // retrieve the lastest discount
+                        getDiscountObject(client, merchant, discountId.get(discountId.size() - 1));
                     }
                 })
                 .exceptionally(exception -> {
@@ -177,9 +178,9 @@ public class RetrieveMerchant {
                         if (catalogObject.getType().equals("DISCOUNT") && merchant.discountProducts!= null && !merchant.discountProducts.isEmpty()) {
                             Merchant.Discount discount = null;
                             if (catalogObject.getDiscountData().getDiscountType().equals("FIXED_AMOUNT")) {
-                                discount = new Merchant.Discount("FIXED_AMOUNT", (float) (catalogObject.getDiscountData().getAmountMoney().getAmount() / 100.0));
+                                discount = new Merchant.Discount("FIXED_AMOUNT", (float) (catalogObject.getDiscountData().getAmountMoney().getAmount() / 100.0), catalogObject.getDiscountData().getName());
                             } else if (catalogObject.getDiscountData().getDiscountType().equals("FIXED_PERCENTAGE")) {
-                                discount = new Merchant.Discount("FIXED_PERCENTAGE", Float.parseFloat(catalogObject.getDiscountData().getPercentage()));
+                                discount = new Merchant.Discount("FIXED_PERCENTAGE", Float.parseFloat(catalogObject.getDiscountData().getPercentage()), catalogObject.getDiscountData().getName());
                             }
                             System.out.print("set discount");
                             merchant.setDiscount(discount);

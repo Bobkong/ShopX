@@ -49,5 +49,7 @@
         app:layout_constraintRight_toLeftOf="@+id/star_button"
         android:layout_marginRight="12dp"/>
 
+    <include layout="@layout/loading_view" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

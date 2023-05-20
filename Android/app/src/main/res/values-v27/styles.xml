@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LoyaltyBottomSheetDialogStyle" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:navigationBarColor">@color/primary_blue_95</item>
+        <item name="enableEdgeToEdge">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
+        <item name="background">@drawable/bottom_sheet_bg_primary_95</item>
+    </style>
+
+    <style name="BottomSheetDialogStyle" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="background">@drawable/bottom_sheet_bg</item>
+        <item name="enableEdgeToEdge">true</item>
+    </style>
+</resources>

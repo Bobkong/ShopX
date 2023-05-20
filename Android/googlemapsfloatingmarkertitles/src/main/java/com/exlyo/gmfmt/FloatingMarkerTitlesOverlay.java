@@ -87,7 +87,7 @@ public class FloatingMarkerTitlesOverlay extends View {
 		boldTextPaint.setStrokeWidth(GMFMTUtils.dipToPixels(getContext(), 3));
 		boldTextPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
-		setTextSizeDIP(14);
+		setTextSizeDIP(12);
 		setTextPaddingToMarkerDIP(8);
 		setMaxFloatingTitlesCount(100);
 		setSetMaxNewMarkersCheckPerFrame(10);
@@ -434,23 +434,20 @@ public class FloatingMarkerTitlesOverlay extends View {
 		final int markerColor = _markerInfo.getColor();
 		final String markerTitle = _markerInfo.getTitle();
 		final TextPaint usedTextPaint = _markerInfo.isBoldText() ? boldTextPaint : regularTextPaint;
-		usedTextPaint.setStyle(Paint.Style.STROKE);
-		if (GMFMTUtils.isDarkColor(markerColor)) {
-			usedTextPaint.setColor(Color.WHITE);
-			usedTextPaint.setAlpha((int) (_alpha / 1.2F));
-		} else {
-			usedTextPaint.setColor(Color.BLACK);
-			usedTextPaint.setAlpha((int) (_alpha / 2F));
-		}
 		final String truncatedText = GMFMTUtils.getTruncatedText(usedTextPaint, maxTextWidth, _displayArea.height(), markerTitle);
 		if (truncatedText == null) {
 			return;
 		}
+
+		Paint paint = new Paint();
+		paint.setTextSize(dp2px(getContext(), 12));
+		float strWidth = paint.measureText(markerTitle);
+
 		GMFMTUtils.drawMultiLineText(//
 			_canvas,//
 			usedTextPaint,//
-			_displayArea.left + 20,//
-			_displayArea.top - 60,//
+			_displayArea.left - strWidth / 2,//
+			_displayArea.top + 20,//
 			(float) Math.ceil(_displayArea.width()),//
 			truncatedText//
 		);
@@ -460,10 +457,15 @@ public class FloatingMarkerTitlesOverlay extends View {
 		GMFMTUtils.drawMultiLineText(//
 			_canvas,//
 			usedTextPaint,//
-			_displayArea.left + 20,//
-			_displayArea.top - 60,//
+			_displayArea.left - strWidth / 2,//
+			_displayArea.top + 20,//
 			(float) Math.ceil(_displayArea.width()),//
 			truncatedText//
 		);
+	}
+
+	public static int dp2px(Context context, float dpValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (dpValue * scale + 0.5f);
 	}
 }

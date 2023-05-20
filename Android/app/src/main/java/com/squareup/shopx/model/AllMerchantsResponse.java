@@ -89,6 +89,9 @@ public class AllMerchantsResponse implements Serializable {
         @SerializedName("locationId")
         String locationId;
 
+        @SerializedName("discountName")
+        String discountName;
+
         public String getMerchantId() {
             return merchantId;
         }
@@ -215,6 +218,14 @@ public class AllMerchantsResponse implements Serializable {
 
         public void setLocationId(String locationId) {
             this.locationId = locationId;
+        }
+
+        public String getDiscountName() {
+            return discountName;
+        }
+
+        public void setDiscountName(String discountName) {
+            this.discountName = discountName;
         }
 
         @Override

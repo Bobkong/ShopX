@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.squareup.shopx.AllMerchants;
 import com.squareup.shopx.R;
+import com.squareup.shopx.activity.MerchantDetailActivity;
 import com.squareup.shopx.model.AllMerchantsResponse;
 import com.squareup.shopx.model.GetLoyaltyInfoResponse;
 import com.squareup.shopx.utils.UIUtils;
@@ -61,6 +62,10 @@ public class MerchantDiscountViewHolder extends RecyclerView.ViewHolder {
             } else {
                 loyaltyDesc.setText("Enroll Now");
             }
+
+            loyaltyCl.setOnClickListener(view -> {
+                ((MerchantDetailActivity) activity).showLoyaltyBottomSheet();
+            });
         } else {
             loyaltyCl.setVisibility(View.GONE);
         }
@@ -73,10 +78,11 @@ public class MerchantDiscountViewHolder extends RecyclerView.ViewHolder {
         } else {
             discountCl.setVisibility(View.VISIBLE);
             if (Objects.equals(merchantInfo.getDiscountType(), "FIXED_PERCENTAGE")) {
-                discountTitle.setText((int)merchantInfo.getDiscountAmount() + "% Off of your subtotal");
+                discountDesc.setText((int)merchantInfo.getDiscountAmount() + "% Off of your subtotal");
             } else {
-                discountTitle.setText("$" + (int)merchantInfo.getDiscountAmount() + " Off each item/service");
+                discountDesc.setText("$" + (int)merchantInfo.getDiscountAmount() + " Off for designated items");
             }
+            discountTitle.setText(merchantInfo.getDiscountName());
         }
     }
 }

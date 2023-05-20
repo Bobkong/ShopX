@@ -23,16 +23,14 @@ object AllMerchants {
 
     var allMerchantCarts = ArrayList<MerchantCart>()
 
-    fun getDisplayMerchants(): List<ShopXMerchant> {
+    fun getDisplayMerchants(): ArrayList<ShopXMerchant> {
         var displayMerchants = ArrayList<ShopXMerchant>()
         for (merchant in allMerchants) {
             // filter distance
-            if (distanceLimit != Float.MAX_VALUE) {
-                val distance = calculateDistance(merchant.lat, merchant.lng)
-                Log.i(TAG, "distance from " + merchant.businessName + " is: " + distance + " miles.")
-                if (distance > distanceLimit)
-                    continue
-            }
+            val distance = calculateDistance(merchant.lat, merchant.lng)
+            Log.i(TAG, "distance from " + merchant.businessName + " is: " + distance + " miles.")
+            if (distance > distanceLimit)
+                continue
 
             // filter ar
             if (onlySeeAREnable) {
@@ -59,7 +57,20 @@ object AllMerchants {
 
     }
 
-    private fun sortMerchants(merchants: ArrayList<ShopXMerchant>): List<ShopXMerchant> {
+    fun getDisplayMerchants(merchantId: String): List<ShopXMerchant> {
+        val merchants = getDisplayMerchants()
+        if (merchantId.isEmpty() || merchantId.isBlank()) {
+            return merchants
+        }
+        for (i in merchants.indices) {
+            if (merchants[i].merchantId == merchantId) {
+                merchants.add(0, merchants.removeAt(i))
+            }
+        }
+        return merchants
+    }
+
+    private fun sortMerchants(merchants: ArrayList<ShopXMerchant>): ArrayList<ShopXMerchant> {
         var merchantsIn50Miles = ArrayList<ShopXMerchant>()
         var merchantsNotIn50Miles = ArrayList<ShopXMerchant>()
 
@@ -87,7 +98,7 @@ object AllMerchants {
             it.discountAmount
         }
 
-        return merchantsIn50Miles.plus(merchantsNotIn50Miles)
+        return ArrayList(merchantsIn50Miles.plus(merchantsNotIn50Miles))
     }
 
     fun calculateDistance(merchantLat: Float, merchantLng: Float): Double {

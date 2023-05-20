@@ -2,27 +2,30 @@ package com.squareup.shopx.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
 import com.squareup.shopx.adapter.MerchantDetailAdapter
+import com.squareup.shopx.adapter.RewardTiersAdapter
 import com.squareup.shopx.model.*
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
+import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.utils.Transparent
 import com.squareup.shopx.widget.CustomDialog
+import com.squareup.shopx.widget.RadiusCardView
+import com.squareup.shopx.widget.RoundRectImageView
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
@@ -35,16 +38,18 @@ class MerchantDetailActivity : AppCompatActivity() {
     private val TAG = "MerchantDetailActivity"
     private var itemList: RecyclerView? = null
     private lateinit var merchantInfo: ShopXMerchant
-    private lateinit var merchantLogo: ImageView
     private lateinit var cartInfo: TextView
     private var customerLoyaltyResponse: GetLoyaltyInfoResponse? = null
     private var merchantItemsResponse: GetMerchantDetailResponse? = null
     private lateinit var backButton: ImageView
+    private lateinit var loadingView: ConstraintLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_merchant_detail)
+
+        loadingView = findViewById(R.id.loading_view)
 
         Transparent.transparentNavBar(this)
         Transparent.transparentStatusBar(this)
@@ -92,6 +97,72 @@ class MerchantDetailActivity : AppCompatActivity() {
         }
     }
 
+    fun showLoyaltyBottomSheet() {
+        customerLoyaltyResponse?.let {
+            val bottomSheetDialog = BottomSheetDialog(this, R.style.LoyaltyBottomSheetDialogStyle)
+            val dialogView = layoutInflater.inflate(R.layout.merchant_loyalty_bottom_sheet, null, false)
+            bottomSheetDialog.setContentView(dialogView)
+
+            try {
+                // hack bg color of the BottomSheetDialog
+                val parent = dialogView!!.parent as ViewGroup
+                parent.setBackgroundResource(android.R.color.transparent)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            val loyaltyCard = dialogView.findViewById<RadiusCardView>(R.id.loyalty_card)
+            val loyaltyHeader = dialogView.findViewById<TextView>(R.id.loyalty_header)
+            val merchantLogo = dialogView.findViewById<RoundRectImageView>(R.id.merchant_logo)
+            val username = dialogView.findViewById<TextView>(R.id.user_name)
+            val merchantName = dialogView.findViewById<TextView>(R.id.merchant_name)
+            val userPoints = dialogView.findViewById<TextView>(R.id.user_points)
+            val earningRules = dialogView.findViewById<TextView>(R.id.earning_rules_text)
+            val rewardTiersList = dialogView.findViewById<RecyclerView>(R.id.reward_tiers)
+            val enrollNow = dialogView.findViewById<TextView>(R.id.enroll_now)
+
+            if (it.isEnrolled == 1) {
+                loyaltyCard.visibility = View.VISIBLE
+                Glide.with(this).load(merchantInfo.logoUrl).into(merchantLogo)
+                var nameString = if (PreferenceUtils.getUsername().length > 1) {
+                    PreferenceUtils.getUsername().substring(0, 2)
+                } else {
+                    PreferenceUtils.getUsername().substring(0, 1)
+                }
+                nameString = nameString.toUpperCase()
+                username.text = nameString
+
+                userPoints.text = "${it.points} pts"
+                merchantName.text = merchantInfo.businessName
+                loyaltyHeader.text = "Loyalty Details"
+            } else {
+                loyaltyCard.visibility = View.GONE
+                loyaltyHeader.text = "Enroll Loyalty"
+            }
+
+            var accrualRuleString = ""
+            for (i in it.loyaltyInfo.program.accrualRules.indices) {
+                val accrualRule = it.loyaltyInfo.program.accrualRules[i]
+                accrualRuleString += (i+1).toString() + ". Earn " + accrualRule.points + " points"
+                if (accrualRule.accrualType == "SPEND") {
+                    accrualRuleString += " for every $" + accrualRule.spendData.amountMoney.amount / 100.0 + " spent in a single transaction."
+                } else if (accrualRule.accrualType == "VISIT") {
+                    accrualRuleString += " for every visit ($" + accrualRule.visitData.minimumAmountMoney.amount / 100.0 + " minimum purchase)."
+                }
+                if (i != it.loyaltyInfo.program.accrualRules.size - 1){
+                    accrualRuleString += "\n"
+                }
+            }
+            earningRules.text = accrualRuleString
+
+            val layoutManager = GridLayoutManager(this, 2)
+            rewardTiersList.layoutManager = layoutManager
+            rewardTiersList.adapter = RewardTiersAdapter(this, it)
+
+            bottomSheetDialog.show()
+        }
+    }
+
     fun showItemBottomSheet(item: GetMerchantDetailResponse.Item) {
         val bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialogStyle)
         val dialogView = layoutInflater.inflate(R.layout.merchant_item_bottom_sheet, null, false)
@@ -131,6 +202,7 @@ class MerchantDetailActivity : AppCompatActivity() {
             override fun onNext(value: GetLoyaltyInfoResponse?) {
                 customerLoyaltyResponse = value
                 runOnUiThread {
+                    loadingView.visibility = View.GONE
                     itemList?.adapter = MerchantDetailAdapter(
                         this@MerchantDetailActivity,
                         merchantItemsResponse,
@@ -142,6 +214,7 @@ class MerchantDetailActivity : AppCompatActivity() {
 
             override fun onError(e: Throwable?) {
                 runOnUiThread {
+                    loadingView.visibility = View.GONE
                     Toast.makeText(this@MerchantDetailActivity, e?.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -194,6 +267,7 @@ class MerchantDetailActivity : AppCompatActivity() {
                     merchantItemsResponse = value
                     runOnUiThread {
                         if (value?.code == 1) {
+                            loadingView.visibility = View.GONE
                             Toast.makeText(this@MerchantDetailActivity, value.msg, Toast.LENGTH_SHORT).show()
                             return@runOnUiThread
                         }
@@ -208,6 +282,7 @@ class MerchantDetailActivity : AppCompatActivity() {
                                     merchantInfo,
                                     null
                                 )
+                                loadingView.visibility = View.GONE
                             }
 
                             for (item in it.items) {
@@ -225,6 +300,7 @@ class MerchantDetailActivity : AppCompatActivity() {
                 override fun onError(e: Throwable?) {
                     runOnUiThread {
                         Toast.makeText(this@MerchantDetailActivity, e?.message, Toast.LENGTH_SHORT).show()
+                        loadingView.visibility = View.GONE
                     }
                 }
 

@@ -142,7 +142,7 @@ public class GetMerchantDetailResponse implements Serializable {
                 if (merchantInfo.getDiscountType().equals("FIXED_PERCENTAGE")) {
                     return getItemPrice() * (100 - merchantInfo.getDiscountAmount()) / 100F;
                 } else if (merchantInfo.getDiscountType().equals("FIXED_AMOUNT")) {
-                   return getItemPrice() - merchantInfo.getDiscountAmount();
+                   return getItemPrice() - merchantInfo.getDiscountAmount() * 100;
                 }
             }
             return 0F;

@@ -28,8 +28,7 @@ public class MerchantListAdapter extends RecyclerView.Adapter<MerchantViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MerchantViewHolder holder, int position) {
-        boolean isLastOne = position == mData.size() - 1;
-        holder.setData(mData.get(position), mActivity, isLastOne);
+        holder.setData(mData.get(position), mActivity, position);
     }
 
     @Override

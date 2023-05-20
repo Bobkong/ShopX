@@ -1,32 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="200dp"
-    android:background="#ffffff"
-    android:layout_marginLeft="20dp"
+    android:layout_width="308dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/homepage_merchant_bg"
+    android:layout_marginRight="12dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="150dp"
-        android:layout_height="match_parent"
-        app:layout_constraintLeft_toLeftOf="parent"/>
-
     <TextView
-        android:id="@+id/business_name"
-        android:layout_width="wrap_content"
+        android:id="@+id/merchant_name"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        app:layout_constraintLeft_toRightOf="@+id/logo"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/business_address"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:singleLine="true"
+        android:maxLines="1"
+        android:ellipsize="end"
+        style="@style/title_large"
+        android:textColor="@color/black_0"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="Blaze Pizza"/>
 
     <TextView
-        android:id="@+id/business_address"
+        android:id="@+id/merchant_open_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/business_name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/business_name"/>
+        app:layout_constraintTop_toBottomOf="@+id/merchant_name"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="4dp"
+        style="@style/label_large"
+        android:textColor="@color/black_40"
+        android:text="Open • 8 AM - 9 PM • 0.5 mile"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:id="@+id/tag_ll"
+        app:layout_constraintTop_toBottomOf="@id/merchant_open_distance"
+        android:gravity="center_horizontal">
+        <TextView
+            android:id="@+id/discount_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/yellow_50_r12"
+            android:text="20% Off"
+            style="@style/label_small"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:textColor="@color/black_0"/>
+
+        <TextView
+            android:id="@+id/loyalty_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/merchant_loyalty_tag_bg"
+            android:text="Rewards"
+            style="@style/label_small"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:textColor="@color/black_0"/>
+
+        <TextView
+            android:id="@+id/AR_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/primary_90_r12"
+            android:text="AR"
+            style="@style/label_small"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:textColor="@color/black_0"/>
+    </LinearLayout>
+
+    <com.squareup.shopx.widget.RadiusCardView
+        android:layout_width="match_parent"
+        android:layout_height="114dp"
+        app:layout_constraintTop_toBottomOf="@+id/tag_ll"
+        app:rcv_bottomLeftRadiu="16dp"
+        app:rcv_bottomRightRadiu="16dp"
+        android:layout_marginTop="20dp">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@id/merchant_logo"
+            android:scaleType="centerCrop"/>
+    </com.squareup.shopx.widget.RadiusCardView>
+
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

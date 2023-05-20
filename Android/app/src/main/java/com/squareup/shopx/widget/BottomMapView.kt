@@ -4,7 +4,7 @@ import android.Manifest
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
 import android.util.Log
@@ -45,7 +45,8 @@ import io.reactivex.disposables.Disposable
 
 
 class BottomMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
-    RelativeLayout(context, attrs, defStyleAttr), OnMapReadyCallback {
+    RelativeLayout(context, attrs, defStyleAttr), OnMapReadyCallback,
+    GoogleMap.OnMarkerClickListener {
     private val TAG = "BottomMapView"
     var isExpanded = false
     var DownY = 0f
@@ -54,11 +55,9 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
     var mainFragment: MainFragment? = null
 
     private lateinit var mMap: GoogleMap
+    private var mapMarkers = HashMap<Marker, String>()
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private var floatingMarkersOverlay: FloatingMarkerTitlesOverlay? = null
-
-    private var mapContent: ConstraintLayout? = null
-
     private val snapHelper = PagerSnapHelper()
     private var mapMaskCL: MapMaskCL? = null
     private var merchantListView: RecyclerView? = null
@@ -75,7 +74,6 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
     fun init(fragment: MainFragment) {
         mainFragment = fragment
         mapMaskCL = findViewById(R.id.pull_up_cl)
-        mapContent = findViewById(R.id.map_content)
 
         // filters
         openNowFilter = findViewById(R.id.open_now_filter)
@@ -160,7 +158,6 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
             this.layoutParams = layoutParams
 
             if ((it.animatedValue as Int) == 0) {
-                mapContent?.visibility = View.VISIBLE
                 requestAllMerchants()
             }
         }
@@ -177,13 +174,20 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
             this.layoutParams = layoutParams
 
             if ((it.animatedValue as Int) == getDefaultMapTopMargin()) {
-                mapContent?.visibility = View.GONE
                 isExpanded = false
                 mapMaskCL?.visibility = View.VISIBLE
                 (mainFragment!!.requireActivity() as? HomeActivity)?.showNavigationBar()
             }
         }
+        resetBottomView()
         animator.start()
+    }
+
+    private fun resetBottomView() {
+        AllMerchants.offerType = AllMerchants.OFFER_SEE_ALL
+        AllMerchants.distanceLimit = 15F
+        updateFilter()
+        hideMerchantList()
     }
 
 
@@ -205,6 +209,8 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
                     .getString(R.string.style_json)
             )
         )
+
+        mMap.setOnMarkerClickListener(this)
 
         floatingMarkersOverlay = findViewById<FloatingMarkerTitlesOverlay>(R.id.map_floating_markers_overlay)
         floatingMarkersOverlay?.setSource(mMap)
@@ -246,6 +252,7 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
                 latLng, 15.0f
             )
         )
+        floatingMarkersOverlay?.invalidate()
     }
 
     fun moveCamera(latLng: LatLng) {
@@ -254,22 +261,28 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
                 latLng, 15.0f
             )
         )
+        floatingMarkersOverlay?.invalidate()
     }
 
     fun addMarkersToMap(merchants: List<AllMerchantsResponse.ShopXMerchant>, focusMerchantId: String) {
         mMap.clear()
+        mapMarkers.clear()
         //createMyMarker(LatLng(AllMerchants.myLat.toDouble(), AllMerchants.myLng.toDouble()))
         floatingMarkersOverlay?.clearMarkers()
         for (i in merchants.indices) {
             val id: Long = i.toLong() + 1
             val latLng = LatLng(merchants[i].lat.toDouble(), merchants[i].lng.toDouble())
             val title = merchants[i].businessName
-            val mi = MarkerInfo(latLng, title, Color.BLACK)
-            mMap.addMarker(
+            val mi = MarkerInfo(latLng, title, resources.getColor(R.color.black_20))
+            val bmp = createColoredMarkerBitmap(
+                merchants[i].merchantId == focusMerchantId, merchants[i]
+            )
+            val marker = mMap.addMarker(
                 MarkerOptions().position(mi.coordinates).icon(
-                    BitmapDescriptorFactory.fromBitmap(createColoredMarkerBitmap(
-                        merchants[i].merchantId == focusMerchantId, merchants[i]
-                    ))))
+                    BitmapDescriptorFactory.fromBitmap(bmp)))
+            marker?.let {
+                mapMarkers[it] = merchants[i].merchantId
+            }
             floatingMarkersOverlay?.addMarker(id, mi)
         }
     }
@@ -282,19 +295,19 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
         if (isSelected) {
             if (merchant.ifLoyalty == 1 && !merchant.discountType.isNullOrEmpty()) {
                 resourceId = R.drawable.selected_loyalty_discount
-                height = UIUtils.dp2px(context, 58f)
-                width = UIUtils.dp2px(context, 66f)
+                height = UIUtils.dp2px(context, 48f)
+                width = UIUtils.dp2px(context, 54f)
             } else if (merchant.ifLoyalty == 1) {
                 resourceId = R.drawable.selected_loyalty
-                height = UIUtils.dp2px(context, 58f)
+                height = UIUtils.dp2px(context, 48f)
                 width = UIUtils.dp2px(context, 30f)
             } else if (!merchant.discountType.isNullOrEmpty()) {
                 resourceId = R.drawable.selected_discount
-                height = UIUtils.dp2px(context, 58f)
+                height = UIUtils.dp2px(context, 48f)
                 width = UIUtils.dp2px(context, 30f)
             } else {
                 resourceId = R.drawable.selected_normal
-                height = UIUtils.dp2px(context, 58f)
+                height = UIUtils.dp2px(context, 48f)
                 width = UIUtils.dp2px(context, 30f)
             }
         }
@@ -370,7 +383,12 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
                         value?.merchants?.let {
                             if (it.size > 0) {
                                 AllMerchants.allMerchants = it
-                                generateDisplayMerchants()
+                                generateMerchantMarkers()
+                                // move to the first merchant
+                                moveCamera(LatLng(
+                                    AllMerchants.getDisplayMerchants()[0].lat.toDouble(),
+                                    AllMerchants.getDisplayMerchants()[0].lng.toDouble()
+                                ))
                                 setFilterListeners()
                             }
                         }
@@ -393,10 +411,11 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
     var currentFocusedMarker = 0;
     fun generateMerchantListView(merchants: List<AllMerchantsResponse.ShopXMerchant>) {
 
-
+        merchantListView?.visibility = View.VISIBLE
         val merchantAdapter = MerchantListAdapter(merchants, mainFragment!!.requireActivity())
         merchantListView?.adapter = merchantAdapter
 
+        merchantListView?.clearOnScrollListeners()
         merchantListView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -411,11 +430,11 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
                         currentFocusedMarker = position
                         animateCamera(
                             LatLng(
-                                AllMerchants.getDisplayMerchants()[currentFocusedMarker].lat.toDouble(),
-                                AllMerchants.getDisplayMerchants()[currentFocusedMarker].lng.toDouble()
+                                merchants[currentFocusedMarker].lat.toDouble(),
+                                merchants[currentFocusedMarker].lng.toDouble()
                             )
                         )
-                        addMarkersToMap(AllMerchants.getDisplayMerchants(), AllMerchants.getDisplayMerchants()[currentFocusedMarker].merchantId)
+                        generateMerchantMarkers(merchants[currentFocusedMarker].merchantId)
                     }
                 }
 
@@ -428,22 +447,37 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     }
 
+    var onlySeeOpenNow = false
     fun setFilterListeners() {
 
         openNowFilter?.setOnClickListener {
-
+            onlySeeOpenNow = !onlySeeOpenNow
+            setOpenNow(onlySeeOpenNow)
+            hideMerchantList()
         }
 
         offerTypeFilter?.setOnClickListener {
             showOfferFilter()
+            hideMerchantList()
         }
 
         distanceFilter?.setOnClickListener {
             showDistanceFilter()
+            hideMerchantList()
         }
 
         ARFilter?.setOnClickListener {
+            hideMerchantList()
+        }
+    }
 
+    fun setOpenNow(openNow: Boolean) {
+        if (openNow) {
+            openNowFilter?.setBackgroundResource(R.drawable.map_filter_selected_background)
+            openNowFilter?.setTextColor(resources.getColor(R.color.white))
+        } else {
+            openNowFilter?.setBackgroundResource(R.drawable.map_filter_unselected_background)
+            openNowFilter?.setTextColor(resources.getColor(R.color.black_0))
         }
     }
 
@@ -504,14 +538,14 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
 
         viewResult.setOnClickListener {
             AllMerchants.offerType = offerType
-            generateDisplayMerchants()
+            generateMerchantMarkers()
             bottomSheetDialog.dismiss()
             updateFilter()
         }
 
         resetResult.setOnClickListener {
             AllMerchants.offerType = AllMerchants.OFFER_SEE_ALL
-            generateDisplayMerchants()
+            generateMerchantMarkers()
             bottomSheetDialog.dismiss()
             updateFilter()
         }
@@ -606,7 +640,7 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
 
         viewResult.setOnClickListener {
             AllMerchants.distanceLimit = distance
-            generateDisplayMerchants()
+            generateMerchantMarkers()
             bottomSheetDialog.dismiss()
             updateFilter()
         }
@@ -614,7 +648,7 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
         resetResult.setOnClickListener {
             distance = 15f
             AllMerchants.distanceLimit = distance
-            generateDisplayMerchants()
+            generateMerchantMarkers()
             bottomSheetDialog.dismiss()
             updateFilter()
         }
@@ -660,17 +694,10 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    fun generateDisplayMerchants() {
-        val displayMerchants = AllMerchants.getDisplayMerchants()
+    fun generateMerchantMarkers(merchantId: String = "") {
+        val displayMerchants = AllMerchants.getDisplayMerchants(merchantId)
         if (displayMerchants.isNotEmpty()) {
-            addMarkersToMap(AllMerchants.getDisplayMerchants(), "")
-            generateMerchantListView(AllMerchants.getDisplayMerchants())
-            // move to the first merchant
-            moveCamera(
-                LatLng(displayMerchants[0].lat.toDouble(),
-                    displayMerchants[0].lng.toDouble()
-                )
-            )
+            addMarkersToMap(AllMerchants.getDisplayMerchants(), merchantId)
         } else {
             mMap.clear()
             merchantListView?.adapter = null
@@ -686,6 +713,19 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
     fun getMyLocation() {
         val latLng = LatLng(AllMerchants.myLat.toDouble(), AllMerchants.myLng.toDouble())
         moveCamera(latLng)
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val merchantId = mapMarkers[marker] ?: ""
+        generateMerchantMarkers(merchantId)
+        generateMerchantListView(AllMerchants.getDisplayMerchants(merchantId))
+        return true
+
+    }
+
+    fun hideMerchantList() {
+        merchantListView?.visibility = View.GONE
+        generateMerchantMarkers()
     }
 
 

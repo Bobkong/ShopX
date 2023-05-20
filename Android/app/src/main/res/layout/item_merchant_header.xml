@@ -87,7 +87,7 @@
                     android:id="@+id/loyalty_tag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/pink_70_r12"
+                    android:background="@drawable/merchant_loyalty_tag_bg"
                     android:text="Rewards"
                     style="@style/label_small"
                     android:layout_marginLeft="2dp"
@@ -98,12 +98,12 @@
                     android:id="@+id/AR_tag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/black_r12"
+                    android:background="@drawable/primary_90_r12"
                     android:text="AR"
                     style="@style/label_small"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
-                    android:textColor="@color/white"/>
+                    android:textColor="@color/black_0"/>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

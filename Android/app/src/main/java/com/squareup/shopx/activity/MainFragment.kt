@@ -78,9 +78,6 @@ class MainFragment : Fragment() {
         bottomSheet = view.findViewById(R.id.bottom_sheet)
         bottomSheet?.init(this)
 
-
-
-
         homepageHeader = view.findViewById(R.id.homepage_header)
         userName = view.findViewById(R.id.user_name)
 
