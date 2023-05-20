@@ -65,48 +65,48 @@ class OrderActivity: AppCompatActivity() {
             }
         }
 
-
-        itemList?.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
-        itemList?.adapter = OrderItemListAdapter(AllMerchants.getCartItems(merchantInfo), this@OrderActivity, merchantInfo)
-
-        val lineItems = ArrayList<LineItem>()
-        for (item in AllMerchants.getCartItems(merchantInfo)) {
-            val lineItem = LineItem(item.itemVariationId)
-            lineItems.add(lineItem)
-        }
-        val order = Order(merchantInfo.locationId, lineItems, CreateOrderRequest.PricingOptions(true))
-
-        val orderRequest = CreateOrderRequest(UUID.randomUUID().toString(), order)
-        SquareApiService.getInstance(merchantInfo.accessToken).createOrder(orderRequest)
-            .subscribe(object: Observer<CreateOrderResponse> {
-                override fun onSubscribe(d: Disposable?) {
-
-                }
-
-                override fun onNext(value: CreateOrderResponse?) {
-                    runOnUiThread {
-                        value?.let {
-                            Log.i(TAG, it.order.id)
-                            orderId = it.order.id
-                            originalPrice.text = (it.order.totalMoney.amount + it.order.discountAmount.amount).toString()
-                            discountPrice.text = it.order.discountAmount.amount.toString()
-                            finalPrice.text = it.order.totalMoney.amount.toString()
-                        }
-                    }
-
-                }
-
-                override fun onError(e: Throwable?) {
-                    runOnUiThread {
-                        Toast.makeText(this@OrderActivity, e?.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onComplete() {
-                }
-
-            })
+//
+//        itemList?.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+//
+//        itemList?.adapter = OrderItemListAdapter(AllMerchants.getCartItems(merchantInfo), this@OrderActivity, merchantInfo)
+//
+//        val lineItems = ArrayList<LineItem>()
+//        for (item in AllMerchants.getCartItems(merchantInfo)) {
+//            val lineItem = LineItem(item.itemVariationId)
+//            lineItems.add(lineItem)
+//        }
+//        val order = Order(merchantInfo.locationId, lineItems, CreateOrderRequest.PricingOptions(true))
+//
+//        val orderRequest = CreateOrderRequest(UUID.randomUUID().toString(), order)
+//        SquareApiService.getInstance(merchantInfo.accessToken).createOrder(orderRequest)
+//            .subscribe(object: Observer<CreateOrderResponse> {
+//                override fun onSubscribe(d: Disposable?) {
+//
+//                }
+//
+//                override fun onNext(value: CreateOrderResponse?) {
+//                    runOnUiThread {
+//                        value?.let {
+//                            Log.i(TAG, it.order.id)
+//                            orderId = it.order.id
+//                            originalPrice.text = (it.order.totalMoney.amount + it.order.discountAmount.amount).toString()
+//                            discountPrice.text = it.order.discountAmount.amount.toString()
+//                            finalPrice.text = it.order.totalMoney.amount.toString()
+//                        }
+//                    }
+//
+//                }
+//
+//                override fun onError(e: Throwable?) {
+//                    runOnUiThread {
+//                        Toast.makeText(this@OrderActivity, e?.message, Toast.LENGTH_SHORT).show()
+//                    }
+//                }
+//
+//                override fun onComplete() {
+//                }
+//
+//            })
 
     }
 

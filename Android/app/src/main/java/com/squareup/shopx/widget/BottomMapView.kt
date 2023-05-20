@@ -142,7 +142,12 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
 
 
     fun getDefaultMapTopMargin(): Int {
-        return UIUtils.getHeight(context) - UIUtils.dp2px(context, 124f)
+        // have bottom bar icons
+        if (UIUtils.getNavigationBarHeight(mainFragment!!.requireActivity()) > 60) {
+            return UIUtils.getHeight(context) - UIUtils.dp2px(context, 124f)
+        } else {
+            return UIUtils.getHeight(context) - UIUtils.dp2px(context, 148f)
+        }
     }
 
     fun expandMapView() {

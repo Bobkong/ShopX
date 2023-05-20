@@ -1,9 +1,9 @@
 package com.squareup.shopx.model;
 
 public class CartUpdateEvent {
-    public String accessToken;
+    public AllMerchantsResponse.ShopXMerchant merchant;
 
-    public CartUpdateEvent(String accessToken) {
-        this.accessToken = accessToken;
+    public CartUpdateEvent(AllMerchantsResponse.ShopXMerchant merchant) {
+        this.merchant = merchant;
     }
 }

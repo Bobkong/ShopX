@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,7 @@ import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.utils.Transparent
 import com.squareup.shopx.widget.CustomDialog
+import com.squareup.shopx.widget.ItemBottomDialog
 import com.squareup.shopx.widget.RadiusCardView
 import com.squareup.shopx.widget.RoundRectImageView
 import io.reactivex.Observer
@@ -38,7 +40,9 @@ class MerchantDetailActivity : AppCompatActivity() {
     private val TAG = "MerchantDetailActivity"
     private var itemList: RecyclerView? = null
     private lateinit var merchantInfo: ShopXMerchant
-    private lateinit var cartInfo: TextView
+    private lateinit var cartInfo: LinearLayout
+    private lateinit var cartCount: TextView
+    private lateinit var cartTotalPrice: TextView
     private var customerLoyaltyResponse: GetLoyaltyInfoResponse? = null
     private var merchantItemsResponse: GetMerchantDetailResponse? = null
     private lateinit var backButton: ImageView
@@ -62,19 +66,21 @@ class MerchantDetailActivity : AppCompatActivity() {
         merchantInfo = intent.extras?.getSerializable("merchant") as ShopXMerchant
 
         cartInfo = findViewById(R.id.cart_info)
-        cartInfo.setOnClickListener {
-            val intent = Intent(this@MerchantDetailActivity, OrderActivity::class.java)
-            intent.putExtra("merchant", merchantInfo)
-
-            if (merchantInfo.ifLoyalty == 1 && customerLoyaltyResponse != null && customerLoyaltyResponse!!.isEnrolled == 1) {
-                intent.putExtra("loyalty", customerLoyaltyResponse)
-            }
-            startActivity(intent)
-        }
+        cartTotalPrice = findViewById(R.id.total_cart_price)
+        cartCount = findViewById(R.id.cart_total_count)
+//        cartInfo.setOnClickListener {
+//            val intent = Intent(this@MerchantDetailActivity, OrderActivity::class.java)
+//            intent.putExtra("merchant", merchantInfo)
+//
+//            if (merchantInfo.ifLoyalty == 1 && customerLoyaltyResponse != null && customerLoyaltyResponse!!.isEnrolled == 1) {
+//                intent.putExtra("loyalty", customerLoyaltyResponse)
+//            }
+//            startActivity(intent)
+//        }
 
         itemList = findViewById(R.id.item_list)
         itemList?.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-
+        setViewCart()
         requestMerchantDetail(merchantInfo.accessToken)
 
 
@@ -92,8 +98,21 @@ class MerchantDetailActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCartUpdateEvent(event: CartUpdateEvent) {
-        if (event.accessToken == merchantInfo.accessToken) {
-            cartInfo.text = AllMerchants.getPrice(merchantInfo).toString()
+        if (event.merchant.equals(merchantInfo)) {
+            setViewCart()
+        }
+    }
+
+    fun setViewCart() {
+        if (AllMerchants.getTotalItemCount(merchantInfo) == 0) {
+            cartInfo.visibility = View.GONE
+        } else {
+            cartInfo.visibility = View.VISIBLE
+            cartCount.text = AllMerchants.getTotalItemCount(merchantInfo).toString()
+            cartTotalPrice.text = "$ " + String.format(
+                "%.2f",
+                AllMerchants.getPrice(merchantInfo) / 100.0
+            )
         }
     }
 
@@ -159,37 +178,17 @@ class MerchantDetailActivity : AppCompatActivity() {
             rewardTiersList.layoutManager = layoutManager
             rewardTiersList.adapter = RewardTiersAdapter(this, it)
 
+            enrollNow.setOnClickListener {
+                enrollLoyaltyProgram(merchantInfo.accessToken, customerLoyaltyResponse!!.loyaltyInfo.program.id)
+                bottomSheetDialog.dismiss()
+            }
             bottomSheetDialog.show()
         }
     }
 
     fun showItemBottomSheet(item: GetMerchantDetailResponse.Item) {
-        val bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialogStyle)
-        val dialogView = layoutInflater.inflate(R.layout.merchant_item_bottom_sheet, null, false)
-        bottomSheetDialog.setContentView(dialogView)
-
-        try {
-            // hack bg color of the BottomSheetDialog
-            val parent = dialogView!!.parent as ViewGroup
-            parent.setBackgroundResource(android.R.color.transparent)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        val itemImage = dialogView.findViewById<ImageView>(R.id.item_image)
-        val itemName = dialogView.findViewById<TextView>(R.id.item_name)
-        val itemDesc = dialogView.findViewById<TextView>(R.id.item_desc)
-        Glide.with(this)
-            .load(item.itemImage)
-            .into(itemImage)
-        itemName.text = item.itemName
-        if (item.itemDescription.isNullOrEmpty()) {
-            itemDesc.visibility = View.GONE
-        } else {
-            itemDesc.text = item.itemDescription
-            itemDesc.visibility = View.VISIBLE
-        }
-        bottomSheetDialog.show()
+        val bottomSheetDialog = ItemBottomDialog(this, R.style.BottomSheetDialogStyle)
+        bottomSheetDialog.init(this, ItemBottomDialog.FROM_MERCHANT_DETAIL, item, merchantInfo)
     }
 
     private fun requestLoyaltyInfo(accessToken: String?) {
@@ -240,6 +239,8 @@ class MerchantDetailActivity : AppCompatActivity() {
                             Toast.makeText(this@MerchantDetailActivity, value.msg, Toast.LENGTH_SHORT).show()
                             return@runOnUiThread
                         }
+
+                        // go to enroll success activity
 
                      }
                 }

@@ -5,6 +5,7 @@ import android.util.Log
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
 import com.squareup.shopx.model.GetMerchantDetailResponse.Item
 import com.squareup.shopx.model.MerchantCart
+import java.util.HashMap
 
 object AllMerchants {
 
@@ -121,25 +122,16 @@ object AllMerchants {
         return null
     }
 
-    fun addToCart(merchant: ShopXMerchant, item: Item) {
+    fun updateItemNumber(merchant: ShopXMerchant, item: Item, number: Int) {
         for (merchantCart in allMerchantCarts) {
             if (merchantCart.merchant.equals(merchant)) {
-                merchantCart.addToCart(item)
+                merchantCart.updateItemCount(item, number)
                 return
             }
         }
         val merchantCart = MerchantCart(merchant)
-        merchantCart.addToCart(item)
+        merchantCart.updateItemCount(item, number)
         allMerchantCarts.add(merchantCart)
-    }
-
-    fun deleteFromCart(merchant: ShopXMerchant, item: Item) {
-        for (merchantCart in allMerchantCarts) {
-            if (merchantCart.merchant.equals(merchant)) {
-                merchantCart.deleteFromCart(item)
-                return
-            }
-        }
     }
 
     fun getPrice(merchant: ShopXMerchant): Float {
@@ -151,13 +143,31 @@ object AllMerchants {
         return 0F
     }
 
-    fun getCartItems(merchant: ShopXMerchant): ArrayList<Item> {
+    fun getCartItems(merchant: ShopXMerchant): HashMap<Item, Int> {
         for (merchantCart in allMerchantCarts) {
             if (merchantCart.merchant.equals(merchant)) {
                 return merchantCart.cartItems
             }
         }
-        return ArrayList()
+        return HashMap()
+    }
+
+    fun getCountOfAnItem(merchant: ShopXMerchant, item: Item): Int {
+        for (merchantCart in allMerchantCarts) {
+            if (merchantCart.merchant.equals(merchant)) {
+                return merchantCart.getCountOfAnItem(item)
+            }
+        }
+        return 0
+    }
+
+    fun getTotalItemCount(merchant: ShopXMerchant): Int {
+        for (merchantCart in allMerchantCarts) {
+            if (merchantCart.merchant.equals(merchant)) {
+                return merchantCart.totalItemCount
+            }
+        }
+        return 0
     }
 
 
