@@ -51,7 +51,7 @@ public class MerchantDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         } else if (position == 1) {
             ((MerchantDiscountViewHolder) holder).setData(mActivity, mMerchantInfo, mLoyaltyInfoResponse);
         } else {
-            ((ItemViewHolder) holder).setData(mMerchantItems.getItems().get(position - 2), mActivity, position - 2, mMerchantInfo);
+            ((ItemViewHolder) holder).setData(mMerchantItems.getItems().get(position - 2), mActivity, position - 2, mMerchantInfo, position - 2 == mMerchantItems.getItems().size() - 1);
         }
     }
 

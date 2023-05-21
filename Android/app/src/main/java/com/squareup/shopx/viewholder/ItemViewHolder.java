@@ -37,7 +37,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         addItem = itemView.findViewById(R.id.add_item);
     }
 
-    public void setData(GetMerchantDetailResponse.Item item, Activity activity, int position, AllMerchantsResponse.ShopXMerchant merchantInfo) {
+    public void setData(GetMerchantDetailResponse.Item item, Activity activity, int position, AllMerchantsResponse.ShopXMerchant merchantInfo, boolean isLast) {
         this.activity = activity;
 
         if (position == 0) {
@@ -84,6 +84,12 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
             ((MerchantDetailActivity) activity).showItemBottomSheet(item);
         });
 
+        if (isLast) {
+            // set extra margin
+            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+            layoutParams.bottomMargin = UIUtils.dp2px(activity, 100f);
+            itemView.setLayoutParams(layoutParams);
+        }
 
     }
 }

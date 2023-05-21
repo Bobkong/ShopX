@@ -24,10 +24,7 @@ import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.utils.Transparent
-import com.squareup.shopx.widget.CustomDialog
-import com.squareup.shopx.widget.ItemBottomDialog
-import com.squareup.shopx.widget.RadiusCardView
-import com.squareup.shopx.widget.RoundRectImageView
+import com.squareup.shopx.widget.*
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
@@ -66,6 +63,11 @@ class MerchantDetailActivity : AppCompatActivity() {
         merchantInfo = intent.extras?.getSerializable("merchant") as ShopXMerchant
 
         cartInfo = findViewById(R.id.cart_info)
+        cartInfo.setOnClickListener {
+            val cartBottomDialog = CartBottomDialog(this, R.style.BottomSheetDialogStyle)
+            cartBottomDialog.init(this, merchantInfo)
+        }
+
         cartTotalPrice = findViewById(R.id.total_cart_price)
         cartCount = findViewById(R.id.cart_total_count)
 //        cartInfo.setOnClickListener {

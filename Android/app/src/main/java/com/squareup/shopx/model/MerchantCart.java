@@ -33,7 +33,11 @@ public class MerchantCart {
         } else {
             // have the item in the cart, update
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                cartItems.replace(item, count);
+                if (count == 0) {
+                    cartItems.remove(item);
+                } else {
+                    cartItems.replace(item, count);
+                }
             }
         }
 

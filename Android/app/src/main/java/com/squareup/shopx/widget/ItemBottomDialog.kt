@@ -69,6 +69,10 @@ class ItemBottomDialog @JvmOverloads constructor(context: Context, style: Int) :
             }
         }
 
+        if (from == FROM_CART) {
+            subItem.setImageDrawable(activity.resources.getDrawable(R.drawable.enable_sub_item))
+        }
+
         subItem.setOnClickListener {
             if (from == FROM_MERCHANT_DETAIL) {
                 if (itemInitialCount == 1) {

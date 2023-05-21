@@ -47,6 +47,7 @@
             style="@style/title_medium"
             android:textColor="@color/white"
             android:text="View Cart"
+            android:includeFontPadding="false"
             android:layout_marginRight="12dp"
             />
 
@@ -57,6 +58,7 @@
             android:paddingTop="2dp"
             android:textAlignment="center"
             style="@style/title_medium"
+            android:includeFontPadding="false"
             android:textColor="@color/white"
             android:text="$ 18.50"
             />
