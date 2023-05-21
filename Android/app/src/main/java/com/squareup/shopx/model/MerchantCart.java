@@ -51,6 +51,15 @@ public class MerchantCart {
         return price;
     }
 
+    // get price before discount
+    public float getOriginalPrice() {
+        float price = 0F;
+        for (GetMerchantDetailResponse.Item item : cartItems.keySet()) {
+            price += item.getItemPrice() * cartItems.get(item);
+        }
+        return price;
+    }
+
     public int getCountOfAnItem(GetMerchantDetailResponse.Item item) {
         for (GetMerchantDetailResponse.Item i : cartItems.keySet()) {
             if (item.equals(i)) {

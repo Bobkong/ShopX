@@ -12,6 +12,7 @@ import com.squareup.shopx.R
 import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.model.GeneralResponse
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
+import com.squareup.shopx.utils.Transparent
 import com.squareup.shopx.widget.CustomDialog
 import com.squareup.shopx.widget.VerifyCodeView
 import io.reactivex.Observer
@@ -31,10 +32,19 @@ class LoginActivity : AppCompatActivity() {
         signUp = findViewById(R.id.sign_up)
         phoneWarning = findViewById(R.id.phone_number_warning)
 
+        Transparent.transparentNavBar(this)
+        Transparent.transparentStatusBar(this)
+
         signinContinue.setOnClickListener {
 
             tryToSignIn()
 
+        }
+
+        signUp.setOnClickListener {
+            val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
     }

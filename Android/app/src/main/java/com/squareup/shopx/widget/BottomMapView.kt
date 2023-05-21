@@ -472,8 +472,21 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
 
         ARFilter?.setOnClickListener {
+            setAREnable()
             hideMerchantList()
         }
+    }
+
+    fun setAREnable() {
+        AllMerchants.onlySeeAREnable = !AllMerchants.onlySeeAREnable
+        if (AllMerchants.onlySeeAREnable) {
+            ARFilter?.setBackgroundResource(R.drawable.map_filter_selected_background)
+            ARFilter?.setTextColor(resources.getColor(R.color.white))
+        } else {
+            ARFilter?.setBackgroundResource(R.drawable.map_filter_unselected_background)
+            ARFilter?.setTextColor(resources.getColor(R.color.black_0))
+        }
+        generateMerchantMarkers()
     }
 
     fun setOpenNow(openNow: Boolean) {

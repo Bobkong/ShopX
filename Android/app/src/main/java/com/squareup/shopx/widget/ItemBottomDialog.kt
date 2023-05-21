@@ -123,7 +123,7 @@ class ItemBottomDialog @JvmOverloads constructor(context: Context, style: Int) :
                     updateCount = itemInitialCount + AllMerchants.getCountOfAnItem(merchantInfo, item)
                 }
                 AllMerchants.updateItemNumber(merchantInfo, item, updateCount)
-                EventBus.getDefault().post(CartUpdateEvent(merchantInfo));
+                EventBus.getDefault().post(CartUpdateEvent(merchantInfo))
                 dismiss()
             } else {
                 showBookDialog(activity)

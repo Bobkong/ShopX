@@ -65,37 +65,24 @@ class MerchantDetailActivity : AppCompatActivity() {
         cartInfo = findViewById(R.id.cart_info)
         cartInfo.setOnClickListener {
             val cartBottomDialog = CartBottomDialog(this, R.style.BottomSheetDialogStyle)
-            cartBottomDialog.init(this, merchantInfo)
+            cartBottomDialog.init(this, merchantInfo, customerLoyaltyResponse)
         }
 
         cartTotalPrice = findViewById(R.id.total_cart_price)
         cartCount = findViewById(R.id.cart_total_count)
-//        cartInfo.setOnClickListener {
-//            val intent = Intent(this@MerchantDetailActivity, OrderActivity::class.java)
-//            intent.putExtra("merchant", merchantInfo)
-//
-//            if (merchantInfo.ifLoyalty == 1 && customerLoyaltyResponse != null && customerLoyaltyResponse!!.isEnrolled == 1) {
-//                intent.putExtra("loyalty", customerLoyaltyResponse)
-//            }
-//            startActivity(intent)
-//        }
 
         itemList = findViewById(R.id.item_list)
         itemList?.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         setViewCart()
         requestMerchantDetail(merchantInfo.accessToken)
 
-
-    }
-
-    override fun onStart() {
-        super.onStart()
         EventBus.getDefault().register(this);
+
     }
 
-    override fun onStop() {
+    override fun onDestroy() {
         EventBus.getDefault().unregister(this);
-        super.onStop()
+        super.onDestroy()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -143,6 +130,7 @@ class MerchantDetailActivity : AppCompatActivity() {
             val enrollNow = dialogView.findViewById<TextView>(R.id.enroll_now)
 
             if (it.isEnrolled == 1) {
+                enrollNow.visibility = View.GONE
                 loyaltyCard.visibility = View.VISIBLE
                 Glide.with(this).load(merchantInfo.logoUrl).into(merchantLogo)
                 var nameString = if (PreferenceUtils.getUsername().length > 1) {
@@ -159,6 +147,7 @@ class MerchantDetailActivity : AppCompatActivity() {
             } else {
                 loyaltyCard.visibility = View.GONE
                 loyaltyHeader.text = "Enroll Loyalty"
+                enrollNow.visibility = View.VISIBLE
             }
 
             var accrualRuleString = ""
@@ -178,7 +167,7 @@ class MerchantDetailActivity : AppCompatActivity() {
 
             val layoutManager = GridLayoutManager(this, 2)
             rewardTiersList.layoutManager = layoutManager
-            rewardTiersList.adapter = RewardTiersAdapter(this, it)
+            rewardTiersList.adapter = RewardTiersAdapter(this, it, RewardTiersAdapter.FROM_MERCHANT_DETAIL)
 
             enrollNow.setOnClickListener {
                 enrollLoyaltyProgram(merchantInfo.accessToken, customerLoyaltyResponse!!.loyaltyInfo.program.id)

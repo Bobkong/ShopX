@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="375dp"
     android:layout_gravity="center_horizontal"
     android:background="@drawable/dialog_background"
     android:layout_height="wrap_content">
@@ -31,7 +31,7 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -40,7 +40,8 @@
         app:layout_constraintTop_toBottomOf="@+id/dialog_desc">
         <TextView
             android:id="@+id/action_left"
-            android:layout_width="wrap_content"
+            android:layout_width="152dp"
+            android:textAlignment="center"
             android:layout_height="wrap_content"
             style="@style/label_medium"
             android:textColor="@color/primary_blue_50"
@@ -50,9 +51,10 @@
 
         <TextView
             android:id="@+id/action_right"
-            android:layout_width="wrap_content"
+            android:layout_width="152dp"
             android:layout_height="wrap_content"
             style="@style/label_medium"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:text="Confirm"
             android:background="@drawable/primary_long_button_r32_solid"/>

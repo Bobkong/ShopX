@@ -22,6 +22,9 @@ public class RewardTiersAdapter extends RecyclerView.Adapter<RewardTiersViewHold
 
     private final Activity mActivity;
     private final GetLoyaltyInfoResponse mLoyaltyInfoResponse;
+    public static int FROM_MERCHANT_DETAIL = 0;
+    public static int FROM_ORDER = 1;
+    private final int from;
 
     @NonNull
     @Override
@@ -32,7 +35,7 @@ public class RewardTiersAdapter extends RecyclerView.Adapter<RewardTiersViewHold
 
     @Override
     public void onBindViewHolder(@NonNull RewardTiersViewHolder holder, int position) {
-        holder.setData(mLoyaltyInfoResponse.getLoyaltyInfo().getProgram().getRewardTiers().get(position), mActivity, position);
+        holder.setData(mLoyaltyInfoResponse.getLoyaltyInfo().getProgram().getRewardTiers().get(position), mActivity, position, from);
     }
 
     @Override
@@ -40,8 +43,9 @@ public class RewardTiersAdapter extends RecyclerView.Adapter<RewardTiersViewHold
         return mLoyaltyInfoResponse.getLoyaltyInfo().getProgram().getRewardTiers().size();
     }
 
-    public RewardTiersAdapter(Activity activity, GetLoyaltyInfoResponse loyaltyInfo) {
+    public RewardTiersAdapter(Activity activity, GetLoyaltyInfoResponse loyaltyInfo, int from) {
         this.mActivity = activity;
         this.mLoyaltyInfoResponse = loyaltyInfo;
+        this.from = from;
     }
 }

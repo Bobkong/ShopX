@@ -14,7 +14,7 @@ import com.squareup.shopx.AllMerchants;
 import com.squareup.shopx.R;
 import com.squareup.shopx.adapter.CartItemListAdapter;
 import com.squareup.shopx.model.AllMerchantsResponse;
-import com.squareup.shopx.model.CartBottomSheetCallback;
+import com.squareup.shopx.model.CartCallback;
 import com.squareup.shopx.model.CartUpdateEvent;
 import com.squareup.shopx.model.GetMerchantDetailResponse;
 import com.squareup.shopx.widget.ItemBottomDialog;
@@ -28,7 +28,7 @@ public class CartItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView count;
     private final TextView price;
     private final TextView itemName;
-    private final LinearLayout addItem, subItem;
+    private final LinearLayout addItem, subItem, itemCountAdjustLl;
 
     public CartItemViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -38,9 +38,10 @@ public class CartItemViewHolder extends RecyclerView.ViewHolder {
         itemName = itemView.findViewById(R.id.item_name);
         addItem = itemView.findViewById(R.id.add_item);
         subItem = itemView.findViewById(R.id.sub_item);
+        itemCountAdjustLl = itemView.findViewById(R.id.item_count_adjust_ll);
     }
 
-    public void setData(GetMerchantDetailResponse.Item item, Activity activity, AllMerchantsResponse.ShopXMerchant merchantInfo, CartBottomSheetCallback listener, CartItemListAdapter adapter) {
+    public void setData(GetMerchantDetailResponse.Item item, Activity activity, AllMerchantsResponse.ShopXMerchant merchantInfo, CartCallback listener, CartItemListAdapter adapter, int from) {
         this.activity = activity;
 
         Glide.with(activity).load(item.getItemImage()).into(itemImage);
@@ -49,27 +50,36 @@ public class CartItemViewHolder extends RecyclerView.ViewHolder {
 
         count.setText(String.valueOf(AllMerchants.INSTANCE.getCountOfAnItem(merchantInfo, item)));
 
-        itemView.setOnClickListener(view -> {
-            listener.dismissBottomSheet();
-            showItemBottomSheet(item, merchantInfo);
-        });
 
-        addItem.setOnClickListener(view -> {
-            int currentCount =  AllMerchants.INSTANCE.getCountOfAnItem(merchantInfo, item);
-            AllMerchants.INSTANCE.updateItemNumber(merchantInfo, item, currentCount + 1);
-            refreshCartInfo(adapter, listener);
-            EventBus.getDefault().post(new CartUpdateEvent(merchantInfo));
-        });
 
-        subItem.setOnClickListener(view -> {
-            int currentCount =  AllMerchants.INSTANCE.getCountOfAnItem(merchantInfo, item);
-            AllMerchants.INSTANCE.updateItemNumber(merchantInfo, item, currentCount - 1);
-            refreshCartInfo(adapter, listener);
-            EventBus.getDefault().post(new CartUpdateEvent(merchantInfo));
-        });
+        if (from == CartItemListAdapter.FROM_OTHER) {
+            itemCountAdjustLl.setVisibility(View.VISIBLE);
+            addItem.setOnClickListener(view -> {
+                int currentCount =  AllMerchants.INSTANCE.getCountOfAnItem(merchantInfo, item);
+                AllMerchants.INSTANCE.updateItemNumber(merchantInfo, item, currentCount + 1);
+                refreshCartInfo(adapter, listener);
+                EventBus.getDefault().post(new CartUpdateEvent(merchantInfo));
+            });
+
+            subItem.setOnClickListener(view -> {
+                int currentCount =  AllMerchants.INSTANCE.getCountOfAnItem(merchantInfo, item);
+                AllMerchants.INSTANCE.updateItemNumber(merchantInfo, item, currentCount - 1);
+                refreshCartInfo(adapter, listener);
+                EventBus.getDefault().post(new CartUpdateEvent(merchantInfo));
+            });
+
+            itemView.setOnClickListener(view -> {
+                listener.dismissCart();
+                showItemBottomSheet(item, merchantInfo);
+            });
+        } else {
+            itemCountAdjustLl.setVisibility(View.GONE);
+        }
+
+
     }
 
-    private void refreshCartInfo(CartItemListAdapter adapter, CartBottomSheetCallback listener) {
+    private void refreshCartInfo(CartItemListAdapter adapter, CartCallback listener) {
        adapter.refreshItems();
        listener.updatePrice();
     }

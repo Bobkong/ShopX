@@ -54,6 +54,7 @@ class SignUpActivity : AppCompatActivity() {
         signIn.setOnClickListener {
             val intent = Intent(this@SignUpActivity, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         signUpContinue.setOnClickListener {

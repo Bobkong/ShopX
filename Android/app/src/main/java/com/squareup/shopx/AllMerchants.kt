@@ -143,6 +143,16 @@ object AllMerchants {
         return 0F
     }
 
+    // get price before discount
+    fun getOriginalPrice(merchant: ShopXMerchant): Float {
+        for (merchantCart in allMerchantCarts) {
+            if (merchantCart.merchant.equals(merchant)) {
+                return merchantCart.originalPrice
+            }
+        }
+        return 0F
+    }
+
     fun getCartItems(merchant: ShopXMerchant): HashMap<Item, Int> {
         for (merchantCart in allMerchantCarts) {
             if (merchantCart.merchant.equals(merchant)) {

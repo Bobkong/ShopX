@@ -35,24 +35,37 @@ public class CreateOrderRequest implements Serializable {
     }
 
     public static class LineItem implements Serializable {
-        @SerializedName("catalog_object_id")
-        String catalogObjectId;
+        @SerializedName("base_price_money")
+        BasePriceMoney basePriceMoney;
 
         @SerializedName("quantity")
         String quantity;
 
-        public LineItem(String catalogObjectId) {
+        @SerializedName("catalog_object_id")
+        String catalogObjectId;
+
+        public LineItem(BasePriceMoney basePriceMoney, String quantity, String name, String catalogObjectId) {
+            this.basePriceMoney = basePriceMoney;
+            this.quantity = quantity;
             this.catalogObjectId = catalogObjectId;
-            this.quantity = "1";
         }
     }
 
     public static class PricingOptions implements Serializable {
         @SerializedName("auto_apply_discounts")
         boolean autoApplyDiscounts;
+    }
 
-        public PricingOptions(boolean autoApplyDiscounts) {
-            this.autoApplyDiscounts = autoApplyDiscounts;
+    public static class BasePriceMoney implements Serializable {
+        @SerializedName("amount")
+        int amount;
+
+        @SerializedName("currency")
+        String currency;
+
+        public BasePriceMoney(int amount) {
+            this.amount = amount;
+            this.currency = "USD";
         }
     }
 }

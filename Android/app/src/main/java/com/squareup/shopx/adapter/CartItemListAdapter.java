@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.shopx.AllMerchants;
 import com.squareup.shopx.R;
 import com.squareup.shopx.model.AllMerchantsResponse;
-import com.squareup.shopx.model.CartBottomSheetCallback;
+import com.squareup.shopx.model.CartCallback;
 import com.squareup.shopx.model.GetMerchantDetailResponse;
 import com.squareup.shopx.viewholder.CartItemViewHolder;
 
@@ -23,7 +23,10 @@ public class CartItemListAdapter extends RecyclerView.Adapter<CartItemViewHolder
     private final Activity mActivity;
     private final AllMerchantsResponse.ShopXMerchant mMerchantInfo;
     private final ArrayList<GetMerchantDetailResponse.Item> items = new ArrayList<>();
-    private final CartBottomSheetCallback mDismissListener;
+    private final CartCallback mDismissListener;
+    private final int from;
+    public static final int FROM_ORDER = 0;
+    public static final int FROM_OTHER = 1;
     @NonNull
     @Override
     public CartItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,7 +36,7 @@ public class CartItemListAdapter extends RecyclerView.Adapter<CartItemViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull CartItemViewHolder holder, int position) {
-        holder.setData(items.get(position), mActivity, mMerchantInfo, mDismissListener, this);
+        holder.setData(items.get(position), mActivity, mMerchantInfo, mDismissListener, this, from);
     }
 
     @Override
@@ -48,14 +51,15 @@ public class CartItemListAdapter extends RecyclerView.Adapter<CartItemViewHolder
         this.notifyDataSetChanged();
 
         if (items.size() == 0) {
-            mDismissListener.dismissBottomSheet();
+            mDismissListener.dismissCart();
         }
     }
 
-    public CartItemListAdapter(Activity activity, AllMerchantsResponse.ShopXMerchant merchantInfo, CartBottomSheetCallback dismissListener) {
+    public CartItemListAdapter(Activity activity, AllMerchantsResponse.ShopXMerchant merchantInfo, CartCallback dismissListener, int from) {
         this.mActivity = activity;
         this.mMerchantInfo = merchantInfo;
         mDismissListener = dismissListener;
+        this.from = from;
         items.addAll(AllMerchants.INSTANCE.getCartItems(merchantInfo).keySet());
     }
 }
