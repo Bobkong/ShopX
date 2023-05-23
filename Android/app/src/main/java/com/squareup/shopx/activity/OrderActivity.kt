@@ -71,8 +71,10 @@ class OrderActivity: AppCompatActivity(), CartCallback {
             finish()
         }
 
-        loyaltyInfo?.let {
+        if (loyaltyInfo != null) {
             gettingRewardsLayout.visibility = View.VISIBLE
+        } else {
+            gettingRewardsLayout.visibility = View.GONE
         }
 
         gettingRewardsLayout.setOnClickListener {

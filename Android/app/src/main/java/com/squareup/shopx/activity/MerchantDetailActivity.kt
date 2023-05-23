@@ -319,4 +319,12 @@ class MerchantDetailActivity : AppCompatActivity() {
             customDialog.dismiss()
         }
     }
+
+    public fun showARPage(position: Int) {
+        val intent = Intent(this, ARItemActivity::class.java)
+        intent.putExtra("startPosition", position)
+        intent.putExtra("merchant", merchantInfo)
+        intent.putExtra("items", merchantItemsResponse)
+        startActivity(intent)
+    }
 }

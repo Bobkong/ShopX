@@ -16,6 +16,7 @@ import com.squareup.shopx.activity.MerchantDetailActivity;
 import com.squareup.shopx.model.AllMerchantsResponse;
 import com.squareup.shopx.model.GetMerchantDetailResponse;
 import com.squareup.shopx.utils.UIUtils;
+import com.squareup.shopx.widget.shadow.ShadowLayout;
 
 public class ItemViewHolder extends RecyclerView.ViewHolder {
 
@@ -24,8 +25,10 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView name;
     private final TextView originalPrice;
     private final TextView realPrice;
-    private final TextView fullMenuHeader;
+    private final ConstraintLayout fullMenuHeader;
     private final ImageView addItem;
+    private final ImageView viewInAR;
+    private final ShadowLayout itemCard;
 
     public ItemViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -35,6 +38,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         realPrice = itemView.findViewById(R.id.discount_price);
         fullMenuHeader = itemView.findViewById(R.id.menu_header);
         addItem = itemView.findViewById(R.id.add_item);
+        viewInAR = itemView.findViewById(R.id.view_in_ar);
+        itemCard = itemView.findViewById(R.id.item_card);
     }
 
     public void setData(GetMerchantDetailResponse.Item item, Activity activity, int position, AllMerchantsResponse.ShopXMerchant merchantInfo, boolean isLast) {
@@ -42,6 +47,14 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         if (position == 0) {
             fullMenuHeader.setVisibility(View.VISIBLE);
+            if (merchantInfo.getArEnable() == 1) {
+                viewInAR.setVisibility(View.VISIBLE);
+                viewInAR.setOnClickListener(view -> {
+                    ((MerchantDetailActivity) activity).showARPage(0);
+                });
+            } else {
+                viewInAR.setVisibility(View.GONE);
+            }
         } else {
             fullMenuHeader.setVisibility(View.GONE);
         }
@@ -80,7 +93,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
 
         }
 
-        itemView.setOnClickListener(v -> {
+        itemCard.setOnClickListener(v -> {
             ((MerchantDetailActivity) activity).showItemBottomSheet(item);
         });
 

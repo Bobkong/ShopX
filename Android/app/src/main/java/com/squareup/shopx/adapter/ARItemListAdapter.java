@@ -20,6 +20,8 @@ public class ARItemListAdapter extends RecyclerView.Adapter<ARItemViewHolder> {
 
     private final List<GetMerchantDetailResponse.Item> mData;
     private final Activity mActivity;
+    private final AllMerchantsResponse.ShopXMerchant merchantInfo;
+
     @NonNull
     @Override
     public ARItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -29,7 +31,7 @@ public class ARItemListAdapter extends RecyclerView.Adapter<ARItemViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ARItemViewHolder holder, int position) {
-        holder.setData(mData.get(position), mActivity);
+        holder.setData(mData.get(position), mActivity, merchantInfo);
     }
 
     @Override
@@ -37,8 +39,9 @@ public class ARItemListAdapter extends RecyclerView.Adapter<ARItemViewHolder> {
         return mData.size();
     }
 
-    public ARItemListAdapter(List<GetMerchantDetailResponse.Item> data, Activity activity) {
+    public ARItemListAdapter(List<GetMerchantDetailResponse.Item> data, Activity activity, AllMerchantsResponse.ShopXMerchant merchantInfo) {
         this.mData = data;
         this.mActivity = activity;
+        this.merchantInfo = merchantInfo;
     }
 }
