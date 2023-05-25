@@ -69,6 +69,9 @@ public class GetMerchantDetailResponse implements Serializable {
         @SerializedName("itemVariationId")
         String itemVariationId;
 
+        @SerializedName("AREffectLink")
+        String AREffectLink;
+
         public String getItemName() {
             return itemName;
         }
@@ -131,6 +134,14 @@ public class GetMerchantDetailResponse implements Serializable {
 
         public void setItemVariationId(String itemVariationId) {
             this.itemVariationId = itemVariationId;
+        }
+
+        public String getAREffectLink() {
+            return AREffectLink;
+        }
+
+        public void setAREffectLink(String AREffectLink) {
+            this.AREffectLink = AREffectLink;
         }
 
         public float getItemDiscountPrice(AllMerchantsResponse.ShopXMerchant merchantInfo) {

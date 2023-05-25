@@ -17,15 +17,15 @@
         android:layout_height="40dp"
         android:src="@drawable/black_back_button"
         android:layout_marginLeft="24dp"
-        app:layout_constraintTop_toTopOf="@+id/item_header"
-        app:layout_constraintBottom_toBottomOf="@id/item_header"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="60dp"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <ImageView
         android:id="@+id/cart"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/cart_icon"
+        android:src="@drawable/star_merchant"
         android:layout_marginRight="24dp"
         app:layout_constraintTop_toTopOf="@+id/back"
         app:layout_constraintRight_toRightOf="parent"/>

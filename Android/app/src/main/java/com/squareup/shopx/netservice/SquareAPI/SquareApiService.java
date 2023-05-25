@@ -2,6 +2,8 @@ package com.squareup.shopx.netservice.SquareAPI;
 
 
 
+import com.squareup.shopx.model.AccumulateLoyaltyPointsRequest;
+import com.squareup.shopx.model.AccumulateLoyaltyPointsResponse;
 import com.squareup.shopx.model.BatchRetrieveRequest;
 import com.squareup.shopx.model.CreateLoyaltyRewardRequest;
 import com.squareup.shopx.model.CreateLoyaltyRewardResponse;
@@ -95,5 +97,10 @@ public class SquareApiService {
                 .subscribeOn(Schedulers.io());
     }
 
+    public Observable<AccumulateLoyaltyPointsResponse> accumulatePoints(String accountId, AccumulateLoyaltyPointsRequest request){
+        return loyaltyApi.accumulateLoyaltyReward(accountId, request)
+                .onErrorResumeNext(new HttpResultFunc<>())
+                .subscribeOn(Schedulers.io());
+    }
 
 }

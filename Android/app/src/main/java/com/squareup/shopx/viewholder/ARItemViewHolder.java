@@ -36,8 +36,9 @@ public class ARItemViewHolder extends RecyclerView.ViewHolder {
         itemName.setText(item.getItemName());
         itemPrice.setText("$" + String.format("%.2f", item.getItemDiscountPrice(merchantInfo) / 100.0));
         itemView.setOnClickListener(view -> {
-            // show add to cart
+            ((ARItemActivity)activity).showAddToCartDialog(item);
         });
+
 
     }
 }

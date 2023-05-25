@@ -50,7 +50,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
             if (merchantInfo.getArEnable() == 1) {
                 viewInAR.setVisibility(View.VISIBLE);
                 viewInAR.setOnClickListener(view -> {
-                    ((MerchantDetailActivity) activity).showARPage(0);
+                    ((MerchantDetailActivity) activity).showARPage(item);
                 });
             } else {
                 viewInAR.setVisibility(View.GONE);

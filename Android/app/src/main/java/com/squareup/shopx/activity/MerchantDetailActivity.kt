@@ -21,6 +21,7 @@ import com.squareup.shopx.adapter.MerchantDetailAdapter
 import com.squareup.shopx.adapter.RewardTiersAdapter
 import com.squareup.shopx.model.*
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
+import com.squareup.shopx.model.GetMerchantDetailResponse.Item
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.utils.Transparent
@@ -89,6 +90,21 @@ class MerchantDetailActivity : AppCompatActivity() {
     fun onCartUpdateEvent(event: CartUpdateEvent) {
         if (event.merchant.equals(merchantInfo)) {
             setViewCart()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onRefreshEvent(event: RefreshLoyaltyEvent) {
+        if (event.merchant.equals(merchantInfo)) {
+            customerLoyaltyResponse?.points = customerLoyaltyResponse?.points?.plus(event.accumulatePoints)!!
+            customerLoyaltyResponse?.isEnrolled = 1
+            itemList?.adapter = MerchantDetailAdapter(
+                this@MerchantDetailActivity,
+                merchantItemsResponse,
+                merchantInfo,
+                customerLoyaltyResponse
+            )
+            itemList?.adapter?.notifyDataSetChanged()
         }
     }
 
@@ -170,7 +186,10 @@ class MerchantDetailActivity : AppCompatActivity() {
             rewardTiersList.adapter = RewardTiersAdapter(this, it, RewardTiersAdapter.FROM_MERCHANT_DETAIL)
 
             enrollNow.setOnClickListener {
-                enrollLoyaltyProgram(merchantInfo.accessToken, customerLoyaltyResponse!!.loyaltyInfo.program.id)
+                intent = Intent(this@MerchantDetailActivity, EnrollSuccessActivity::class.java)
+                intent.putExtra("merchantInfo", merchantInfo)
+                intent.putExtra("loyaltyInfo", customerLoyaltyResponse)
+                startActivity(intent)
                 bottomSheetDialog.dismiss()
             }
             bottomSheetDialog.show()
@@ -184,7 +203,7 @@ class MerchantDetailActivity : AppCompatActivity() {
 
     private fun requestLoyaltyInfo(accessToken: String?) {
         // todo: change the test code
-        ShopXApiService.getInstance().getLoyaltyinfo(accessToken, "+18583190000")
+        ShopXApiService.getInstance().getLoyaltyinfo(accessToken, "+18583190004")
             .subscribe(object: Observer<GetLoyaltyInfoResponse> {
             override fun onSubscribe(d: Disposable?) {
             }
@@ -215,38 +234,7 @@ class MerchantDetailActivity : AppCompatActivity() {
         })
     }
 
-    private fun enrollLoyaltyProgram(accessToken: String?, programId: String?) {
-        // todo: change the test code
-        ShopXApiService.getInstance().enrollLoyalty(accessToken, "+18583190000", programId)
-            .subscribe(object: Observer<EnrollLoyaltyResponse> {
-                override fun onSubscribe(d: Disposable?) {
 
-                }
-
-                override fun onNext(value: EnrollLoyaltyResponse?) {
-                    runOnUiThread {
-
-                        if (value?.code == 1) {
-                            Toast.makeText(this@MerchantDetailActivity, value.msg, Toast.LENGTH_SHORT).show()
-                            return@runOnUiThread
-                        }
-
-                        // go to enroll success activity
-
-                     }
-                }
-
-                override fun onError(e: Throwable?) {
-                    runOnUiThread {
-                        Toast.makeText(this@MerchantDetailActivity, e?.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onComplete() {
-                }
-
-            })
-    }
 
     private fun requestMerchantDetail(accessToken: String?) {
         ShopXApiService.getInstance().getMerchantDetail(accessToken, "")
@@ -320,11 +308,12 @@ class MerchantDetailActivity : AppCompatActivity() {
         }
     }
 
-    public fun showARPage(position: Int) {
+    public fun showARPage(item: Item) {
         val intent = Intent(this, ARItemActivity::class.java)
-        intent.putExtra("startPosition", position)
+        intent.putExtra("startItem", item)
         intent.putExtra("merchant", merchantInfo)
         intent.putExtra("items", merchantItemsResponse)
+        intent.putExtra("loyaltyInfo", customerLoyaltyResponse)
         startActivity(intent)
     }
 }

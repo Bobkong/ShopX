@@ -28,11 +28,20 @@ import com.google.firebase.storage.FirebaseStorage
 import com.peceoqicka.x.gallerylayoutmanager.GalleryLayoutManager
 import com.peceoqicka.x.gallerylayoutmanager.OnScrollListener
 import com.peceoqicka.x.gallerylayoutmanager.SimpleViewTransformListener
+import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
 import com.squareup.shopx.adapter.ARItemListAdapter
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
+import com.squareup.shopx.model.CartUpdateEvent
+import com.squareup.shopx.model.GetLoyaltyInfoResponse
 import com.squareup.shopx.model.GetMerchantDetailResponse
 import com.squareup.shopx.model.GetMerchantDetailResponse.Item
+import com.squareup.shopx.widget.CartBottomDialog
+import com.squareup.shopx.widget.CustomDialog
+import com.squareup.shopx.widget.ItemBottomDialog
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.io.File
 import java.io.IOException
 
@@ -46,8 +55,12 @@ class ARItemActivity : AppCompatActivity() {
     private lateinit var arItemList: RecyclerView
     private var items: GetMerchantDetailResponse? = null
     private var arFragment: ArFragment? = null
-    private var currentPosition = 0
+    private var merchantInfo: ShopXMerchant? = null
+    private var currentItem: Item? = null
     var arItems = ArrayList<Item>()
+    private lateinit var cartInfo: LinearLayout
+    private lateinit var cartCount: TextView
+    private lateinit var cartTotalPrice: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ar)
@@ -60,10 +73,20 @@ class ARItemActivity : AppCompatActivity() {
         instruction = findViewById(R.id.instruction)
         arItemList = findViewById(R.id.ar_item_list)
 
-        currentPosition = intent.extras?.getInt("startPosition") ?: 0
-        val merchantInfo = intent.extras?.getSerializable("merchant") as ShopXMerchant
+        currentItem = intent.extras?.getSerializable("startItem") as? Item
+        merchantInfo = intent.extras?.getSerializable("merchant") as ShopXMerchant
         items = intent.extras?.getSerializable("items") as GetMerchantDetailResponse
 
+        val loyaltyInfo = intent.extras?.getSerializable("loyaltyInfo") as? GetLoyaltyInfoResponse
+        cartInfo = findViewById(R.id.cart_info)
+        cartInfo.setOnClickListener {
+            val cartBottomDialog = CartBottomDialog(this, R.style.BottomSheetDialogStyle)
+            cartBottomDialog.init(this, merchantInfo!!, loyaltyInfo)
+        }
+
+        cartTotalPrice = findViewById(R.id.total_cart_price)
+        cartCount = findViewById(R.id.cart_total_count)
+        setViewCart()
 
         arFragment = supportFragmentManager.findFragmentById(R.id.ar_fragment) as ArFragment?
 
@@ -91,8 +114,8 @@ class ARItemActivity : AppCompatActivity() {
                             instruction.visibility = View.GONE
                         }
                         canShowLaterLoadingInstruction = true
-                    }, 4 * 1000)
-                }, 4 * 1000)
+                    }, 3 * 1000)
+                }, 3 * 1000)
             }, 3 * 1000)
             arFragment?.arSceneView?.scene?.removeOnUpdateListener(updateListener)
 
@@ -104,11 +127,18 @@ class ARItemActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             arFragment?.arSceneView?.scene?.addOnUpdateListener(updateListener)
-        }, 5 * 1000)
+        }, 3 * 1000)
 
 
 
-        generateARMenu(items!!, currentPosition, merchantInfo)
+        generateARMenu(items!!, currentItem!!, merchantInfo!!)
+        EventBus.getDefault().register(this);
+
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy()
     }
 
     var canShowLaterLoadingInstruction = false
@@ -181,8 +211,8 @@ class ARItemActivity : AppCompatActivity() {
 
     private val mOnScrollListener = object : OnScrollListener {
         override fun onIdle(snapViewPosition: Int) {
-            currentPosition = snapViewPosition
-            loadARItem(arItems[currentPosition].arLink)
+            currentItem = arItems[snapViewPosition]
+            loadARItem(currentItem!!.arLink)
         }
 
         override fun onScrolling(scrollingPercentage: Float, fromPosition: Int, toPosition: Int) {
@@ -190,9 +220,7 @@ class ARItemActivity : AppCompatActivity() {
         }
     }
 
-    private fun generateARMenu(merchantDetail: GetMerchantDetailResponse, startPosition: Int, merchantInfo: ShopXMerchant) {
-
-
+    private fun generateARMenu(merchantDetail: GetMerchantDetailResponse, startItem: Item, merchantInfo: ShopXMerchant) {
 
         arItems = ArrayList()
 
@@ -212,15 +240,42 @@ class ARItemActivity : AppCompatActivity() {
         arItemList.isEnabled = false
 
         // load the AR item users select from the detail page
-        loadARItem(arItems[startPosition].arLink)
-
+        if (arItems.indexOf(startItem) == 0) {
+            loadARItem(startItem.arLink)
+        } else {
+            arItemList.scrollToPosition(arItems.indexOf(startItem))
+            loadARItem(startItem.arLink)
+        }
     }
     var arItemAdapter: ARItemListAdapter? = null
     val hideLaterLoadingInstruction = Runnable {
         instruction.visibility = View.GONE
     }
 
-    fun loadARItem(arLink: String) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCartUpdateEvent(event: CartUpdateEvent) {
+        if (event.merchant.equals(merchantInfo)) {
+            setViewCart()
+        }
+    }
+
+    fun setViewCart() {
+        if (AllMerchants.getTotalItemCount(merchantInfo!!) == 0) {
+            cartInfo.visibility = View.GONE
+        } else {
+            cartInfo.visibility = View.VISIBLE
+            cartCount.text = AllMerchants.getTotalItemCount(merchantInfo!!).toString()
+            cartTotalPrice.text = "$ " + String.format(
+                "%.2f",
+                AllMerchants.getPrice(merchantInfo!!) / 100.0
+            )
+        }
+    }
+
+    fun loadARItem(arLink: String?) {
+        if (arLink.isNullOrEmpty()) {
+            return
+        }
         isBuildingModel = true
         Handler().removeCallbacks(hideLaterLoadingInstruction)
         if (canShowLaterLoadingInstruction) {
@@ -236,7 +291,7 @@ class ARItemActivity : AppCompatActivity() {
             val file = File.createTempFile("pizza", "glb")
             modelRef.getFile(file).addOnSuccessListener {
                 items?.let { items ->
-                    if (arItems[currentPosition].arLink == arLink) {
+                    if (currentItem!!.arLink == arLink) {
                         buildModel(file)
                     }
                 }
@@ -275,4 +330,50 @@ class ARItemActivity : AppCompatActivity() {
                 }
         }
     }
+
+
+    fun showAddToCartDialog(item: Item) {
+        val customDialog = CustomDialog(this, R.layout.add_ar_item_dialog)
+        val dialogTitle = customDialog.findViewById<TextView>(R.id.dialog_title)
+        val itemCount = customDialog.findViewById<TextView>(R.id.item_count_text)
+        val subItem = customDialog.findViewById<ImageView>(R.id.sub_item)
+        val addItem = customDialog.findViewById<ImageView>(R.id.add_item)
+        val rightAction = customDialog.findViewById<TextView>(R.id.action_right)
+        val leftAction = customDialog.findViewById<TextView>(R.id.action_left)
+        leftAction.text = "Cancel"
+        rightAction.text = "Confirm"
+        dialogTitle.text = "Number"
+        customDialog.show()
+
+        var itemInitialCount = 1
+        leftAction.setOnClickListener {
+            customDialog.dismiss()
+        }
+
+        rightAction.setOnClickListener {
+            var updateCount = itemInitialCount + AllMerchants.getCountOfAnItem(merchantInfo!!, item)
+            AllMerchants.updateItemNumber(merchantInfo!!, item, updateCount)
+            EventBus.getDefault().post(CartUpdateEvent(merchantInfo))
+            customDialog.dismiss()
+        }
+
+        subItem.setOnClickListener {
+            if (itemInitialCount == 1) {
+                return@setOnClickListener
+            }
+            itemInitialCount--
+            itemCount.text = itemInitialCount.toString()
+            if (itemInitialCount == 1) {
+                subItem.setImageDrawable(resources.getDrawable(R.drawable.unable_sub_item))
+            } else {
+                subItem.setImageDrawable(resources.getDrawable(R.drawable.enable_sub_item))
+            }
+        }
+
+        addItem.setOnClickListener {
+            itemInitialCount++
+            itemCount.text = itemInitialCount.toString()
+        }
+    }
+
 }

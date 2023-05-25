@@ -35,7 +35,7 @@
         <activity android:name=".activity.AllItemsActivity"
             android:theme="@style/NoActionBar"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activity.LoyaltyActivity"
+        <activity android:name=".activity.EnrollSuccessActivity"
             android:theme="@style/NoActionBar"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.CreateCustomerActivity"

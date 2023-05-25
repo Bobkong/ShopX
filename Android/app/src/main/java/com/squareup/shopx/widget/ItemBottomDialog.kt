@@ -5,12 +5,14 @@ import android.content.Context
 import android.graphics.Paint
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
+import com.squareup.shopx.activity.MerchantDetailActivity
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
 import com.squareup.shopx.model.CartUpdateEvent
 import com.squareup.shopx.model.GetMerchantDetailResponse
@@ -56,6 +58,7 @@ class ItemBottomDialog @JvmOverloads constructor(context: Context, style: Int) :
         val itemCountLl = dialogView.findViewById<LinearLayout>(R.id.item_count)
         val itemCount = dialogView.findViewById<TextView>(R.id.item_count_text)
         val actionButton = dialogView.findViewById<TextView>(R.id.action_button)
+        val viewInAR = dialogView.findViewById<ImageView>(R.id.view_in_ar)
 
         itemCount.text = itemInitialCount.toString()
         addItem.setOnClickListener {
@@ -168,6 +171,15 @@ class ItemBottomDialog @JvmOverloads constructor(context: Context, style: Int) :
         } else {
             itemDesc.text = item.itemDescription
             itemDesc.visibility = View.VISIBLE
+        }
+
+        if (item.arLink.isNullOrEmpty()) {
+            viewInAR.visibility = View.GONE
+        } else {
+            viewInAR.visibility = View.VISIBLE
+            viewInAR.setOnClickListener {
+                (activity as MerchantDetailActivity).showARPage(item)
+            }
         }
         show()
     }
