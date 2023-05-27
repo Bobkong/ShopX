@@ -33,16 +33,19 @@ public class Transparent {
     }
 
 
-    public static void transparentStatusBar(@NonNull final Activity activity) {
-        transparentStatusBar(activity.getWindow());
+    public static void transparentStatusBar(@NonNull final Activity activity, boolean light) {
+        transparentStatusBar(activity.getWindow(), light);
     }
 
-    public static void transparentStatusBar(@NonNull final Window window) {
+    public static void transparentStatusBar(@NonNull final Window window, boolean light) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            if (light) {
+                option = option | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            }
             int vis = window.getDecorView().getSystemUiVisibility();
             window.getDecorView().setSystemUiVisibility(option | vis);
             window.setStatusBarColor(Color.TRANSPARENT);

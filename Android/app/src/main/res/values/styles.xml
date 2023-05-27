@@ -144,7 +144,7 @@
     </style>
 
     <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
-        <item name="behavior_peekHeight">750dp</item>
+        <item name="behavior_peekHeight">1000dp</item>
     </style>
 
 

@@ -15,13 +15,11 @@ import com.google.ar.core.HitResult
 import com.google.ar.core.Plane
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.FrameTime
-import com.google.ar.sceneform.Node
 import com.google.ar.sceneform.Scene.OnUpdateListener
 import com.google.ar.sceneform.assets.RenderableSource
 import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.ux.ArFragment
-import com.google.ar.sceneform.ux.BaseTransformableNode
 import com.google.ar.sceneform.ux.TransformableNode
 import com.google.firebase.FirebaseApp
 import com.google.firebase.storage.FirebaseStorage
@@ -36,9 +34,9 @@ import com.squareup.shopx.model.CartUpdateEvent
 import com.squareup.shopx.model.GetLoyaltyInfoResponse
 import com.squareup.shopx.model.GetMerchantDetailResponse
 import com.squareup.shopx.model.GetMerchantDetailResponse.Item
+import com.squareup.shopx.utils.Transparent
 import com.squareup.shopx.widget.CartBottomDialog
 import com.squareup.shopx.widget.CustomDialog
-import com.squareup.shopx.widget.ItemBottomDialog
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -65,6 +63,9 @@ class ARItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ar)
         FirebaseApp.initializeApp(this)
+
+        Transparent.transparentNavBar(this)
+        Transparent.transparentStatusBar(this, false)
 
         back = findViewById(R.id.back)
         back.setOnClickListener { finish() }
@@ -373,6 +374,7 @@ class ARItemActivity : AppCompatActivity() {
         addItem.setOnClickListener {
             itemInitialCount++
             itemCount.text = itemInitialCount.toString()
+            subItem.setImageDrawable(resources.getDrawable(R.drawable.enable_sub_item))
         }
     }
 

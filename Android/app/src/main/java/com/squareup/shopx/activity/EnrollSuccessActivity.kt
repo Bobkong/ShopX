@@ -47,7 +47,7 @@ class EnrollSuccessActivity : AppCompatActivity() {
         plusPoint = findViewById(R.id.plus_point)
 
         Transparent.transparentNavBar(this)
-        Transparent.transparentStatusBar(this)
+        Transparent.transparentStatusBar(this, true)
 
         backButton = findViewById(R.id.back)
         backButton.setOnClickListener {

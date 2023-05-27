@@ -34,7 +34,7 @@ class HomeActivity : AppCompatActivity() {
         navigationBar = findViewById(R.id.navigation_bar)
 
         Transparent.transparentNavBar(this)
-        Transparent.transparentStatusBar(this)
+        Transparent.transparentStatusBar(this, true)
 
         // The app must have been given the Location permission. If we don't have it yet, request it.
         if (!GeoPermissionsHelper.hasGeoPermissions(this)) {

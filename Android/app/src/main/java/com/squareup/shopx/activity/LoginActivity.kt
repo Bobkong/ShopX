@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
         phoneWarning = findViewById(R.id.phone_number_warning)
 
         Transparent.transparentNavBar(this)
-        Transparent.transparentStatusBar(this)
+        Transparent.transparentStatusBar(this, true)
 
         signinContinue.setOnClickListener {
 

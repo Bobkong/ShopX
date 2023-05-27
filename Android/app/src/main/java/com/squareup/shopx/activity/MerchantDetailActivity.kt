@@ -54,7 +54,7 @@ class MerchantDetailActivity : AppCompatActivity() {
         loadingView = findViewById(R.id.loading_view)
 
         Transparent.transparentNavBar(this)
-        Transparent.transparentStatusBar(this)
+        Transparent.transparentStatusBar(this, true)
 
         backButton = findViewById(R.id.back_button)
         backButton.setOnClickListener {

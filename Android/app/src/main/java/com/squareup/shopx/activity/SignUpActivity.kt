@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -34,6 +35,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var confirmPasswordWarning: TextView
     private lateinit var signIn: TextView
     private lateinit var phoneNumberInputLl: LinearLayout
+    private lateinit var back: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +64,7 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         Transparent.transparentNavBar(this)
-        Transparent.transparentStatusBar(this)
+        Transparent.transparentStatusBar(this, true)
     }
 
     private fun tryToSignUp() {

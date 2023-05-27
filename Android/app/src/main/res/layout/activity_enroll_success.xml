@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="#fdfdfd"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -14,7 +14,6 @@
         android:paddingTop="64dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -37,18 +36,18 @@
             android:text="Redeem Rewards"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        app:layout_constraintTop_toBottomOf="@+id/success_header">
+        app:layout_constraintTop_toBottomOf="@+id/success_header"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:paddingBottom="120dp"
+            android:paddingTop="24dp"
+            android:layout_marginBottom="120dp">
             <com.squareup.shopx.widget.RadiusCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -138,16 +137,16 @@
             <com.squareup.shopx.widget.shadow.ShadowLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 app:layout_constraintTop_toBottomOf="@+id/loyalty_card"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="28dp"
-                app:shadowRadius="8dp"
+                app:shadowRadius="16dp"
                 app:xOffset="0dp"
                 app:yOffset="10dp"
                 app:blurRadius="16dp"
-                app:shadowColor="#0D000000">
+                app:shadowColor="#0D000000"
+                android:id="@+id/congrats_ll">
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -199,8 +198,11 @@
                         android:text="Thanks for joining our loyalty program! You’re now on your way to earning points and enjoying exclusive rewards!"/>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </com.squareup.shopx.widget.shadow.ShadowLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+
+         </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
 
     <include layout="@layout/loading_view" />
 

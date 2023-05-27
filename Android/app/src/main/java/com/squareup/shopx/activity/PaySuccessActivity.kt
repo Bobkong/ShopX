@@ -55,7 +55,7 @@ class PaySuccessActivity : AppCompatActivity() {
         filterList = findViewById(R.id.filter_list)
 
         Transparent.transparentNavBar(this)
-        Transparent.transparentStatusBar(this)
+        Transparent.transparentStatusBar(this, true)
 
         backButton = findViewById(R.id.back)
         backButton.setOnClickListener {

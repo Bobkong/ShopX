@@ -8,7 +8,7 @@
     <com.squareup.shopx.widget.shadow.ShadowLayout
         android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shadowRadius="8dp"
+        app:shadowRadius="16dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         app:xOffset="0dp"

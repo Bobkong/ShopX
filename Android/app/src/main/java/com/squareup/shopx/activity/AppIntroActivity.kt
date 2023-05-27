@@ -19,17 +19,19 @@ class AppIntroActivity : AppCompatActivity() {
         setContentView(R.layout.activity_app_intro)
 
         Transparent.transparentNavBar(this)
-        Transparent.transparentStatusBar(this)
+        Transparent.transparentStatusBar(this, false)
         setGuideImageHeight()
 
         findViewById<TextView>(R.id.sign_up).setOnClickListener {
             val intent = Intent(this@AppIntroActivity, SignUpActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         findViewById<TextView>(R.id.sign_in).setOnClickListener {
             val intent = Intent(this@AppIntroActivity, LoginActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
 

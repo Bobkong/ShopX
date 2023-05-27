@@ -50,7 +50,7 @@ class OrderActivity: AppCompatActivity(), CartCallback {
         setContentView(R.layout.activity_order)
 
         Transparent.transparentNavBar(this)
-        Transparent.transparentStatusBar(this)
+        Transparent.transparentStatusBar(this, true)
 
         merchantInfo = intent.extras?.getSerializable("merchant") as ShopXMerchant
         loyaltyInfo = intent.extras?.getSerializable("loyalty") as? GetLoyaltyInfoResponse

@@ -27,7 +27,7 @@ class VerificationCodeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_verification_code)
 
         Transparent.transparentNavBar(this)
-        Transparent.transparentStatusBar(this)
+        Transparent.transparentStatusBar(this, true)
 
         verifyCodeView = findViewById(R.id.verify_code_view)
         codeWarning = findViewById(R.id.code_warning)

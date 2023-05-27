@@ -37,7 +37,7 @@ class GuideActivity: AppCompatActivity(), ViewPager.OnPageChangeListener {
         initDots()
 
         Transparent.transparentNavBar(this)
-        Transparent.transparentStatusBar(this)
+        Transparent.transparentStatusBar(this, true)
 
         mContinueButton = findViewById(R.id.guide_continue)
         mContinueButton?.setOnClickListener {

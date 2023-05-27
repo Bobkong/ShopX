@@ -49,7 +49,7 @@ class RedeemActivity: AppCompatActivity(){
             finish()
         }
         Transparent.transparentNavBar(this)
-        Transparent.transparentStatusBar(this)
+        Transparent.transparentStatusBar(this, true)
         val merchantLogo = findViewById<RoundRectImageView>(R.id.merchant_logo)
         val username = findViewById<TextView>(R.id.user_name)
         val merchantName = findViewById<TextView>(R.id.merchant_name)

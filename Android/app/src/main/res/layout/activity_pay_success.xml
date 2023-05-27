@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            app:shadowRadius="8dp"
+            app:shadowRadius="16dp"
             app:xOffset="0dp"
             app:yOffset="10dp"
             app:blurRadius="16dp"
