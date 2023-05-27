@@ -1,7 +1,6 @@
 package com.squareup.shopx.viewholder;
 
 import android.app.Activity;
-import android.graphics.Paint;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,12 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.squareup.shopx.R;
-import com.squareup.shopx.activity.MerchantDetailActivity;
 import com.squareup.shopx.adapter.RewardTiersAdapter;
-import com.squareup.shopx.model.AllMerchantsResponse;
-import com.squareup.shopx.model.GetMerchantDetailResponse;
 import com.squareup.shopx.model.LoyaltyProgramResponse;
 import com.squareup.shopx.model.RedeemRewardEvent;
 import com.squareup.shopx.utils.UIUtils;
@@ -42,12 +37,12 @@ public class RewardTiersViewHolder extends RecyclerView.ViewHolder {
         switch (position % 4) {
             case 0:
                 rewardTierBg.setImageDrawable(activity.getResources().getDrawable(R.drawable.reward_tier_1));
-                rewardTiersText.setTextColor(activity.getResources().getColor(R.color.black_0));
+                rewardTiersText.setTextColor(activity.getResources().getColor(R.color.white));
                 setLeftRightMargin(false);
                 break;
             case 1:
                 rewardTierBg.setImageDrawable(activity.getResources().getDrawable(R.drawable.reward_tier_2));
-                rewardTiersText.setTextColor(activity.getResources().getColor(R.color.white));
+                rewardTiersText.setTextColor(activity.getResources().getColor(R.color.black_0));
                 setLeftRightMargin(true);
                 break;
             case 2:

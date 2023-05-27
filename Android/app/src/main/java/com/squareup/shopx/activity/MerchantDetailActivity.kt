@@ -169,7 +169,7 @@ class MerchantDetailActivity : AppCompatActivity() {
             var accrualRuleString = ""
             for (i in it.loyaltyInfo.program.accrualRules.indices) {
                 val accrualRule = it.loyaltyInfo.program.accrualRules[i]
-                accrualRuleString += (i+1).toString() + ". Earn " + accrualRule.points + " points"
+                accrualRuleString += (if (it.loyaltyInfo.program.accrualRules.size == 1) "" else (i+1).toString() + ". ") + "Earn " + accrualRule.points + " points"
                 if (accrualRule.accrualType == "SPEND") {
                     accrualRuleString += " for every $" + accrualRule.spendData.amountMoney.amount / 100.0 + " spent in a single transaction."
                 } else if (accrualRule.accrualType == "VISIT") {
@@ -203,7 +203,7 @@ class MerchantDetailActivity : AppCompatActivity() {
 
     private fun requestLoyaltyInfo(accessToken: String?) {
         // todo: change the test code
-        ShopXApiService.getInstance().getLoyaltyinfo(accessToken, "+18583190005")
+        ShopXApiService.getInstance().getLoyaltyinfo(accessToken, PreferenceUtils.getUserPhone())
             .subscribe(object: Observer<GetLoyaltyInfoResponse> {
             override fun onSubscribe(d: Disposable?) {
             }

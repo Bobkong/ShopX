@@ -92,6 +92,13 @@ class MainFragment : Fragment() {
         return view
     }
 
+    fun showMap() {
+        if (isAdded) {
+            bottomSheet?.expandMapView()
+        }
+
+    }
+
 
 
 

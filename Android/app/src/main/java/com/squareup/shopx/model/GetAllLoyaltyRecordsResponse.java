@@ -13,7 +13,7 @@ public class GetAllLoyaltyRecordsResponse implements Serializable {
     String msg;
 
     @SerializedName("loyalty_merchants")
-    ArrayList<GetMerchantDetailResponse> loyaltyMerchants;
+    ArrayList<AllMerchantsResponse.ShopXMerchant> loyaltyMerchants;
 
     public int getCode() {
         return code;
@@ -31,11 +31,11 @@ public class GetAllLoyaltyRecordsResponse implements Serializable {
         this.msg = msg;
     }
 
-    public ArrayList<GetMerchantDetailResponse> getLoyaltyMerchants() {
+    public ArrayList<AllMerchantsResponse.ShopXMerchant> getLoyaltyMerchants() {
         return loyaltyMerchants;
     }
 
-    public void setLoyaltyMerchants(ArrayList<GetMerchantDetailResponse> loyaltyMerchants) {
+    public void setLoyaltyMerchants(ArrayList<AllMerchantsResponse.ShopXMerchant> loyaltyMerchants) {
         this.loyaltyMerchants = loyaltyMerchants;
     }
 }

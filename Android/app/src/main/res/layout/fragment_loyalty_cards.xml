@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fdfdfd"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="64dp"
+        android:id="@+id/header"
+        style="@style/title_large"
+        android:textColor="@color/black_0"
+        android:text="Loyalty Cards"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loyalty_cards"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="116dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="140dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <ImageView
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:id="@+id/last_one"
+            android:visibility="gone"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/last_one_disable"/>
+
+        <ImageView
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:id="@+id/next_one"
+            android:visibility="gone"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/next_one_enable"/>
+    </LinearLayout>
+
+    <include layout="@layout/no_loyalty_cards"
+        android:visibility="gone"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.squareup.shopx.activity
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -16,6 +17,7 @@ import com.squareup.shopx.utils.Transparent
 class HomeActivity : AppCompatActivity() {
     val TAG = "HomeActivity"
     var mainFragment: MainFragment = MainFragment()
+    var loyaltyFragment: LoyaltyCardsFragment = LoyaltyCardsFragment()
     lateinit var homeTabIcon: ImageView
     lateinit var loyaltyTabIcon: ImageView
     lateinit var orderTabIcon: ImageView
@@ -85,7 +87,7 @@ class HomeActivity : AppCompatActivity() {
         loyaltyTabIcon.setOnClickListener {
             val fm: FragmentManager = supportFragmentManager
             val transaction: FragmentTransaction = fm.beginTransaction()
-            transaction.replace(R.id.fragment_container, mainFragment)
+            transaction.replace(R.id.fragment_container, loyaltyFragment)
             transaction.commit()
             homeTabIcon.isSelected = false
             loyaltyTabIcon.isSelected = true
@@ -130,6 +132,21 @@ class HomeActivity : AppCompatActivity() {
 
     public fun showNavigationBar() {
         navigationBar.visibility = View.VISIBLE
+    }
+
+    fun goToMainMap() {
+        val fm: FragmentManager = supportFragmentManager
+        val transaction: FragmentTransaction = fm.beginTransaction()
+        transaction.replace(R.id.fragment_container, mainFragment)
+        transaction.commit()
+        homeTabIcon.isSelected = true
+        loyaltyTabIcon.isSelected = false
+        orderTabIcon.isSelected = false
+        profileTabIcon.isSelected = false
+
+        Handler().postDelayed({
+            mainFragment.showMap()
+        }, 200)
     }
 
 }

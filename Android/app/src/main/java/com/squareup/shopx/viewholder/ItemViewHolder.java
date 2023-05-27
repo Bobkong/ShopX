@@ -30,6 +30,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
     private final ImageView viewInAR;
     private final ShadowLayout itemCard;
 
+
     public ItemViewHolder(@NonNull View itemView) {
         super(itemView);
         logo = itemView.findViewById(R.id.item_image);
