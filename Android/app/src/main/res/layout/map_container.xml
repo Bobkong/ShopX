@@ -159,7 +159,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/map_fragment_gradient"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"/>
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="48dp"

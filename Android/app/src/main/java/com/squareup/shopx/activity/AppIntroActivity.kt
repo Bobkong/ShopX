@@ -28,7 +28,7 @@ class AppIntroActivity : AppCompatActivity() {
         }
 
         findViewById<TextView>(R.id.sign_in).setOnClickListener {
-            val intent = Intent(this@AppIntroActivity, SignInAccount::class.java)
+            val intent = Intent(this@AppIntroActivity, LoginActivity::class.java)
             startActivity(intent)
         }
 

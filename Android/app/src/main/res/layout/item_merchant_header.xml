@@ -18,7 +18,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:shadowRadius="8dp"
+        app:shadowRadius="16dp"
         app:xOffset="0dp"
         app:yOffset="10dp"
         app:blurRadius="16dp"
@@ -27,8 +27,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:background="@drawable/white_r16"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_r16">
             <TextView
                 android:id="@+id/merchant_name"
                 android:layout_width="wrap_content"

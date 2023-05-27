@@ -203,7 +203,7 @@ class MerchantDetailActivity : AppCompatActivity() {
 
     private fun requestLoyaltyInfo(accessToken: String?) {
         // todo: change the test code
-        ShopXApiService.getInstance().getLoyaltyinfo(accessToken, "+18583190004")
+        ShopXApiService.getInstance().getLoyaltyinfo(accessToken, "+18583190005")
             .subscribe(object: Observer<GetLoyaltyInfoResponse> {
             override fun onSubscribe(d: Disposable?) {
             }

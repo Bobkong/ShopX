@@ -61,7 +61,7 @@ class VerificationCodeActivity : AppCompatActivity() {
                 override fun onNext(value: GeneralResponse?) {
                     runOnUiThread {
                         code = value?.msg
-                        Toast.makeText(this@VerificationCodeActivity, "Verification code sent!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@VerificationCodeActivity, "Verification code is: " + value?.msg, Toast.LENGTH_SHORT).show()
                     }
                 }
 

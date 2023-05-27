@@ -38,6 +38,10 @@
         <activity android:name=".activity.EnrollSuccessActivity"
             android:theme="@style/NoActionBar"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activity.PaySuccessActivity"
+            android:windowSoftInputMode="stateVisible"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.CreateCustomerActivity"
             android:theme="@style/NoActionBar"
             android:screenOrientation="portrait"/>
@@ -111,6 +115,8 @@
             android:windowSoftInputMode="stateVisible"
             android:theme="@style/NoActionBar"
             android:screenOrientation="portrait"/>
+
+
     </application>
 
 </manifest>

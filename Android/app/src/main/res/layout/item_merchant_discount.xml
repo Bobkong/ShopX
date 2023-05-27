@@ -6,85 +6,85 @@
     android:layout_marginRight="24dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
+    <com.squareup.shopx.widget.CornersConstraintLayout
+        app:corner="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:cardCornerRadius="16dp"
-        android:elevation="0dp"
-        android:id="@+id/merchant_discount_info">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        android:id="@+id/merchant_discount_info"
+        android:background="@drawable/merchant_discount_bg"
+        android:paddingTop="28dp"
+        android:paddingBottom="28dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp">
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/merchant_discount_bg"
-            android:paddingTop="28dp"
-            android:paddingBottom="28dp"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/discount_title"
-                android:text="10% Off of your subtotal"
-                style="@style/title_medium"
-                android:textColor="@color/white"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                />
+            android:id="@+id/discount_title"
+            android:text="10% Off of your subtotal"
+            style="@style/title_medium"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/discount_desc"
-                android:text="Expire data: 31/10/2023"
-                style="@style/title_small_secondary"
-                android:textColor="@color/primary_blue_90"
-                app:layout_constraintTop_toBottomOf="@+id/discount_title"
-                android:layout_marginTop="4dp"
-                app:layout_constraintLeft_toLeftOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/discount_desc"
+            android:text="Expire data: 31/10/2023"
+            style="@style/title_small_secondary"
+            android:textColor="@color/primary_blue_90"
+            app:layout_constraintTop_toBottomOf="@+id/discount_title"
+            android:layout_marginTop="4dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
+    </com.squareup.shopx.widget.CornersConstraintLayout>
 
-    <androidx.cardview.widget.CardView
+    <com.squareup.shopx.widget.CornersConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="16dp"
-        android:elevation="0dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="12dp"
         android:id="@+id/merchant_loyalty_info"
         app:layout_constraintTop_toBottomOf="@+id/merchant_discount_info">
-        <androidx.constraintlayout.widget.ConstraintLayout
+
+        <com.squareup.shopx.widget.CornersImageView
+            app:corner="16dp"
+            android:id="@+id/merchant_loyalty_bg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/merchant_loyalty_bg"
-            android:paddingTop="22dp"
-            android:paddingBottom="22dp"
-            android:paddingLeft="18dp"
-            android:paddingRight="18dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/loyalty_title"
-                android:text="Enroll loyalty program and win rewards"
-                style="@style/title_medium"
-                android:textColor="@color/white"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                />
+            android:src="@drawable/merchant_loyalty_bg"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/loyalty_desc"
-                android:background="@drawable/white_r10"
-                android:text="Enroll Now"
-                style="@style/title_small_secondary"
-                android:textColor="@color/black_0"
-                app:layout_constraintTop_toBottomOf="@+id/loyalty_title"
-                android:layout_marginTop="8dp"
-                app:layout_constraintLeft_toLeftOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/loyalty_title"
+            android:text="Enroll loyalty program and win rewards"
+            style="@style/title_medium"
+            android:textColor="@color/white"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:paddingTop="20dp"
+            android:includeFontPadding="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/loyalty_desc"
+            android:background="@drawable/white_r10"
+            android:text="Enroll Now"
+            style="@style/title_small_secondary"
+            android:textColor="@color/black_0"
+            app:layout_constraintTop_toBottomOf="@+id/loyalty_title"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            app:layout_constraintLeft_toLeftOf="parent" />
+    </com.squareup.shopx.widget.CornersConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

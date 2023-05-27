@@ -62,7 +62,7 @@ class EnrollSuccessActivity : AppCompatActivity() {
 
     private fun enrollLoyaltyProgram(merchantInfo: ShopXMerchant, loyaltyInfo: GetLoyaltyInfoResponse) {
         // todo: change the test code
-        ShopXApiService.getInstance().enrollLoyalty(merchantInfo.accessToken, "+18583190004", loyaltyInfo.loyaltyInfo.program.id)
+        ShopXApiService.getInstance().enrollLoyalty(merchantInfo.accessToken, "+18583190005", loyaltyInfo.loyaltyInfo.program.id)
             .subscribe(object: Observer<EnrollLoyaltyResponse> {
                 override fun onSubscribe(d: Disposable?) {
 
