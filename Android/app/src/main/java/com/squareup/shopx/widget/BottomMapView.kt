@@ -600,7 +600,7 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
 
         // distance
-        if (AllMerchants.distanceLimit == 15F) {
+        if (AllMerchants.distanceLimit == Float.MAX_VALUE) {
             distanceFilter?.setBackgroundResource(R.drawable.map_filter_unselected_background)
             distanceText?.setTextColor(resources.getColor(R.color.black_0))
             distanceTriangle?.setImageResource(R.drawable.filter_triangle)
@@ -625,6 +625,9 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     private fun showDistanceFilter() {
         var distance = AllMerchants.distanceLimit
+        if (distance == Float.MAX_VALUE) {
+            distance = 0F
+        }
         val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetDialogStyle)
         val dialogView = mainFragment!!.layoutInflater.inflate(R.layout.distance_filter_bottom_sheet, null, false)
         bottomSheetDialog.setContentView(dialogView)
@@ -667,7 +670,7 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
 
         resetResult.setOnClickListener {
-            distance = 15f
+            distance = Float.MAX_VALUE
             AllMerchants.distanceLimit = distance
             generateMerchantMarkers()
             bottomSheetDialog.dismiss()
@@ -678,6 +681,9 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     private fun calculateProgress(progress: Float): Float {
+        if (progress <= 7.5) {
+            return Float.MAX_VALUE
+        }
         if (progress <= 22.5) {
             return 15f
         }

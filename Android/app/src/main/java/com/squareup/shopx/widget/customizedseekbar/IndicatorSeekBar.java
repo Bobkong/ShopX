@@ -1276,9 +1276,6 @@ public class IndicatorSeekBar extends View {
     private float calculateProgress(float touchX) {
         lastProgress = mProgress;
         mProgress = mMin + (getAmplitude()) * (touchX - mPaddingLeft) / mSeekLength;
-        if (mProgress <= 7.5) {
-            mProgress = 15f;
-        }
         return mProgress;
     }
 
