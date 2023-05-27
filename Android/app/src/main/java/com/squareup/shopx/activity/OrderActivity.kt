@@ -1,5 +1,6 @@
 package com.squareup.shopx.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,12 +12,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.wallet.*
+import com.google.android.gms.wallet.Wallet.WalletOptions
 import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
 import com.squareup.shopx.adapter.CartItemListAdapter
+import com.squareup.shopx.consts.Configs.GOOGLE_PAY_MERCHANT_ID
 import com.squareup.shopx.model.*
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
 import com.squareup.shopx.model.CreateOrderRequest.BasePriceMoney
+import com.squareup.shopx.model.LoyaltyProgramResponse.AmountMoney
+import com.squareup.shopx.netservice.GooglePay.GooglePayChargeClient
 import com.squareup.shopx.netservice.SquareAPI.SquareApiService
 import com.squareup.shopx.utils.Transparent
 import com.squareup.shopx.widget.RadiusCardView
@@ -25,7 +32,8 @@ import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.UUID
+import sqip.GooglePay
+import java.util.*
 
 class OrderActivity: AppCompatActivity(), CartCallback {
     private val TAG = "OrderActivity"
@@ -131,10 +139,76 @@ class OrderActivity: AppCompatActivity(), CartCallback {
             })
         EventBus.getDefault().register(this);
 
+        googlePayChargeClient = GooglePayChargeClient()
+        googlePayChargeClient!!.onActivityCreated(this)
+        paymentsClient = Wallet.getPaymentsClient(
+            this,
+            WalletOptions.Builder()
+                .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
+                .build()
+        )
+        placeOrder.setOnClickListener {
+            payOrder()
+        }
+
     }
 
+    private fun payOrder() {
+        startGooglePayActivity()
+    }
+
+    private val LOAD_PAYMENT_DATA_REQUEST_CODE = 1
+    private var paymentsClient: PaymentsClient? = null
+    private var googlePayChargeClient: GooglePayChargeClient? = null
+    private fun startGooglePayActivity() {
+        val transactionInfo: TransactionInfo = TransactionInfo.newBuilder()
+            .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
+            .setTotalPrice("1.00")
+            .setCurrencyCode("USD")
+            .build()
+        val paymentDataRequest: PaymentDataRequest = GooglePay.createPaymentDataRequest(
+            GOOGLE_PAY_MERCHANT_ID,
+            transactionInfo
+        )
+        val googlePayActivityTask: Task<PaymentData> =
+            paymentsClient!!.loadPaymentData(paymentDataRequest)
+        AutoResolveHelper.resolveTask(
+            googlePayActivityTask,
+            this,
+            LOAD_PAYMENT_DATA_REQUEST_CODE
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == LOAD_PAYMENT_DATA_REQUEST_CODE) {
+            handleGooglePayActivityResult(resultCode, data)
+        }
+    }
+
+    private fun handleGooglePayActivityResult(resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
+            val paymentData = PaymentData.getFromIntent(data!!)
+            if (paymentData != null && paymentData.paymentMethodToken != null) {
+                val googlePayToken = paymentData.paymentMethodToken!!.token
+                googlePayChargeClient!!.charge(googlePayToken)
+            }
+        } else {
+            // The customer canceled Google Pay or an error happened, show the order sheet again.
+            runOnUiThread {
+                Toast.makeText(this, "Error happens. Try it later!", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
     override fun onDestroy() {
-        EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this)
+        if (!isChangingConfigurations) {
+            googlePayChargeClient!!.cancel()
+        }
+        googlePayChargeClient!!.onActivityDestroyed()
         super.onDestroy()
     }
 
@@ -146,8 +220,6 @@ class OrderActivity: AppCompatActivity(), CartCallback {
             loadingView.visibility = View.VISIBLE
         }
     }
-
-
 
     private fun retrieveOrder() {
         if (orderId.isNullOrEmpty()) {
@@ -218,5 +290,20 @@ class OrderActivity: AppCompatActivity(), CartCallback {
             "%.2f",
             (AllMerchants.getPrice(merchantInfo) - loyaltyValue) / 100.0
         )
+    }
+
+    fun payOrder(nonce: String) {
+        runOnUiThread {
+            val intent = Intent(this@OrderActivity, PaySuccessActivity::class.java)
+            intent.putExtra("merchantInfo", merchantInfo)
+            intent.putExtra("loyaltyInfo", loyaltyInfo)
+            intent.putExtra("orderId", orderId)
+            intent.putExtra("nonce", nonce)
+            intent.putExtra("value", (AllMerchants.getPrice(merchantInfo) - loyaltyValue).toInt())
+            startActivity(intent)
+            finish()
+        }
+
+
     }
 }

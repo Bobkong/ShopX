@@ -10,14 +10,10 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
-import com.squareup.shopx.model.AccumulateLoyaltyPointsRequest
-import com.squareup.shopx.model.AccumulateLoyaltyPointsResponse
-import com.squareup.shopx.model.AllMerchantsResponse
+import com.squareup.shopx.model.*
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
-import com.squareup.shopx.model.EnrollLoyaltyResponse
-import com.squareup.shopx.model.GetLoyaltyInfoResponse
-import com.squareup.shopx.model.RefreshLoyaltyEvent
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.netservice.SquareAPI.SquareApiService
 import com.squareup.shopx.utils.PreferenceUtils
@@ -29,7 +25,7 @@ import org.greenrobot.eventbus.EventBus
 import java.util.*
 
 class PaySuccessActivity : AppCompatActivity() {
-    private val TAG = "EnrollSuccessActivity"
+    private val TAG = "PaySuccessActivity"
     private lateinit var loadingView: ConstraintLayout
     private lateinit var backButton: ImageView
     private lateinit var merchantLogo: ImageView
@@ -55,7 +51,7 @@ class PaySuccessActivity : AppCompatActivity() {
         filterList = findViewById(R.id.filter_list)
 
         Transparent.transparentNavBar(this)
-        Transparent.transparentStatusBar(this, true)
+        Transparent.transparentStatusBar(this, false)
 
         backButton = findViewById(R.id.back)
         backButton.setOnClickListener {
@@ -63,66 +59,101 @@ class PaySuccessActivity : AppCompatActivity() {
         }
 
         val merchantInfo = intent.extras?.getSerializable("merchantInfo") as AllMerchantsResponse.ShopXMerchant
-        val loyaltyInfo = intent.extras?.getSerializable("loyaltyInfo") as GetLoyaltyInfoResponse
+        val loyaltyInfo = intent.extras?.getSerializable("loyaltyInfo") as? GetLoyaltyInfoResponse
+        val orderId = intent.extras?.getSerializable("orderId") as String
+        val nonce = intent.extras?.getSerializable("nonce") as String
+        val value = intent.extras?.getSerializable("value") as Int
+        payOrder(merchantInfo, value, nonce, orderId, loyaltyInfo)
 
+
+        shareFilterLl.visibility = View.GONE
 
     }
 
+    private fun payOrder(merchantInfo: ShopXMerchant, value: Int, nonce: String, orderId: String, loyaltyInfo: GetLoyaltyInfoResponse?) {
+        val amountMoney = PaymentRequest.AmountMoney(value, "USD")
+        val payRequest = PaymentRequest(UUID.randomUUID().toString(), nonce, amountMoney, orderId)
+        SquareApiService.getInstance(merchantInfo.accessToken).payOrder(payRequest)
+            .subscribe(object: Observer<PaymentResponse> {
+                override fun onSubscribe(d: Disposable?) {
 
-//    private fun accumulateTwoPoints(merchantInfo: ShopXMerchant, loyaltyInfo: GetLoyaltyInfoResponse, loyaltyAccount: String) {
-//        val accumulatePoints = AccumulateLoyaltyPointsRequest.AccumulatePoints(2)
-//        val request = AccumulateLoyaltyPointsRequest(UUID.randomUUID().toString(), merchantInfo.locationId, accumulatePoints)
-//        SquareApiService.getInstance(merchantInfo.accessToken).accumulatePoints(loyaltyAccount, request)
-//            .subscribe(object: Observer<AccumulateLoyaltyPointsResponse> {
-//                override fun onSubscribe(d: Disposable?) {
-//
-//                }
-//
-//                override fun onNext(value: AccumulateLoyaltyPointsResponse?) {
-//                    runOnUiThread {
-//                        if (value == null || value.events.isNullOrEmpty()) {
-//                            plusPoint.visibility = View.GONE
-//                            userPoints.text = "0 pts"
-//                        } else {
-//                            plusPoint.text = "+${value.events?.get(0)?.accumulatePoints?.points.toString()} pts"
-//                            userPoints.text = "${value.events?.get(0)?.accumulatePoints?.points.toString()} pts"
-//                        }
-//                        loadingView.visibility = View.GONE
-//                        Glide.with(this@PaySuccessActivity).load(merchantInfo.logoUrl).into(merchantLogo)
-//                        var nameString = if (PreferenceUtils.getUsername().length > 1) {
-//                            PreferenceUtils.getUsername().substring(0, 2)
-//                        } else {
-//                            PreferenceUtils.getUsername().substring(0, 1)
-//                        }
-//                        nameString = nameString.toUpperCase()
-//                        username.text = nameString
-//                        merchantName.text = merchantInfo.businessName
-//                        EventBus.getDefault().post(
-//                            RefreshLoyaltyEvent(
-//                                merchantInfo, value!!.events?.get(0)?.accumulatePoints?.points
-//                            )
-//                        )
-//                    }
-//                }
-//
-//                override fun onError(e: Throwable?) {
-//                    runOnUiThread {
-//                        plusPoint.visibility = View.GONE
-//                        userPoints.text = "0 pts"
-//                        loadingView.visibility = View.GONE
-//                        plusPoint.visibility = View.GONE
-//                        EventBus.getDefault().post(
-//                            RefreshLoyaltyEvent(
-//                                merchantInfo, 0
-//                            )
-//                        )
-//                        Toast.makeText(this@PaySuccessActivity, e?.message, Toast.LENGTH_SHORT).show()
-//                    }
-//                }
-//
-//                override fun onComplete() {
-//                }
-//
-//            })
-//    }
+                }
+
+                override fun onNext(value: PaymentResponse?) {
+                    runOnUiThread {
+                        value?.let {
+                            if (loyaltyInfo != null) {
+                                accumulateTwoPoints(merchantInfo, loyaltyInfo, orderId)
+                            } else {
+                                plusPoint.visibility = View.GONE
+                                merchantLogo.visibility = View.GONE
+                                username.visibility = View.GONE
+                                loadingView.visibility = View.GONE
+                            }
+                        }
+                    }
+
+                }
+
+                override fun onError(e: Throwable?) {
+                    runOnUiThread {
+                        Toast.makeText(this@PaySuccessActivity, e?.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onComplete() {
+                }
+
+            })
+    }
+
+
+    private fun accumulateTwoPoints(merchantInfo: ShopXMerchant, loyaltyInfo: GetLoyaltyInfoResponse, orderId: String) {
+        val accumulatePoints = AccumulateLoyaltyPointsRequest.AccumulatePoints(orderId)
+        val request = AccumulateLoyaltyPointsRequest(UUID.randomUUID().toString(), merchantInfo.locationId, accumulatePoints)
+        SquareApiService.getInstance(merchantInfo.accessToken).accumulatePoints(loyaltyInfo.loyaltyAccount, request)
+            .subscribe(object: Observer<AccumulateLoyaltyPointsResponse> {
+                override fun onSubscribe(d: Disposable?) {
+
+                }
+
+                override fun onNext(value: AccumulateLoyaltyPointsResponse?) {
+                    value?.let {
+                        runOnUiThread {
+
+                            plusPoint.text = "+${value.events?.get(0)?.accumulatePoints?.points.toString()} pts"
+                            loadingView.visibility = View.GONE
+                            Glide.with(this@PaySuccessActivity).load(merchantInfo.logoUrl).into(merchantLogo)
+                            var nameString = if (PreferenceUtils.getUsername().length > 1) {
+                                PreferenceUtils.getUsername().substring(0, 2)
+                            } else {
+                                PreferenceUtils.getUsername().substring(0, 1)
+                            }
+                            nameString = nameString.toUpperCase()
+                            username.text = nameString
+                            EventBus.getDefault().post(
+                                RefreshLoyaltyEvent(
+                                    merchantInfo, value!!.events?.get(0)?.accumulatePoints?.points
+                                )
+                            )
+                        }
+                    }
+
+                }
+
+                override fun onError(e: Throwable?) {
+                    runOnUiThread {
+                        plusPoint.visibility = View.GONE
+                        merchantLogo.visibility = View.GONE
+                        username.visibility = View.GONE
+                        loadingView.visibility = View.GONE
+                        Toast.makeText(this@PaySuccessActivity, e?.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onComplete() {
+                }
+
+            })
+    }
 }

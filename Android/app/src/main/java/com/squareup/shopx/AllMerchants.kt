@@ -15,7 +15,7 @@ object AllMerchants {
     const val OFFER_SEE_LOYALTY = 2
     const val OFFER_SEE_DISCOUNT_LOYALTY = 3
     var allMerchants = ArrayList<ShopXMerchant>()
-    var distanceLimit = 15.0F
+    var distanceLimit = Float.MAX_VALUE
     var offerType = OFFER_SEE_ALL
     var onlySeeAREnable = false
 

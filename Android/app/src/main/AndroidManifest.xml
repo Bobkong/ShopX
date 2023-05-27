@@ -75,6 +75,9 @@
             android:theme="@style/NoActionBar"
             android:screenOrientation="portrait"/>
 
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true"/>
 
         <meta-data
             android:name="sqip.SQUARE_APPLICATION_ID"

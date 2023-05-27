@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
+import com.squareup.shopx.activity.ARItemActivity
 import com.squareup.shopx.activity.OrderActivity
 import com.squareup.shopx.adapter.CartItemListAdapter
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
@@ -63,6 +64,9 @@ class CartBottomDialog @JvmOverloads constructor(context: Context, style: Int) :
             }
             activity.startActivity(intent)
             dismiss()
+            if (activity is ARItemActivity) {
+                activity.finish()
+            }
         }
 
         show()

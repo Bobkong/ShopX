@@ -390,10 +390,13 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
                                 AllMerchants.allMerchants = it
                                 generateMerchantMarkers()
                                 // move to the first merchant
-                                moveCamera(LatLng(
-                                    AllMerchants.getDisplayMerchants()[0].lat.toDouble(),
-                                    AllMerchants.getDisplayMerchants()[0].lng.toDouble()
-                                ))
+                                if (AllMerchants.getDisplayMerchants().size > 0) {
+                                    moveCamera(LatLng(
+                                        AllMerchants.getDisplayMerchants()[0].lat.toDouble(),
+                                        AllMerchants.getDisplayMerchants()[0].lng.toDouble()
+                                    ))
+                                }
+
                                 setFilterListeners()
                             }
                         }

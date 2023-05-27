@@ -130,8 +130,8 @@
                         android:textAlignment="center"
                         style="@style/label_medium"
                         android:layout_marginRight="6dp"
-                        android:textColor="@color/primary_blue_50"
-                        android:background="@drawable/primary_long_button_r24_stroke"
+                        android:textColor="@color/black_0"
+                        android:background="@drawable/black95_button_r24_solid"
                         />
 
                     <TextView

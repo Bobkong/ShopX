@@ -16,6 +16,7 @@ dependencyResolutionManagement {
         jcenter()
         maven { url 'https://jitpack.io' }
         maven { url 'https://www.jitpack.io' }
+        maven { url 'https://sdk.squareup.com/public/android' }
     }
 }
 rootProject.name = "Shopar"

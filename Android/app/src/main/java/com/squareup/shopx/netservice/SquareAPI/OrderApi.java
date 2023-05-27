@@ -5,6 +5,8 @@ import com.squareup.shopx.model.CreateOrderRequest;
 import com.squareup.shopx.model.CreateOrderResponse;
 import com.squareup.shopx.model.Customer;
 import com.squareup.shopx.model.CustomerResponse;
+import com.squareup.shopx.model.PaymentRequest;
+import com.squareup.shopx.model.PaymentResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -26,6 +28,11 @@ public interface OrderApi {
             @Path("order_id")
             String orderId
     );
+
+    @POST("v2/payments")
+    Observable<PaymentResponse> payOrder(
+            @Body PaymentRequest paymentRequest
+            );
 
 }
 
