@@ -18,12 +18,14 @@ import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
 import com.squareup.shopx.model.AllMerchantsResponse
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
+import com.squareup.shopx.model.NotificationEvent
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.utils.BroadcastReceiverPage
 import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.widget.BottomMapView
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import org.greenrobot.eventbus.EventBus
 
 
 class MainFragment : Fragment() {
@@ -76,21 +78,6 @@ class MainFragment : Fragment() {
 
 
 
-
-    private fun createNotification(merchant: ShopXMerchant) {
-        if (isAdded && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel =
-                NotificationChannel("Notify", "ShopX", NotificationManager.IMPORTANCE_DEFAULT)
-            channel.description = "ShopX Discount Notification"
-            val notificationManager = requireActivity().getSystemService(NotificationManager::class.java)
-            notificationManager?.createNotificationChannel(channel)
-
-            val intent = Intent(requireActivity(), BroadcastReceiverPage::class.java)
-            intent.putExtra("merchant", merchant)
-            requireActivity().sendBroadcast(intent)
-        }
-    }
-
     public fun requestAllMerchants() {
         ShopXApiService.getInstance().allMerchants
             .subscribe(object: Observer<AllMerchantsResponse> {
@@ -117,7 +104,7 @@ class MainFragment : Fragment() {
                                 if (PreferenceUtils.getNotification() && closestMerchant != null && AllMerchants.calculateDistance(closestMerchant.lat, closestMerchant.lng) < 50) {
                                     // if there's a merchant near customer within 50miles, send notification
                                     Handler().postDelayed({
-                                        createNotification(closestMerchant)
+                                        EventBus.getDefault().post(NotificationEvent(closestMerchant))
                                     }, 6 * 1000)
                                 }
 

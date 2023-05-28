@@ -1,5 +1,9 @@
 package com.squareup.shopx.activity
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -12,7 +16,14 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.ar.core.codelabs.arlocalizer.helpers.GeoPermissionsHelper
 import com.squareup.shopx.R
+import com.squareup.shopx.model.AllMerchantsResponse
+import com.squareup.shopx.model.CartUpdateEvent
+import com.squareup.shopx.model.NotificationEvent
+import com.squareup.shopx.utils.BroadcastReceiverPage
 import com.squareup.shopx.utils.Transparent
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 class HomeActivity : AppCompatActivity() {
     val TAG = "HomeActivity"
@@ -48,6 +59,13 @@ class HomeActivity : AppCompatActivity() {
 
         setDefaultFragment()
         initNavigationBar()
+        EventBus.getDefault().register(this);
+
+    }
+
+    override fun onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy()
     }
 
 
@@ -149,6 +167,25 @@ class HomeActivity : AppCompatActivity() {
         Handler().postDelayed({
             mainFragment.showMap()
         }, 200)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onNotificationEvent(event: NotificationEvent) {
+        createNotification(event.merchant)
+    }
+
+    private fun createNotification(merchant: AllMerchantsResponse.ShopXMerchant) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel =
+                NotificationChannel("Notify", "ShopX", NotificationManager.IMPORTANCE_DEFAULT)
+            channel.description = "ShopX Discount Notification"
+            val notificationManager = this.getSystemService(NotificationManager::class.java)
+            notificationManager?.createNotificationChannel(channel)
+
+            val intent = Intent(this, BroadcastReceiverPage::class.java)
+            intent.putExtra("merchant", merchant)
+            this.sendBroadcast(intent)
+        }
     }
 
 }
