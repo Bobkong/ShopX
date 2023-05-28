@@ -1,5 +1,6 @@
 package com.squareup.shopx.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -58,6 +59,12 @@ class PaySuccessActivity : AppCompatActivity() {
             finish()
         }
 
+        backToHome.setOnClickListener {
+            val intent = Intent(this@PaySuccessActivity, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         val merchantInfo = intent.extras?.getSerializable("merchantInfo") as AllMerchantsResponse.ShopXMerchant
         val loyaltyInfo = intent.extras?.getSerializable("loyaltyInfo") as? GetLoyaltyInfoResponse
         val orderId = intent.extras?.getSerializable("orderId") as String
@@ -86,9 +93,8 @@ class PaySuccessActivity : AppCompatActivity() {
                                 accumulateTwoPoints(merchantInfo, loyaltyInfo, orderId)
                             } else {
                                 plusPoint.visibility = View.GONE
-                                merchantLogo.visibility = View.GONE
-                                username.visibility = View.GONE
                                 loadingView.visibility = View.GONE
+                                setMerchantLogoAndUsername(merchantInfo)
                             }
                         }
                     }
@@ -108,6 +114,8 @@ class PaySuccessActivity : AppCompatActivity() {
     }
 
 
+
+
     private fun accumulateTwoPoints(merchantInfo: ShopXMerchant, loyaltyInfo: GetLoyaltyInfoResponse, orderId: String) {
         val accumulatePoints = AccumulateLoyaltyPointsRequest.AccumulatePoints(orderId)
         val request = AccumulateLoyaltyPointsRequest(UUID.randomUUID().toString(), merchantInfo.locationId, accumulatePoints)
@@ -123,14 +131,7 @@ class PaySuccessActivity : AppCompatActivity() {
 
                             plusPoint.text = "+${value.events?.get(0)?.accumulatePoints?.points.toString()} pts"
                             loadingView.visibility = View.GONE
-                            Glide.with(this@PaySuccessActivity).load(merchantInfo.logoUrl).into(merchantLogo)
-                            var nameString = if (PreferenceUtils.getUsername().length > 1) {
-                                PreferenceUtils.getUsername().substring(0, 2)
-                            } else {
-                                PreferenceUtils.getUsername().substring(0, 1)
-                            }
-                            nameString = nameString.toUpperCase()
-                            username.text = nameString
+                            setMerchantLogoAndUsername(merchantInfo)
                             EventBus.getDefault().post(
                                 RefreshLoyaltyEvent(
                                     merchantInfo, value!!.events?.get(0)?.accumulatePoints?.points
@@ -144,8 +145,6 @@ class PaySuccessActivity : AppCompatActivity() {
                 override fun onError(e: Throwable?) {
                     runOnUiThread {
                         plusPoint.visibility = View.GONE
-                        merchantLogo.visibility = View.GONE
-                        username.visibility = View.GONE
                         loadingView.visibility = View.GONE
                         Toast.makeText(this@PaySuccessActivity, e?.message, Toast.LENGTH_SHORT).show()
                     }
@@ -155,5 +154,16 @@ class PaySuccessActivity : AppCompatActivity() {
                 }
 
             })
+    }
+
+    private fun setMerchantLogoAndUsername(merchantInfo: ShopXMerchant) {
+        Glide.with(this@PaySuccessActivity).load(merchantInfo.logoUrl).into(merchantLogo)
+        var nameString = if (PreferenceUtils.getUsername().length > 1) {
+            PreferenceUtils.getUsername().substring(0, 2)
+        } else {
+            PreferenceUtils.getUsername().substring(0, 1)
+        }
+        nameString = nameString.toUpperCase()
+        username.text = nameString
     }
 }

@@ -87,6 +87,9 @@ dependencies {
     // square in-app pay
     implementation "com.squareup.sdk.in-app-payments:google-pay:1.6.2"
 
+    // blur
+    implementation 'com.github.centerzx:ShapeBlurView:1.0.5'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

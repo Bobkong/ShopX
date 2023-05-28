@@ -76,4 +76,8 @@ public class MerchantCart {
         }
         return count;
     }
+
+    public void clearCart() {
+        cartItems = new HashMap<>();
+    }
 }

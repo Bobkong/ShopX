@@ -162,6 +162,14 @@ object AllMerchants {
         return HashMap()
     }
 
+    fun clearCart(merchant: ShopXMerchant) {
+        for (merchantCart in allMerchantCarts) {
+            if (merchantCart.merchant.equals(merchant)) {
+                merchantCart.clearCart()
+            }
+        }
+    }
+
     fun getCountOfAnItem(merchant: ShopXMerchant, item: Item): Int {
         for (merchantCart in allMerchantCarts) {
             if (merchantCart.merchant.equals(merchant)) {

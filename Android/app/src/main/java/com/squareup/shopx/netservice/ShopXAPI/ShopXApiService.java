@@ -14,6 +14,7 @@ import com.squareup.shopx.model.GetLoyaltyInfoResponse;
 import com.squareup.shopx.model.GetMerchantDetailRequest;
 import com.squareup.shopx.model.GetMerchantDetailResponse;
 import com.squareup.shopx.model.LoginRequest;
+import com.squareup.shopx.model.PlaceOrderRequest;
 import com.squareup.shopx.model.ShopXCustomer;
 import com.squareup.shopx.model.VerifyPhoneRequest;
 import com.squareup.shopx.netservice.HttpResultFunc;
@@ -34,6 +35,7 @@ public class ShopXApiService {
     private final CustomerApi customerApi = ShopXServiceManager.getInstance().create(CustomerApi.class);
     private final MerchantApi merchantApi = ShopXServiceManager.getInstance().create(MerchantApi.class);
     private final LoyaltyApi loyaltyApi = ShopXServiceManager.getInstance().create(LoyaltyApi.class);
+    private final OrderApi orderApi = ShopXServiceManager.getInstance().create(OrderApi.class);
 
     public Observable<AddCustomerResponse> addCustomer(String phone, String nickname, String password){
         return customerApi.createCustomer(new ShopXCustomer(phone, nickname, 0, password))
@@ -85,6 +87,12 @@ public class ShopXApiService {
 
     public Observable<GetAllLoyaltyRecordsResponse> getAllLoyaltyRecordsResponse(String contact){
         return loyaltyApi.getAllLoyaltyRecords(new GetAllLoyaltyRecordsRequest(contact))
+                .onErrorResumeNext(new HttpResultFunc<>())
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<GeneralResponse> placeOrder(PlaceOrderRequest request){
+        return orderApi.placeOrder(request)
                 .onErrorResumeNext(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io());
     }

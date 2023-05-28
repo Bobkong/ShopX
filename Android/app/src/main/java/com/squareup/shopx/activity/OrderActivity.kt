@@ -22,9 +22,11 @@ import com.squareup.shopx.consts.Configs.GOOGLE_PAY_MERCHANT_ID
 import com.squareup.shopx.model.*
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
 import com.squareup.shopx.model.CreateOrderRequest.BasePriceMoney
-import com.squareup.shopx.model.LoyaltyProgramResponse.AmountMoney
 import com.squareup.shopx.netservice.GooglePay.GooglePayChargeClient
+import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.netservice.SquareAPI.SquareApiService
+import com.squareup.shopx.utils.DateUtil
+import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.utils.Transparent
 import com.squareup.shopx.widget.RadiusCardView
 import io.reactivex.Observer
@@ -34,6 +36,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import sqip.GooglePay
 import java.util.*
+
 
 class OrderActivity: AppCompatActivity(), CartCallback {
     private val TAG = "OrderActivity"
@@ -293,6 +296,7 @@ class OrderActivity: AppCompatActivity(), CartCallback {
     }
 
     fun payOrder(nonce: String) {
+        sendOrderToShopX()
         runOnUiThread {
             val intent = Intent(this@OrderActivity, PaySuccessActivity::class.java)
             intent.putExtra("merchantInfo", merchantInfo)
@@ -301,9 +305,39 @@ class OrderActivity: AppCompatActivity(), CartCallback {
             intent.putExtra("nonce", nonce)
             intent.putExtra("value", (AllMerchants.getPrice(merchantInfo) - loyaltyValue).toInt())
             startActivity(intent)
+            AllMerchants.clearCart(merchantInfo)
+            EventBus.getDefault().post(CartUpdateEvent(merchantInfo))
             finish()
         }
+    }
 
+    private fun sendOrderToShopX() {
+        val placeOrderRequest = PlaceOrderRequest(PreferenceUtils.getUserPhone(),
+            merchantInfo.accessToken,
+            orderId,
+            DateUtil.getOrderTime(),
+            ((AllMerchants.getPrice(merchantInfo) - loyaltyValue).toInt()),
+            AllMerchants.getOriginalPrice(merchantInfo).toInt(),
+            (AllMerchants.getOriginalPrice(merchantInfo) - AllMerchants.getPrice(merchantInfo)).toInt(),
+            loyaltyValue,
+            AllMerchants.getTotalItemCount(merchantInfo))
+        ShopXApiService.getInstance().placeOrder(placeOrderRequest)
+            .subscribe(object : Observer<GeneralResponse> {
+                override fun onSubscribe(d: Disposable?) {
 
+                }
+
+                override fun onNext(value: GeneralResponse?) {
+                    // do nothing for now
+                }
+
+                override fun onError(e: Throwable?) {
+                    // do nothing for now
+                }
+
+                override fun onComplete() {
+                }
+
+            })
     }
 }

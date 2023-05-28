@@ -10,6 +10,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.FragmentContainerView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.ar.core.HitResult
 import com.google.ar.core.Plane
@@ -232,7 +234,7 @@ class ARItemActivity : AppCompatActivity() {
         }
 
         arItemList.layoutManager = GalleryLayoutManager.create {
-            itemSpace = 100
+            itemSpace = 120
             onScrollListener = mOnScrollListener
             viewTransformListener = SimpleViewTransformListener(1.2f, 1.2f)
         }
