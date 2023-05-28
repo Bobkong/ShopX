@@ -11,20 +11,23 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.squareup.shopx.R;
 import com.squareup.shopx.activity.MainFragment;
+import com.squareup.shopx.activity.MerchantDetailActivity;
+import com.squareup.shopx.model.AllMerchantsResponse;
 
 public class BroadcastReceiverPage extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent i = new Intent(context, MainFragment.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        @SuppressLint("UnspecifiedImmutableFlag")
-        PendingIntent p = PendingIntent.getActivity(context, 0, i, 0);
+        AllMerchantsResponse.ShopXMerchant merchant = (AllMerchantsResponse.ShopXMerchant) intent.getSerializableExtra("merchant");
+
+        Intent i = new Intent(context, MerchantDetailActivity.class);
+        i.putExtra("merchant", merchant);
+        PendingIntent p = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder b = new NotificationCompat.Builder(context, "Notify")
                 .setSmallIcon(R.drawable.marker_normal)
-                .setContentTitle("ShopX Title")
-                .setContentText("ShopX Description")
+                .setContentTitle("ShopX Offers!")
+                .setContentText("Check out " + merchant.getBusinessName() + " to get your exclusive offers!")
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)

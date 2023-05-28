@@ -56,12 +56,14 @@ class MerchantDetailActivity : AppCompatActivity() {
         Transparent.transparentNavBar(this)
         Transparent.transparentStatusBar(this, true)
 
+
+
+        merchantInfo = intent.extras?.getSerializable("merchant") as ShopXMerchant
+
         backButton = findViewById(R.id.back_button)
         backButton.setOnClickListener {
             finish()
         }
-
-        merchantInfo = intent.extras?.getSerializable("merchant") as ShopXMerchant
 
         cartInfo = findViewById(R.id.cart_info)
         cartInfo.setOnClickListener {

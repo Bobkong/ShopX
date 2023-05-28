@@ -14,6 +14,7 @@ public class PreferenceUtils {
     private static final String PREFERENCE_KEY_PHONE = "PREFERENCE_KEY_PHONE";
     private static final String PREFERENCE_KEY_FIRST_USE = "PREFERENCE_KEY_FIRST_USE";
     private static final String PREFERENCE_KEY_USERNAME = "PREFERENCE_KEY_USERNAME";
+    private static final String PREFERENCE_KEY_NOTIFICATION = "PREFERENCE_KEY_NOTIFICATION";
     @SuppressLint("StaticFieldLeak")
     private static Context context;
 
@@ -59,6 +60,17 @@ public class PreferenceUtils {
     @NonNull
     public static Boolean getFirstUse() {
         final Boolean result = getSharedPreferences().getBoolean(PREFERENCE_KEY_FIRST_USE, true);
+        return result;
+    }
+
+    public static void setNotification(@NonNull Boolean notification) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.putBoolean(PREFERENCE_KEY_NOTIFICATION, notification).apply();
+    }
+
+    @NonNull
+    public static Boolean getNotification() {
+        final Boolean result = getSharedPreferences().getBoolean(PREFERENCE_KEY_NOTIFICATION, true);
         return result;
     }
 

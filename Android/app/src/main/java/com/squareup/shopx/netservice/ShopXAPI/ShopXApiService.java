@@ -16,8 +16,10 @@ import com.squareup.shopx.model.GetOrderItemsRequest;
 import com.squareup.shopx.model.GetOrderItemsResponse;
 import com.squareup.shopx.model.GetOrdersResponse;
 import com.squareup.shopx.model.LoginRequest;
+import com.squareup.shopx.model.LoginResponse;
 import com.squareup.shopx.model.PlaceOrderRequest;
 import com.squareup.shopx.model.ShopXCustomer;
+import com.squareup.shopx.model.UpdateNotifyRequest;
 import com.squareup.shopx.model.VerifyPhoneRequest;
 import com.squareup.shopx.netservice.HttpResultFunc;
 import com.squareup.shopx.netservice.ShopXServiceManager;
@@ -39,8 +41,8 @@ public class ShopXApiService {
     private final LoyaltyApi loyaltyApi = ShopXServiceManager.getInstance().create(LoyaltyApi.class);
     private final OrderApi orderApi = ShopXServiceManager.getInstance().create(OrderApi.class);
 
-    public Observable<AddCustomerResponse> addCustomer(String phone, String nickname, String password){
-        return customerApi.createCustomer(new ShopXCustomer(phone, nickname, 0, password))
+    public Observable<AddCustomerResponse> addCustomer(String phone, String nickname, String password, int ifNotify){
+        return customerApi.createCustomer(new ShopXCustomer(phone, nickname, ifNotify, password))
                 .onErrorResumeNext(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io());
     }
@@ -51,13 +53,19 @@ public class ShopXApiService {
                 .subscribeOn(Schedulers.io());
     }
 
+    public Observable<GeneralResponse> updateNotify(String phone, int ifNotify){
+        return customerApi.updateNotify(new UpdateNotifyRequest(phone, ifNotify))
+                .onErrorResumeNext(new HttpResultFunc<>())
+                .subscribeOn(Schedulers.io());
+    }
+
     public Observable<GeneralResponse> verifyPhone(String phoneNumber){
         return customerApi.verifyPhone(new VerifyPhoneRequest(phoneNumber))
                 .onErrorResumeNext(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io());
     }
 
-    public Observable<GeneralResponse> login(String phoneNumber){
+    public Observable<LoginResponse> login(String phoneNumber){
         return customerApi.login(new LoginRequest(phoneNumber))
                 .onErrorResumeNext(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io());

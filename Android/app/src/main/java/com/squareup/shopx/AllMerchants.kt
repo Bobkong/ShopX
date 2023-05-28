@@ -58,6 +58,19 @@ object AllMerchants {
 
     }
 
+    fun getClosestMerchant(): ShopXMerchant? {
+        var closestMerchant: ShopXMerchant? = null
+        var distance = Double.MAX_VALUE
+        for (i in 1 until allMerchants.size) {
+            var currentDistance = calculateDistance(allMerchants[i].lat, allMerchants[i].lng)
+            if (currentDistance < distance && (allMerchants[i].ifLoyalty == 1 || allMerchants[i].discountType.isNotEmpty())) {
+                closestMerchant = allMerchants[i]
+                distance = currentDistance
+            }
+        }
+        return closestMerchant
+    }
+
     fun getDisplayMerchants(merchantId: String): List<ShopXMerchant> {
         val merchants = getDisplayMerchants()
         if (merchantId.isEmpty() || merchantId.isBlank()) {

@@ -1,56 +1,27 @@
 package com.squareup.shopx.activity
 
-import android.Manifest
-import android.animation.ValueAnimator
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateInterpolator
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.exlyo.gmfmt.FloatingMarkerTitlesOverlay
-import com.exlyo.gmfmt.MarkerInfo
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
-import com.squareup.shopx.adapter.MerchantListAdapter
 import com.squareup.shopx.model.AllMerchantsResponse
+import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.utils.BroadcastReceiverPage
 import com.squareup.shopx.utils.PreferenceUtils
-import com.squareup.shopx.utils.UIUtils
 import com.squareup.shopx.widget.BottomMapView
-import com.squareup.shopx.widget.MapMaskCL
-import com.squareup.shopx.widget.customizedseekbar.IndicatorSeekBar
-import com.squareup.shopx.widget.customizedseekbar.OnSeekChangeListener
-import com.squareup.shopx.widget.customizedseekbar.SeekParams
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 
@@ -62,10 +33,12 @@ class MainFragment : Fragment() {
 
 
     private var bottomSheet: BottomMapView? = null
+    private lateinit var loadingView: ConstraintLayout
 
 
     private lateinit var homepageHeader: TextView
     private lateinit var userName: TextView
+    private var fusedLocationClient: FusedLocationProviderClient? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,6 +53,7 @@ class MainFragment : Fragment() {
 
         homepageHeader = view.findViewById(R.id.homepage_header)
         userName = view.findViewById(R.id.user_name)
+        loadingView = view.findViewById(R.id.loading_view)
 
         homepageHeader.text = "Hello " + PreferenceUtils.getUsername()
         var nameString = if (PreferenceUtils.getUsername().length > 1) {
@@ -90,7 +64,6 @@ class MainFragment : Fragment() {
         nameString = nameString.toUpperCase()
         userName.text = nameString
 
-        requestAllMerchants()
         return view
     }
 
@@ -104,8 +77,8 @@ class MainFragment : Fragment() {
 
 
 
-    private fun createNotification() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    private fun createNotification(merchant: ShopXMerchant) {
+        if (isAdded && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel =
                 NotificationChannel("Notify", "ShopX", NotificationManager.IMPORTANCE_DEFAULT)
             channel.description = "ShopX Discount Notification"
@@ -113,11 +86,12 @@ class MainFragment : Fragment() {
             notificationManager?.createNotificationChannel(channel)
 
             val intent = Intent(requireActivity(), BroadcastReceiverPage::class.java)
+            intent.putExtra("merchant", merchant)
             requireActivity().sendBroadcast(intent)
         }
     }
 
-    private fun requestAllMerchants() {
+    public fun requestAllMerchants() {
         ShopXApiService.getInstance().allMerchants
             .subscribe(object: Observer<AllMerchantsResponse> {
                 override fun onSubscribe(d: Disposable?) {
@@ -127,6 +101,9 @@ class MainFragment : Fragment() {
                 override fun onNext(value: AllMerchantsResponse?) {
 
                     requireActivity().runOnUiThread {
+                        requireActivity().runOnUiThread {
+                            loadingView.visibility = View.GONE
+                        }
                         if (value?.code == 1) {
                             Toast.makeText(context, value.msg, Toast.LENGTH_SHORT).show()
                             return@runOnUiThread
@@ -135,6 +112,15 @@ class MainFragment : Fragment() {
                         value?.merchants?.let {
                             if (it.size > 0) {
                                 AllMerchants.allMerchants = it
+
+                                val closestMerchant = AllMerchants.getClosestMerchant()
+                                if (PreferenceUtils.getNotification() && closestMerchant != null && AllMerchants.calculateDistance(closestMerchant.lat, closestMerchant.lng) < 50) {
+                                    // if there's a merchant near customer within 50miles, send notification
+                                    Handler().postDelayed({
+                                        createNotification(closestMerchant)
+                                    }, 6 * 1000)
+                                }
+
                             }
                         }
                     }
@@ -143,6 +129,7 @@ class MainFragment : Fragment() {
 
                 override fun onError(e: Throwable?) {
                     requireActivity().runOnUiThread {
+                        loadingView.visibility = View.GONE
                         Toast.makeText(context, e?.message, Toast.LENGTH_SHORT).show()
                     }
                 }

@@ -35,13 +35,10 @@ import com.squareup.shopx.activity.HomeActivity
 import com.squareup.shopx.activity.MainFragment
 import com.squareup.shopx.adapter.MerchantListAdapter
 import com.squareup.shopx.model.AllMerchantsResponse
-import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.utils.UIUtils
 import com.squareup.shopx.widget.customizedseekbar.IndicatorSeekBar
 import com.squareup.shopx.widget.customizedseekbar.OnSeekChangeListener
 import com.squareup.shopx.widget.customizedseekbar.SeekParams
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
 
 
 class BottomMapView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
@@ -245,6 +242,7 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
                     AllMerchants.myLat = location.latitude.toFloat()
                     AllMerchants.myLng = location.longitude.toFloat()
                     moveCamera(LatLng(location.latitude, location.longitude))
+                    mainFragment!!.requestAllMerchants()
                 } else {
                     Toast.makeText(context, "Loading location failed. Please try later", Toast.LENGTH_SHORT).show()
                 }

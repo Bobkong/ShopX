@@ -2,16 +2,14 @@ package com.squareup.shopx.activity
 
 import android.content.*
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.shopx.R
-import com.squareup.shopx.model.AddCustomerResponse
 import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.model.GeneralResponse
+import com.squareup.shopx.model.LoginResponse
 import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.utils.Transparent
 import com.squareup.shopx.widget.VerifyCodeView
@@ -41,7 +39,7 @@ class VerificationCodeActivity : AppCompatActivity() {
                     if (intent.getStringExtra("nickname").isNullOrEmpty()) {
                         login()
                     } else {
-                        saveCustomer()
+                        gotoNotificationSettingPage()
                     }
 
                 }
@@ -79,15 +77,16 @@ class VerificationCodeActivity : AppCompatActivity() {
 
     private fun login() {
         ShopXApiService.getInstance().login(intent.getStringExtra("phone"))
-            .subscribe(object : Observer<GeneralResponse> {
+            .subscribe(object : Observer<LoginResponse> {
                 override fun onSubscribe(d: Disposable?) {
 
                 }
 
-                override fun onNext(value: GeneralResponse?) {
+                override fun onNext(value: LoginResponse?) {
                     if (value?.code == 0) {
                         PreferenceUtils.setUserPhone(intent.getStringExtra("phone")!!)
-                        PreferenceUtils.setUsername(value.msg)
+                        PreferenceUtils.setUsername(value.customer.nickname)
+                        PreferenceUtils.setNotification(value.customer.ifNotify == 1)
                         val intent = Intent(this@VerificationCodeActivity, HomeActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -110,37 +109,17 @@ class VerificationCodeActivity : AppCompatActivity() {
             })
     }
 
-    private fun saveCustomer() {
-        ShopXApiService.getInstance().addCustomer(intent.getStringExtra("phone")!!, intent.getStringExtra("nickname")!!, intent.getStringExtra("password")!!)
-            .subscribe(object : Observer<AddCustomerResponse> {
-                override fun onSubscribe(d: Disposable?) {
-                }
+    private fun gotoNotificationSettingPage() {
+        val phone = intent.extras?.getString("phone")
+        val nickname = intent.extras?.getString("nickname")
+        val password = intent.extras?.getString("password")
+        val intent = Intent(this@VerificationCodeActivity, NotificationActivity::class.java)
+        intent.putExtra("phone", phone)
+        intent.putExtra("nickname", nickname)
+        intent.putExtra("password", password)
+        startActivity(intent)
+        finish()
 
-                override fun onNext(value: AddCustomerResponse?) {
-                    if (value?.code == 0) {
-                        PreferenceUtils.setUserPhone(intent.getStringExtra("phone")!!)
-                        PreferenceUtils.setUsername(intent.getStringExtra("nickname")!!)
-                        val intent = Intent(this@VerificationCodeActivity, HomeActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        runOnUiThread {
-                            Toast.makeText(this@VerificationCodeActivity, value?.msg, Toast.LENGTH_SHORT).show()
-                        }
-                    }
-
-                }
-
-                override fun onError(e: Throwable?) {
-                    runOnUiThread {
-                        Toast.makeText(this@VerificationCodeActivity, e?.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onComplete() {
-                }
-
-            })
 
     }
 

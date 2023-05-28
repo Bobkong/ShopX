@@ -60,6 +60,10 @@
             android:theme="@style/NoActionBar"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activity.NotificationActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".activity.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"

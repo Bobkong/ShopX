@@ -57,6 +57,8 @@
             <include layout="@layout/map_container" />
     </com.squareup.shopx.widget.BottomMapView>
 
+    <include layout="@layout/loading_view" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
