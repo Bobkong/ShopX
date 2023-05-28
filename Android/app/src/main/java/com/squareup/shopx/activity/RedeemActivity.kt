@@ -179,6 +179,7 @@ class RedeemActivity: AppCompatActivity(){
                         runOnUiThread {
                             showSuccessDialog()
                             EventBus.getDefault().post(RedeemSuccessEvent(orderId))
+                            EventBus.getDefault().post(RefreshLoyaltyEvent(merchantInfo, -1 * rewardTier.points))
                             loyaltyInfo?.let {
                                 it.points -= rewardTier.points
                                 userPoints.text = "${it.points} pts"

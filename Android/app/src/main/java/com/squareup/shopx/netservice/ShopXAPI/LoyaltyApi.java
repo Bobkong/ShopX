@@ -1,16 +1,11 @@
 package com.squareup.shopx.netservice.ShopXAPI;
 
-import com.squareup.shopx.model.AddCustomerResponse;
 import com.squareup.shopx.model.EnrollLoyaltyRequest;
 import com.squareup.shopx.model.EnrollLoyaltyResponse;
-import com.squareup.shopx.model.GeneralResponse;
-import com.squareup.shopx.model.GetAllLoyaltyRecordsRequest;
+import com.squareup.shopx.model.GetAllRecordsRequest;
 import com.squareup.shopx.model.GetAllLoyaltyRecordsResponse;
 import com.squareup.shopx.model.GetLoyaltyInfoRequest;
 import com.squareup.shopx.model.GetLoyaltyInfoResponse;
-import com.squareup.shopx.model.LoginRequest;
-import com.squareup.shopx.model.ShopXCustomer;
-import com.squareup.shopx.model.VerifyPhoneRequest;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -30,7 +25,7 @@ public interface LoyaltyApi {
 
     @POST("/getAllLoyaltyRecords")
     Observable<GetAllLoyaltyRecordsResponse> getAllLoyaltyRecords(
-            @Body GetAllLoyaltyRecordsRequest request
+            @Body GetAllRecordsRequest request
     );
 
 }

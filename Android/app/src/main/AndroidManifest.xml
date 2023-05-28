@@ -56,6 +56,9 @@
             android:screenOrientation="portrait">
 
         </activity>
+        <activity android:name=".activity.OrderDetailActivity"
+            android:theme="@style/NoActionBar"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".activity.SplashActivity"
             android:exported="true"

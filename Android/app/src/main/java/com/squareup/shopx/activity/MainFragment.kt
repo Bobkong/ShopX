@@ -89,6 +89,8 @@ class MainFragment : Fragment() {
         }
         nameString = nameString.toUpperCase()
         userName.text = nameString
+
+        requestAllMerchants()
         return view
     }
 
@@ -113,6 +115,42 @@ class MainFragment : Fragment() {
             val intent = Intent(requireActivity(), BroadcastReceiverPage::class.java)
             requireActivity().sendBroadcast(intent)
         }
+    }
+
+    private fun requestAllMerchants() {
+        ShopXApiService.getInstance().allMerchants
+            .subscribe(object: Observer<AllMerchantsResponse> {
+                override fun onSubscribe(d: Disposable?) {
+
+                }
+
+                override fun onNext(value: AllMerchantsResponse?) {
+
+                    requireActivity().runOnUiThread {
+                        if (value?.code == 1) {
+                            Toast.makeText(context, value.msg, Toast.LENGTH_SHORT).show()
+                            return@runOnUiThread
+                        }
+
+                        value?.merchants?.let {
+                            if (it.size > 0) {
+                                AllMerchants.allMerchants = it
+                            }
+                        }
+                    }
+
+                }
+
+                override fun onError(e: Throwable?) {
+                    requireActivity().runOnUiThread {
+                        Toast.makeText(context, e?.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onComplete() {
+                }
+
+            })
     }
 
 

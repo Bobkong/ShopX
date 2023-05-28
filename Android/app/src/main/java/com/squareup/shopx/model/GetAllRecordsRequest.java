@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class GetAllLoyaltyRecordsRequest implements Serializable {
+public class GetAllRecordsRequest implements Serializable {
     @SerializedName("contact")
     String contact;
 
-    public GetAllLoyaltyRecordsRequest(String contact) {
+    public GetAllRecordsRequest(String contact) {
         this.contact = contact;
     }
 }

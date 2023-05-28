@@ -1,14 +1,16 @@
 package com.squareup.shopx.utils;
 
+import android.os.Build;
+
 import java.util.Calendar;
+import java.util.Date;
 
 public class DateUtil {
     public static String getOrderTime() {
-        //获取当前时间
-        Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
-        int month = c.get(Calendar.MONTH);
-        int date = c.get(Calendar.DATE);
-        return translateMonth(month) + " " + date;
+        Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.MONTH) + 1;
+        int day = c.get(Calendar.DATE);
+        return translateMonth(month) + " " + day;
     }
 
     public static String translateMonth(int month) {

@@ -18,6 +18,7 @@ class HomeActivity : AppCompatActivity() {
     val TAG = "HomeActivity"
     var mainFragment: MainFragment = MainFragment()
     var loyaltyFragment: LoyaltyCardsFragment = LoyaltyCardsFragment()
+    var orderFragment: OrderHistoryFragment = OrderHistoryFragment()
     lateinit var homeTabIcon: ImageView
     lateinit var loyaltyTabIcon: ImageView
     lateinit var orderTabIcon: ImageView
@@ -98,7 +99,7 @@ class HomeActivity : AppCompatActivity() {
         orderTabIcon.setOnClickListener {
             val fm: FragmentManager = supportFragmentManager
             val transaction: FragmentTransaction = fm.beginTransaction()
-            transaction.replace(R.id.fragment_container, mainFragment)
+            transaction.replace(R.id.fragment_container, orderFragment)
             transaction.commit()
             homeTabIcon.isSelected = false
             loyaltyTabIcon.isSelected = false

@@ -3,16 +3,18 @@ package com.squareup.shopx.netservice.ShopXAPI;
 
 import com.squareup.shopx.model.AddCustomerResponse;
 import com.squareup.shopx.model.AllMerchantsResponse;
-import com.squareup.shopx.model.Customer;
 import com.squareup.shopx.model.EnrollLoyaltyRequest;
 import com.squareup.shopx.model.EnrollLoyaltyResponse;
 import com.squareup.shopx.model.GeneralResponse;
-import com.squareup.shopx.model.GetAllLoyaltyRecordsRequest;
+import com.squareup.shopx.model.GetAllRecordsRequest;
 import com.squareup.shopx.model.GetAllLoyaltyRecordsResponse;
 import com.squareup.shopx.model.GetLoyaltyInfoRequest;
 import com.squareup.shopx.model.GetLoyaltyInfoResponse;
 import com.squareup.shopx.model.GetMerchantDetailRequest;
 import com.squareup.shopx.model.GetMerchantDetailResponse;
+import com.squareup.shopx.model.GetOrderItemsRequest;
+import com.squareup.shopx.model.GetOrderItemsResponse;
+import com.squareup.shopx.model.GetOrdersResponse;
 import com.squareup.shopx.model.LoginRequest;
 import com.squareup.shopx.model.PlaceOrderRequest;
 import com.squareup.shopx.model.ShopXCustomer;
@@ -86,13 +88,25 @@ public class ShopXApiService {
     }
 
     public Observable<GetAllLoyaltyRecordsResponse> getAllLoyaltyRecordsResponse(String contact){
-        return loyaltyApi.getAllLoyaltyRecords(new GetAllLoyaltyRecordsRequest(contact))
+        return loyaltyApi.getAllLoyaltyRecords(new GetAllRecordsRequest(contact))
                 .onErrorResumeNext(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io());
     }
 
     public Observable<GeneralResponse> placeOrder(PlaceOrderRequest request){
         return orderApi.placeOrder(request)
+                .onErrorResumeNext(new HttpResultFunc<>())
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<GetOrdersResponse> getAllOrders(String contact){
+        return orderApi.getAllOrders(new GetAllRecordsRequest(contact))
+                .onErrorResumeNext(new HttpResultFunc<>())
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Observable<GetOrderItemsResponse> getOrderItems(String orderId, String accessToken){
+        return orderApi.getOrderItems(new GetOrderItemsRequest(orderId, accessToken))
                 .onErrorResumeNext(new HttpResultFunc<>())
                 .subscribeOn(Schedulers.io());
     }

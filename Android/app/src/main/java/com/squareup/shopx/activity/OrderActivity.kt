@@ -296,13 +296,24 @@ class OrderActivity: AppCompatActivity(), CartCallback {
     }
 
     fun payOrder(nonce: String) {
-        sendOrderToShopX()
+        val placeOrderRequest = PlaceOrderRequest(PreferenceUtils.getUserPhone(),
+            merchantInfo.accessToken,
+            orderId,
+            System.currentTimeMillis(),
+            ((AllMerchants.getPrice(merchantInfo) - loyaltyValue).toInt()),
+            AllMerchants.getOriginalPrice(merchantInfo).toInt(),
+            (AllMerchants.getOriginalPrice(merchantInfo) - AllMerchants.getPrice(merchantInfo)).toInt(),
+            loyaltyValue,
+            AllMerchants.getTotalItemCount(merchantInfo),
+            DateUtil.getOrderTime())
+        sendOrderToShopX(placeOrderRequest)
         runOnUiThread {
             val intent = Intent(this@OrderActivity, PaySuccessActivity::class.java)
             intent.putExtra("merchantInfo", merchantInfo)
             intent.putExtra("loyaltyInfo", loyaltyInfo)
             intent.putExtra("orderId", orderId)
             intent.putExtra("nonce", nonce)
+            intent.putExtra("orderInfo", placeOrderRequest)
             intent.putExtra("value", (AllMerchants.getPrice(merchantInfo) - loyaltyValue).toInt())
             startActivity(intent)
             AllMerchants.clearCart(merchantInfo)
@@ -311,16 +322,8 @@ class OrderActivity: AppCompatActivity(), CartCallback {
         }
     }
 
-    private fun sendOrderToShopX() {
-        val placeOrderRequest = PlaceOrderRequest(PreferenceUtils.getUserPhone(),
-            merchantInfo.accessToken,
-            orderId,
-            DateUtil.getOrderTime(),
-            ((AllMerchants.getPrice(merchantInfo) - loyaltyValue).toInt()),
-            AllMerchants.getOriginalPrice(merchantInfo).toInt(),
-            (AllMerchants.getOriginalPrice(merchantInfo) - AllMerchants.getPrice(merchantInfo)).toInt(),
-            loyaltyValue,
-            AllMerchants.getTotalItemCount(merchantInfo))
+    private fun sendOrderToShopX(placeOrderRequest: PlaceOrderRequest) {
+
         ShopXApiService.getInstance().placeOrder(placeOrderRequest)
             .subscribe(object : Observer<GeneralResponse> {
                 override fun onSubscribe(d: Disposable?) {

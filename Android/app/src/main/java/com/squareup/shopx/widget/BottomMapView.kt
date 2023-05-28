@@ -163,7 +163,7 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
             this.layoutParams = layoutParams
 
             if ((it.animatedValue as Int) == 0) {
-                requestAllMerchants()
+                createAllMerchants()
             }
         }
         animator.start()
@@ -369,51 +369,21 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     }
 
-
-    private fun requestAllMerchants() {
-        ShopXApiService.getInstance().getAllMerchants()
-            .subscribe(object: Observer<AllMerchantsResponse> {
-                override fun onSubscribe(d: Disposable?) {
-
+    private fun createAllMerchants() {
+        AllMerchants.allMerchants.let {
+            if (it.size > 0) {
+                AllMerchants.allMerchants = it
+                generateMerchantMarkers()
+                // move to the first merchant
+                if (AllMerchants.getDisplayMerchants().size > 0) {
+                    moveCamera(LatLng(
+                        AllMerchants.getDisplayMerchants()[0].lat.toDouble(),
+                        AllMerchants.getDisplayMerchants()[0].lng.toDouble()
+                    ))
                 }
-
-                override fun onNext(value: AllMerchantsResponse?) {
-
-                    mainFragment!!.requireActivity().runOnUiThread {
-                        if (value?.code == 1) {
-                            Toast.makeText(context, value.msg, Toast.LENGTH_SHORT).show()
-                            return@runOnUiThread
-                        }
-
-                        value?.merchants?.let {
-                            if (it.size > 0) {
-                                AllMerchants.allMerchants = it
-                                generateMerchantMarkers()
-                                // move to the first merchant
-                                if (AllMerchants.getDisplayMerchants().size > 0) {
-                                    moveCamera(LatLng(
-                                        AllMerchants.getDisplayMerchants()[0].lat.toDouble(),
-                                        AllMerchants.getDisplayMerchants()[0].lng.toDouble()
-                                    ))
-                                }
-
-                                setFilterListeners()
-                            }
-                        }
-                    }
-
-                }
-
-                override fun onError(e: Throwable?) {
-                    mainFragment!!.requireActivity().runOnUiThread {
-                        Toast.makeText(context, e?.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                override fun onComplete() {
-                }
-
-            })
+                setFilterListeners()
+            }
+        }
     }
 
     var currentFocusedMarker = 0;

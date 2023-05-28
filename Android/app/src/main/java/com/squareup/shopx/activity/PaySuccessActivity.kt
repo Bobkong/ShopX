@@ -58,7 +58,6 @@ class PaySuccessActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
-
         backToHome.setOnClickListener {
             val intent = Intent(this@PaySuccessActivity, HomeActivity::class.java)
             startActivity(intent)
@@ -70,14 +69,32 @@ class PaySuccessActivity : AppCompatActivity() {
         val orderId = intent.extras?.getSerializable("orderId") as String
         val nonce = intent.extras?.getSerializable("nonce") as String
         val value = intent.extras?.getSerializable("value") as Int
+        val orderInfo = intent.extras?.getSerializable("orderInfo") as PlaceOrderRequest
         payOrder(merchantInfo, value, nonce, orderId, loyaltyInfo)
 
+        viewOrder.setOnClickListener {
+            val intent = Intent(
+                this,
+                OrderDetailActivity::class.java
+            )
+            intent.putExtra("merchantInfo", merchantInfo)
+            intent.putExtra("orderInfo", orderInfo)
+            startActivity(intent)
+            finish()
+        }
 
         shareFilterLl.visibility = View.GONE
 
     }
 
     private fun payOrder(merchantInfo: ShopXMerchant, value: Int, nonce: String, orderId: String, loyaltyInfo: GetLoyaltyInfoResponse?) {
+        // if the amount is 0, no need of payment
+        if (value == 0) {
+            plusPoint.visibility = View.GONE
+            loadingView.visibility = View.GONE
+            setMerchantLogoAndUsername(merchantInfo)
+            return
+        }
         val amountMoney = PaymentRequest.AmountMoney(value, "USD")
         val payRequest = PaymentRequest(UUID.randomUUID().toString(), nonce, amountMoney, orderId)
         SquareApiService.getInstance(merchantInfo.accessToken).payOrder(payRequest)
