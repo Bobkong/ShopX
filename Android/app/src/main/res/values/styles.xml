@@ -147,5 +147,11 @@
         <item name="behavior_peekHeight">1000dp</item>
     </style>
 
+    <style name="MySwitch" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/primary_blue_50</item>
+        <item name="colorSwitchThumbNormal">@color/black_80</item>
+        <item name="android:colorForeground">@color/black_50</item>
+    </style>
+
 
 </resources>
