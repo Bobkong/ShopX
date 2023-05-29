@@ -37,6 +37,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import sqip.GooglePay
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class OrderActivity: AppCompatActivity(), CartCallback {
@@ -314,6 +315,12 @@ class OrderActivity: AppCompatActivity(), CartCallback {
     }
 
     fun payOrder(nonce: String) {
+        val arItemList = ARItemList()
+        for (item in AllMerchants.getCartItems(merchantInfo).keys) {
+            if (!item.arEffectLink.isNullOrEmpty()) {
+                arItemList.arItems.add(item)
+            }
+        }
         val placeOrderRequest = PlaceOrderRequest(PreferenceUtils.getUserPhone(),
             merchantInfo.accessToken,
             orderId,
@@ -333,6 +340,7 @@ class OrderActivity: AppCompatActivity(), CartCallback {
             intent.putExtra("nonce", nonce)
             intent.putExtra("orderInfo", placeOrderRequest)
             intent.putExtra("value", (AllMerchants.getPrice(merchantInfo) - loyaltyValue).toInt())
+            intent.putExtra("arItems", arItemList)
             startActivity(intent)
             AllMerchants.clearCart(merchantInfo)
             EventBus.getDefault().post(CartUpdateEvent(merchantInfo))

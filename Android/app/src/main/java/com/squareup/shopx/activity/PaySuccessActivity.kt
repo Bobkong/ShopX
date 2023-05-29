@@ -1,25 +1,26 @@
 package com.squareup.shopx.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.squareup.shopx.AllMerchants
 import com.squareup.shopx.R
+import com.squareup.shopx.adapter.ARFilterAdapter
 import com.squareup.shopx.model.*
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
-import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.netservice.SquareAPI.SquareApiService
 import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.utils.Transparent
-import com.squareup.shopx.widget.RoundRectImageView
+import com.squareup.shopx.utils.UIUtils
+import com.squareup.shopx.widget.ARFilterItemDecoration
+import com.squareup.shopx.widget.ARSpanSizeLookup
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
@@ -64,12 +65,13 @@ class PaySuccessActivity : AppCompatActivity() {
             finish()
         }
 
-        val merchantInfo = intent.extras?.getSerializable("merchantInfo") as AllMerchantsResponse.ShopXMerchant
+        val merchantInfo = intent.extras?.getSerializable("merchantInfo") as ShopXMerchant
         val loyaltyInfo = intent.extras?.getSerializable("loyaltyInfo") as? GetLoyaltyInfoResponse
         val orderId = intent.extras?.getSerializable("orderId") as String
         val nonce = intent.extras?.getSerializable("nonce") as String
         val value = intent.extras?.getSerializable("value") as Int
         val orderInfo = intent.extras?.getSerializable("orderInfo") as PlaceOrderRequest
+        val arItemList = intent.extras?.getSerializable("arItems") as ARItemList
         payOrder(merchantInfo, value, nonce, orderId, loyaltyInfo)
 
         viewOrder.setOnClickListener {
@@ -83,7 +85,20 @@ class PaySuccessActivity : AppCompatActivity() {
             finish()
         }
 
-        shareFilterLl.visibility = View.GONE
+        if (arItemList.arItems.isNotEmpty()) {
+            val layoutManager = GridLayoutManager(this, 24);
+            val spanCounts = if (arItemList.arItems.size < 4) arItemList.arItems.size else 4
+            layoutManager.spanSizeLookup = ARSpanSizeLookup(spanCounts)
+
+            filterList.layoutManager = layoutManager
+            filterList.addItemDecoration(ARFilterItemDecoration(spanCounts, 4, 18))
+            filterList.adapter = ARFilterAdapter(this, arItemList.arItems)
+            shareFilterLl.visibility = View.VISIBLE
+        } else {
+            shareFilterLl.visibility = View.GONE
+        }
+
+
 
     }
 

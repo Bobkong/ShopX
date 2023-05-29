@@ -206,7 +206,14 @@ class MainFragment : Fragment() {
                     }
                 }
 
-                override fun onError(e: Throwable) {}
+                override fun onError(e: Throwable) {
+                    if (isAdded) {
+                        requireActivity().runOnUiThread {
+                            Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                }
                 override fun onComplete() {}
             })
     }

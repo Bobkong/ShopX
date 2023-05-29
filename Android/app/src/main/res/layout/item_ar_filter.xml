@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="68dp"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="4dp"
+    android:layout_marginLeft="4dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/ar_filter_bg"
+        android:scaleType="centerCrop"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/ar_filter_bg"/>
+
+    <com.squareup.shopx.widget.RoundRectImageView
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="@+id/ar_filter_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/ar_filter_bg"
+        app:layout_constraintLeft_toLeftOf="@+id/ar_filter_bg"
+        app:layout_constraintRight_toRightOf="@+id/ar_filter_bg"
+        app:radius="26dp"
+        android:id="@+id/item_image"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/item_name"
+        android:text="test"
+        android:textAlignment="center"
+        style="@style/label_small"
+        android:textColor="@color/black_0"
+        app:layout_constraintTop_toBottomOf="@+id/ar_filter_bg"
+        android:layout_marginTop="4dp"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

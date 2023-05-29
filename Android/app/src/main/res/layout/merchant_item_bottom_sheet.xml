@@ -3,7 +3,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_sheet_bg"
-        android:paddingBottom="40dp"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <ImageView
@@ -14,144 +13,156 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="12dp"/>
-        
-
-        <com.squareup.shopx.widget.RoundRectImageView
-            app:radius="24dp"
-            android:id="@+id/item_image"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="280dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="36dp"/>
-
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:id="@+id/view_in_ar"
-            android:src="@drawable/view_in_ar"
-            app:layout_constraintRight_toRightOf="@+id/item_image"
-            app:layout_constraintBottom_toBottomOf="@+id/item_image"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="12dp"/>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_image"
-            android:layout_marginTop="32dp"
-            android:id="@+id/item_name"
-            style="@style/title_large"
-            android:textColor="@color/black_0"
-            android:text="Blaze Pizza"/>
-
-        <LinearLayout
-            android:id="@+id/original_price_ll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_name"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
+            android:scrollbars="none">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/original_price_text"
-                    style="@style/label_large"
-                    android:textColor="@color/black_50"
-                    android:layout_marginRight="4dp"
-                    android:text="$10.50"/>
+                    android:paddingBottom="40dp"
+                    >
+                        <com.squareup.shopx.widget.RoundRectImageView
+                            app:radius="24dp"
+                            android:id="@+id/item_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="280dp"
+                            android:scaleType="centerCrop"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_marginTop="36dp"/>
 
-                <TextView
-                    android:id="@+id/discount_tag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/yellow_50_r12"
-                    android:text="20% Off"
-                    style="@style/label_small"
-                    android:layout_marginLeft="4dp"
-                    android:textColor="@color/black_0"/>
-        </LinearLayout>
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="50dp"
+                            android:id="@+id/view_in_ar"
+                            android:src="@drawable/view_in_ar"
+                            app:layout_constraintRight_toRightOf="@+id/item_image"
+                            app:layout_constraintBottom_toBottomOf="@+id/item_image"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="12dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/original_price_ll"
-            android:layout_marginTop="8dp"
-            android:id="@+id/real_price"
-            style="@style/title_large"
-            android:textColor="@color/black_0"
-            android:text="$10.50"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/real_price"
-            android:layout_marginTop="28dp"
-            android:id="@+id/item_desc"
-            style="@style/body_medium"
-            android:textAlignment="center"
-            android:textColor="@color/black_40"
-            android:text="Blaze Pizza"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/item_image"
+                            android:layout_marginTop="32dp"
+                            android:id="@+id/item_name"
+                            style="@style/title_large"
+                            android:textColor="@color/black_0"
+                            android:text="Blaze Pizza"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_desc"
-            android:layout_marginTop="52dp"
-            android:id="@+id/item_count"
-            android:gravity="center"
-            android:orientation="horizontal">
-                <ImageView
-                    android:id="@+id/sub_item"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/unable_sub_item"/>
+                        <LinearLayout
+                            android:id="@+id/original_price_ll"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/item_name"
+                            android:layout_marginTop="8dp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginRight="24dp"
-                    android:text="1"
-                    android:id="@+id/item_count_text"
-                    android:textColor="@color/black_0"
-                    style="@style/label_large"
-                    />
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/original_price_text"
+                                    style="@style/label_large"
+                                    android:textColor="@color/black_50"
+                                    android:layout_marginRight="4dp"
+                                    android:text="$10.50"/>
 
-                <ImageView
-                    android:id="@+id/add_item"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/add_item"/>
-        </LinearLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_count"
-            android:layout_marginTop="40dp"
-            android:id="@+id/action_button"
-            android:background="@drawable/primary_long_button_r24"
-            style="@style/title_medium"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:text="Add to Cart"/>
+                                <TextView
+                                    android:id="@+id/discount_tag"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/yellow_50_r12"
+                                    android:text="20% Off"
+                                    style="@style/label_small"
+                                    android:layout_marginLeft="4dp"
+                                    android:textColor="@color/black_0"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/original_price_ll"
+                            android:layout_marginTop="8dp"
+                            android:id="@+id/real_price"
+                            style="@style/title_large"
+                            android:textColor="@color/black_0"
+                            android:text="$10.50"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/real_price"
+                            android:layout_marginTop="28dp"
+                            android:id="@+id/item_desc"
+                            style="@style/body_medium"
+                            android:textAlignment="center"
+                            android:textColor="@color/black_40"
+                            android:text="Blaze Pizza"/>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/item_desc"
+                            android:layout_marginTop="52dp"
+                            android:id="@+id/item_count"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+                                <ImageView
+                                    android:id="@+id/sub_item"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:src="@drawable/unable_sub_item"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginRight="24dp"
+                                    android:text="1"
+                                    android:id="@+id/item_count_text"
+                                    android:textColor="@color/black_0"
+                                    style="@style/label_large"
+                                    />
+
+                                <ImageView
+                                    android:id="@+id/add_item"
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:src="@drawable/add_item"/>
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/item_count"
+                            android:layout_marginTop="40dp"
+                            android:id="@+id/action_button"
+                            android:background="@drawable/primary_long_button_r24"
+                            style="@style/title_medium"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:text="Add to Cart"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,6 +36,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="42dp"
                 android:background="@drawable/merchant_item_card_bg">
 
                 <TextView
@@ -175,7 +176,7 @@
                         android:text="Enhance Your AR Experience! Share your AR item using our exclusive Instagram filters and Let Your Creativity Shine on your Insta Story!"/>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/filter_list"
                         app:layout_constraintLeft_toLeftOf="parent"
