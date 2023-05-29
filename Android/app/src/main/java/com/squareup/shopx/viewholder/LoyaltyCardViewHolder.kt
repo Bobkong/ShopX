@@ -32,17 +32,22 @@ class LoyaltyCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
                 }
 
                 override fun onNext(value: GetLoyaltyInfoResponse?) {
-                    fragment.requireActivity().runOnUiThread {
-                        loadingView.visibility = View.GONE
-                        setLoyaltyInfo(value!!, fragment.requireActivity(), merchantInfo)
+                    if (fragment.isAdded) {
+                        fragment.requireActivity().runOnUiThread {
+                            loadingView.visibility = View.GONE
+                            setLoyaltyInfo(value!!, fragment.requireActivity(), merchantInfo)
+                        }
                     }
                 }
 
                 override fun onError(e: Throwable?) {
-                    fragment.requireActivity().runOnUiThread {
-                        loadingView.visibility = View.GONE
-                        Toast.makeText(fragment.requireActivity(), e?.message, Toast.LENGTH_SHORT).show()
+                    if (fragment.isAdded) {
+                        fragment.requireActivity().runOnUiThread {
+                            loadingView.visibility = View.GONE
+                            Toast.makeText(fragment.requireActivity(), e?.message, Toast.LENGTH_SHORT).show()
+                        }
                     }
+
                 }
 
                 override fun onComplete() {

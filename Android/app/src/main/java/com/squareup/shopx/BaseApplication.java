@@ -17,7 +17,7 @@ import retrofit2.Retrofit;
 
 public class BaseApplication extends Application {
 
-    private static Context context;
+    public static Context context;
 
     public static Context getContext(){
         return context;

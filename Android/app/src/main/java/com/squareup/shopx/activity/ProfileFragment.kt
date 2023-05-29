@@ -45,6 +45,7 @@ class ProfileFragment : Fragment() {
     private lateinit var userName: TextView
     private lateinit var notificationSwitch: SwitchMaterial
     private lateinit var logOut: ConstraintLayout
+    private lateinit var userFullName: TextView
 
 
     override fun onCreateView(
@@ -57,6 +58,9 @@ class ProfileFragment : Fragment() {
         userName = view.findViewById(R.id.user_name)
         notificationSwitch = view.findViewById(R.id.notification_switch)
         logOut = view.findViewById(R.id.logout)
+        userFullName = view.findViewById(R.id.user_full_name)
+
+        userFullName.text = PreferenceUtils.getUsername()
 
         var nameString = if (PreferenceUtils.getUsername().length > 1) {
             PreferenceUtils.getUsername().substring(0, 2)

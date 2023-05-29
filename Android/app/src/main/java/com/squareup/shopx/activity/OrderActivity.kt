@@ -28,6 +28,7 @@ import com.squareup.shopx.netservice.SquareAPI.SquareApiService
 import com.squareup.shopx.utils.DateUtil
 import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.utils.Transparent
+import com.squareup.shopx.widget.CustomDialog
 import com.squareup.shopx.widget.RadiusCardView
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -151,9 +152,31 @@ class OrderActivity: AppCompatActivity(), CartCallback {
                 .build()
         )
         placeOrder.setOnClickListener {
-            payOrder()
+            showPayConfirmDialog()
         }
 
+    }
+
+    private fun showPayConfirmDialog() {
+        val customDialog = CustomDialog(this, R.layout.customize_dialog)
+        val dialogTitle = customDialog.findViewById<TextView>(R.id.dialog_title)
+        val dialogDesc = customDialog.findViewById<TextView>(R.id.dialog_desc)
+        val rightAction = customDialog.findViewById<TextView>(R.id.action_right)
+        val leftActivity = customDialog.findViewById<TextView>(R.id.action_left)
+        rightAction.text = "Pay Order"
+        leftActivity.text = "Cancel"
+        dialogTitle.text = "Reminder"
+        dialogDesc.text = "Please go to the store and pay the order after confirming with the merchant."
+        customDialog.show()
+
+        leftActivity.setOnClickListener {
+            customDialog.dismiss()
+        }
+
+        rightAction.setOnClickListener {
+            payOrder()
+            customDialog.dismiss()
+        }
     }
 
     private fun payOrder() {
@@ -196,11 +219,6 @@ class OrderActivity: AppCompatActivity(), CartCallback {
             if (paymentData != null && paymentData.paymentMethodToken != null) {
                 val googlePayToken = paymentData.paymentMethodToken!!.token
                 googlePayChargeClient!!.charge(googlePayToken)
-            }
-        } else {
-            // The customer canceled Google Pay or an error happened, show the order sheet again.
-            runOnUiThread {
-                Toast.makeText(this, "Error happens. Try it later!", Toast.LENGTH_SHORT).show()
             }
         }
     }

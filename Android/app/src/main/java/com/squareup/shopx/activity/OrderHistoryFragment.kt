@@ -69,6 +69,9 @@ class OrderHistoryFragment : Fragment() {
                 }
 
                 override fun onNext(value: GetOrdersResponse?) {
+                    if (!isAdded) {
+                        return
+                    }
                     requireActivity().runOnUiThread {
                         loadingView.visibility = View.GONE
                         if (value == null || value.allOrders.isNullOrEmpty()) {
@@ -84,6 +87,9 @@ class OrderHistoryFragment : Fragment() {
                 }
 
                 override fun onError(e: Throwable?) {
+                    if (!isAdded) {
+                        return
+                    }
                     requireActivity().runOnUiThread {
                         loadingView.visibility = View.GONE
                         Toast.makeText(requireContext(), e?.message, Toast.LENGTH_SHORT).show()

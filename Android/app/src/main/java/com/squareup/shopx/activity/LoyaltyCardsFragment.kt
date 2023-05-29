@@ -70,6 +70,9 @@ class LoyaltyCardsFragment : Fragment() {
                 }
 
                 override fun onNext(value: GetAllLoyaltyRecordsResponse?) {
+                    if (!isAdded) {
+                        return
+                    }
                     requireActivity().runOnUiThread {
                         if (value == null || value.loyaltyMerchants.isNullOrEmpty()) {
                             noLoyaltyCards.visibility = View.VISIBLE
@@ -122,6 +125,9 @@ class LoyaltyCardsFragment : Fragment() {
                 }
 
                 override fun onError(e: Throwable?) {
+                    if (!isAdded) {
+                        return
+                    }
                     requireActivity().runOnUiThread {
 
                         Toast.makeText(requireContext(), e?.message, Toast.LENGTH_SHORT).show()

@@ -5,6 +5,7 @@ import android.util.Log
 import com.squareup.shopx.model.AllMerchantsResponse.ShopXMerchant
 import com.squareup.shopx.model.GetMerchantDetailResponse.Item
 import com.squareup.shopx.model.MerchantCart
+import java.util.Collections
 import java.util.HashMap
 
 object AllMerchants {
@@ -123,6 +124,39 @@ object AllMerchants {
         )
         return results[0] / 1609.0
     }
+
+    fun getRecommendMerchants(type: Int): ArrayList<ShopXMerchant> {
+        val allDiscountMerchants = ArrayList<ShopXMerchant>()
+        for (merchant in allMerchants) {
+            if (merchant.recommend == type) {
+                allDiscountMerchants.add(merchant)
+            }
+        }
+
+        // bubble sort based on distance
+        for (i in 1 until allDiscountMerchants.size) {
+            for (j in 0..allDiscountMerchants.size - 1 - i) {
+                if (calculateDistance(allDiscountMerchants[j].lat, allDiscountMerchants[j].lng) > calculateDistance(allDiscountMerchants[j+1].lat, allDiscountMerchants[j+1].lng)) {
+                    // swap two merchants
+                    Collections.swap(allDiscountMerchants, j, j+1)
+                }
+            }
+        }
+
+        return allDiscountMerchants
+    }
+
+
+    fun getAllARMerchants() : ArrayList<ShopXMerchant> {
+        val allARMerchants = ArrayList<ShopXMerchant>()
+        for (merchant in allMerchants) {
+            if (merchant.arEnable == 1) {
+                allARMerchants.add(merchant)
+            }
+        }
+        return allARMerchants
+    }
+
 
     fun getMerchant(accessToken: String?): ShopXMerchant? {
         accessToken?.let {

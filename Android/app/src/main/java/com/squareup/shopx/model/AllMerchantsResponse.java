@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class AllMerchantsResponse implements Serializable {
+
+
     @SerializedName("code")
     int code;
 
@@ -41,6 +43,10 @@ public class AllMerchantsResponse implements Serializable {
     }
 
     public static class ShopXMerchant implements Serializable {
+
+        public static int RECOMMEND_DISCOUNT = 1;
+        public static int RECOMMEND_LOYALTY = 2;
+
         @SerializedName("merchantId")
         String merchantId;
 
@@ -91,6 +97,15 @@ public class AllMerchantsResponse implements Serializable {
 
         @SerializedName("discountName")
         String discountName;
+
+        @SerializedName("recommend")
+        int recommend = 0;
+
+        @SerializedName("recommendBg")
+        String recommendBg;
+
+        @SerializedName("recommendText")
+        int recommendText;
 
         public String getMerchantId() {
             return merchantId;
@@ -226,6 +241,30 @@ public class AllMerchantsResponse implements Serializable {
 
         public void setDiscountName(String discountName) {
             this.discountName = discountName;
+        }
+
+        public int getRecommend() {
+            return recommend;
+        }
+
+        public void setRecommend(int recommend) {
+            this.recommend = recommend;
+        }
+
+        public String getRecommendBg() {
+            return recommendBg;
+        }
+
+        public void setRecommendBg(String recommendBg) {
+            this.recommendBg = recommendBg;
+        }
+
+        public int getRecommendText() {
+            return recommendText;
+        }
+
+        public void setRecommendText(int recommendText) {
+            this.recommendText = recommendText;
         }
 
         @Override

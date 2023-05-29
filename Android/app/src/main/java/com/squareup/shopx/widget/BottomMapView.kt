@@ -187,7 +187,7 @@ class BottomMapView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     private fun resetBottomView() {
         AllMerchants.offerType = AllMerchants.OFFER_SEE_ALL
-        AllMerchants.distanceLimit = 15F
+        AllMerchants.distanceLimit = Float.MAX_VALUE
         updateFilter()
         hideMerchantList()
     }
