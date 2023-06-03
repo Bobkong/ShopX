@@ -57,6 +57,7 @@ class OrderActivity: AppCompatActivity(), CartCallback {
     private lateinit var loadingView: ConstraintLayout
     private lateinit var back: ImageView
     private var loyaltyValue: Int = 0
+    private var orderValue: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,6 +126,7 @@ class OrderActivity: AppCompatActivity(), CartCallback {
                         value?.let {
                             Log.i(TAG, it.order.id)
                             orderId = it.order.id
+                            orderValue = it.order.totalMoney.amount
                         }
                         loadingView.visibility = View.GONE
                     }
@@ -259,6 +261,7 @@ class OrderActivity: AppCompatActivity(), CartCallback {
                             Log.i(TAG, it.order.id)
                             loadingView.visibility = View.GONE
                             loyaltyValue = it.order.discountAmount.amount
+                            orderValue = it.order.totalMoney.amount
                             updatePrice()
                         }
                     }
@@ -339,7 +342,7 @@ class OrderActivity: AppCompatActivity(), CartCallback {
             intent.putExtra("orderId", orderId)
             intent.putExtra("nonce", nonce)
             intent.putExtra("orderInfo", placeOrderRequest)
-            intent.putExtra("value", (AllMerchants.getPrice(merchantInfo) - loyaltyValue).toInt())
+            intent.putExtra("value", orderValue)
             intent.putExtra("arItems", arItemList)
             startActivity(intent)
             AllMerchants.clearCart(merchantInfo)

@@ -154,6 +154,16 @@ object AllMerchants {
                 allARMerchants.add(merchant)
             }
         }
+
+        // bubble sort based on distance
+        for (i in 1 until allARMerchants.size) {
+            for (j in 0..allARMerchants.size - 1 - i) {
+                if (calculateDistance(allARMerchants[j].lat, allARMerchants[j].lng) > calculateDistance(allARMerchants[j+1].lat, allARMerchants[j+1].lng)) {
+                    // swap two merchants
+                    Collections.swap(allARMerchants, j, j+1)
+                }
+            }
+        }
         return allARMerchants
     }
 

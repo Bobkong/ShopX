@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.ar.core.codelabs.arlocalizer.helpers.GeoPermissionsHelper;
 import com.squareup.shopx.utils.PreferenceUtils;
+import com.squareup.shopx.utils.Transparent;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -17,6 +18,9 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Transparent.transparentNavBar(this);
+        Transparent.transparentStatusBar(this, true);
 
         new Handler().postDelayed(() -> {
             if (PreferenceUtils.getFirstUse()) {

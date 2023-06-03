@@ -33,7 +33,7 @@ public class BroadcastReceiverPage extends BroadcastReceiver {
         new Handler().postDelayed(() -> {
                 NotificationCompat.Builder b = null;
                 b = new NotificationCompat.Builder(context, "Notify")
-                    .setSmallIcon(R.drawable.marker_normal)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentTitle("ShopX Offers!")
                     .setContentText("Check out " + merchant.getBusinessName() + " to get exclusive offers!")
                     .setAutoCancel(true)

@@ -29,6 +29,7 @@ public class CartItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView price;
     private final TextView itemName;
     private final LinearLayout addItem, subItem, itemCountAdjustLl;
+    private final TextView itemQuantity;
 
     public CartItemViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -39,6 +40,7 @@ public class CartItemViewHolder extends RecyclerView.ViewHolder {
         addItem = itemView.findViewById(R.id.add_item);
         subItem = itemView.findViewById(R.id.sub_item);
         itemCountAdjustLl = itemView.findViewById(R.id.item_count_adjust_ll);
+        itemQuantity = itemView.findViewById(R.id.quantity);
     }
 
     public void setData(GetMerchantDetailResponse.Item item, Activity activity, AllMerchantsResponse.ShopXMerchant merchantInfo, CartCallback listener, CartItemListAdapter adapter, int from) {
@@ -73,6 +75,8 @@ public class CartItemViewHolder extends RecyclerView.ViewHolder {
                 showItemBottomSheet(item, merchantInfo);
             });
         } else {
+            itemQuantity.setText("Qty: " + AllMerchants.INSTANCE.getCountOfAnItem(merchantInfo,item));
+            itemQuantity.setVisibility(View.VISIBLE);
             itemCountAdjustLl.setVisibility(View.GONE);
         }
 

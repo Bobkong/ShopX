@@ -48,6 +48,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="8dp"
+                android:textAlignment="center"
                 style="@style/label_large"
                 android:textColor="@color/black_40"
                 android:text="Open • 8 AM - 9 PM • 0.5 mile"/>
@@ -60,6 +61,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="6dp"
+                android:textAlignment="center"
                 style="@style/label_large"
                 android:textColor="@color/black_40"
                 android:text="1809 Shattuck Ave, Berkeley, 94709"/>

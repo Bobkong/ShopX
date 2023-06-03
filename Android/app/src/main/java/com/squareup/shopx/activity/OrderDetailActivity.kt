@@ -22,6 +22,7 @@ import com.squareup.shopx.netservice.ShopXAPI.ShopXApiService
 import com.squareup.shopx.netservice.SquareAPI.SquareApiService
 import com.squareup.shopx.utils.PreferenceUtils
 import com.squareup.shopx.utils.Transparent
+import com.squareup.shopx.widget.CustomDialog
 import com.squareup.shopx.widget.RadiusCardView
 import com.squareup.shopx.widget.RoundRectImageView
 import io.reactivex.Observer
@@ -72,6 +73,23 @@ class OrderDetailActivity : AppCompatActivity() {
             )
             intent.putExtra("merchant", merchantInfo)
             startActivity(intent)
+        }
+
+        getHelp.setOnClickListener {
+            val customDialog = CustomDialog(this, R.layout.customize_dialog)
+            val dialogTitle = customDialog.findViewById<TextView>(R.id.dialog_title)
+            val dialogDesc = customDialog.findViewById<TextView>(R.id.dialog_desc)
+            val rightAction = customDialog.findViewById<TextView>(R.id.action_right)
+            val leftAction = customDialog.findViewById<TextView>(R.id.action_left)
+            rightAction.text = "OK"
+            leftAction.visibility = View.GONE
+            dialogTitle.text = "Reminder"
+            dialogDesc.text = "If you confront any issues, please contact (+1)8583195080."
+            customDialog.show()
+
+            rightAction.setOnClickListener {
+                customDialog.dismiss()
+            }
         }
 
         back.setOnClickListener {

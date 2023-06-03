@@ -77,10 +77,6 @@ class ARItemActivity : AppCompatActivity() {
         instruction = findViewById(R.id.instruction)
         arItemList = findViewById(R.id.ar_item_list)
 
-        val layoutParams = instruction.layoutParams as ConstraintLayout.LayoutParams
-        layoutParams.topMargin = (UIUtils.getHeight(this) * 0.68).toInt()
-        instruction.layoutParams = layoutParams
-
         currentItem = intent.extras?.getSerializable("startItem") as? Item
         merchantInfo = intent.extras?.getSerializable("merchant") as ShopXMerchant
         items = intent.extras?.getSerializable("items") as GetMerchantDetailResponse

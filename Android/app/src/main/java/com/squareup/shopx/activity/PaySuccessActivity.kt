@@ -166,7 +166,7 @@ class PaySuccessActivity : AppCompatActivity() {
                             setMerchantLogoAndUsername(merchantInfo)
                             EventBus.getDefault().post(
                                 RefreshLoyaltyEvent(
-                                    merchantInfo, value!!.events?.get(0)?.accumulatePoints?.points
+                                    merchantInfo, value!!.events?.get(0)?.accumulatePoints?.points, loyaltyInfo.loyaltyAccount
                                 )
                             )
                         }

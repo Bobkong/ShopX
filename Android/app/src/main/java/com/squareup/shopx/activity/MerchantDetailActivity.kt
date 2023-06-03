@@ -100,6 +100,7 @@ class MerchantDetailActivity : AppCompatActivity() {
         if (event.merchant.equals(merchantInfo)) {
             customerLoyaltyResponse?.points = customerLoyaltyResponse?.points?.plus(event.accumulatePoints)!!
             customerLoyaltyResponse?.isEnrolled = 1
+            customerLoyaltyResponse?.loyaltyAccount = event.loyaltyAccount
             itemList?.adapter = MerchantDetailAdapter(
                 this@MerchantDetailActivity,
                 merchantItemsResponse,

@@ -54,11 +54,13 @@ class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
         }
 
+        val layoutParams = itemView.layoutParams as RecyclerView.LayoutParams
         if (isLast) {
-            val layoutParams = itemView.layoutParams as RecyclerView.LayoutParams
             layoutParams.bottomMargin = UIUtils.dp2px(activity, 120f)
-            itemView.layoutParams = layoutParams
+        } else {
+            layoutParams.bottomMargin = 0;
         }
+        itemView.layoutParams = layoutParams
     }
 
 

@@ -121,7 +121,7 @@ class EnrollSuccessActivity : AppCompatActivity() {
                         merchantName.text = merchantInfo.businessName
                         EventBus.getDefault().post(
                             RefreshLoyaltyEvent(
-                                merchantInfo, value!!.events?.get(0)?.accumulatePoints?.points
+                                merchantInfo, value!!.events?.get(0)?.accumulatePoints?.points, loyaltyAccount
                             )
                         )
                     }
@@ -135,7 +135,7 @@ class EnrollSuccessActivity : AppCompatActivity() {
                         plusPoint.visibility = View.GONE
                         EventBus.getDefault().post(
                             RefreshLoyaltyEvent(
-                                merchantInfo, 0
+                                merchantInfo, 0, loyaltyAccount
                             )
                         )
                         Toast.makeText(this@EnrollSuccessActivity, e?.message, Toast.LENGTH_SHORT).show()
