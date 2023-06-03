@@ -59,7 +59,9 @@ class VerificationCodeActivity : AppCompatActivity() {
                 override fun onNext(value: GeneralResponse?) {
                     runOnUiThread {
                         code = value?.msg
-                        Toast.makeText(this@VerificationCodeActivity, "Verification code is: " + value?.msg, Toast.LENGTH_SHORT).show()
+                        if (value?.code == 3) {
+                            Toast.makeText(this@VerificationCodeActivity, "Verification code is: " + value?.msg, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
 

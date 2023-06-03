@@ -37,6 +37,7 @@ import com.squareup.shopx.model.GetLoyaltyInfoResponse
 import com.squareup.shopx.model.GetMerchantDetailResponse
 import com.squareup.shopx.model.GetMerchantDetailResponse.Item
 import com.squareup.shopx.utils.Transparent
+import com.squareup.shopx.utils.UIUtils
 import com.squareup.shopx.widget.CartBottomDialog
 import com.squareup.shopx.widget.CustomDialog
 import org.greenrobot.eventbus.EventBus
@@ -76,6 +77,10 @@ class ARItemActivity : AppCompatActivity() {
         instruction = findViewById(R.id.instruction)
         arItemList = findViewById(R.id.ar_item_list)
 
+        val layoutParams = instruction.layoutParams as ConstraintLayout.LayoutParams
+        layoutParams.topMargin = (UIUtils.getHeight(this) * 0.68).toInt()
+        instruction.layoutParams = layoutParams
+
         currentItem = intent.extras?.getSerializable("startItem") as? Item
         merchantInfo = intent.extras?.getSerializable("merchant") as ShopXMerchant
         items = intent.extras?.getSerializable("items") as GetMerchantDetailResponse
@@ -94,6 +99,10 @@ class ARItemActivity : AppCompatActivity() {
         arFragment = supportFragmentManager.findFragmentById(R.id.ar_fragment) as ArFragment?
 
         arFragment?.setOnTapArPlaneListener { hitResult, plane, motionEvent ->
+
+            if (isBuildingModel) {
+                return@setOnTapArPlaneListener
+            }
 
             for (node in arFragment!!.arSceneView.scene.children) {
                 if (node.name == "AR Item") {

@@ -41,8 +41,8 @@ public class RecommendARAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return mRecommendMerchants.size();
     }
 
-    public RecommendARAdapter(MainFragment fragment, ArrayList<AllMerchantsResponse.ShopXMerchant> loyaltyPrograms) {
+    public RecommendARAdapter(MainFragment fragment, ArrayList<AllMerchantsResponse.ShopXMerchant> arMerchants) {
         this.mFragment = fragment;
-        this.mRecommendMerchants = loyaltyPrograms;
+        this.mRecommendMerchants = arMerchants;
     }
 }

@@ -32,17 +32,20 @@ public class RecommendARViewHolder extends RecyclerView.ViewHolder {
             return;
         }
 
-        if (ifFirst) {
-            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) itemView.getLayoutParams();
-            layoutParams.leftMargin = UIUtils.dp2px(fragment.requireActivity(), 24f);
-            itemView.setLayoutParams(layoutParams);
-        }
+        RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) itemView.getLayoutParams();
 
-        if (ifLast) {
-            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) itemView.getLayoutParams();
-            layoutParams.rightMargin = UIUtils.dp2px(fragment.requireActivity(), 24f);
-            itemView.setLayoutParams(layoutParams);
+        if (ifFirst) {
+            layoutParams.leftMargin = UIUtils.dp2px(fragment.requireActivity(), 24f);
+        } else {
+            layoutParams.leftMargin = 0;
         }
+        if (ifLast) {
+            layoutParams.rightMargin = UIUtils.dp2px(fragment.requireActivity(), 24f);
+        } else {
+            layoutParams.rightMargin = 0;
+        }
+        itemView.setLayoutParams(layoutParams);
+
 
         Glide.with(fragment.requireActivity())
                 .load(merchantInfo.getLogoUrl())

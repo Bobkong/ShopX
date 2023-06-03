@@ -19,6 +19,8 @@ public class BaseApplication extends Application {
 
     public static Context context;
 
+    public static int hasNotified = 0;
+
     public static Context getContext(){
         return context;
     }

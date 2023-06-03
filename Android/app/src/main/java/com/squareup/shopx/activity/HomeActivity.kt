@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.ar.core.codelabs.arlocalizer.helpers.GeoPermissionsHelper
+import com.squareup.shopx.BaseApplication
 import com.squareup.shopx.R
 import com.squareup.shopx.model.AllMerchantsResponse
 import com.squareup.shopx.model.CartUpdateEvent
@@ -171,7 +172,10 @@ class HomeActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onNotificationEvent(event: NotificationEvent) {
-        createNotification(event.merchant)
+        if (BaseApplication.hasNotified == 0) {
+            createNotification(event.merchant)
+            BaseApplication.hasNotified = 1
+        }
     }
 
     private fun createNotification(merchant: AllMerchantsResponse.ShopXMerchant) {

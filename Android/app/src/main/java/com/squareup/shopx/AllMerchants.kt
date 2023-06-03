@@ -86,34 +86,34 @@ object AllMerchants {
     }
 
     private fun sortMerchants(merchants: ArrayList<ShopXMerchant>): ArrayList<ShopXMerchant> {
-        var merchantsIn50Miles = ArrayList<ShopXMerchant>()
-        var merchantsNotIn50Miles = ArrayList<ShopXMerchant>()
+        var merchantsIn300Miles = ArrayList<ShopXMerchant>()
+        var merchantsNotIn300Miles = ArrayList<ShopXMerchant>()
 
         for (merchant in merchants) {
-            if (calculateDistance(merchant.lat, merchant.lng) > 50.0) {
-                merchantsNotIn50Miles.add(merchant)
+            if (calculateDistance(merchant.lat, merchant.lng) > 300.0) {
+                merchantsNotIn300Miles.add(merchant)
             } else {
-                merchantsIn50Miles.add(merchant)
+                merchantsIn300Miles.add(merchant)
             }
         }
 
-        merchantsIn50Miles.sortByDescending {
+        merchantsIn300Miles.sortByDescending {
             it.ifLoyalty
         }
 
-        merchantsIn50Miles.sortByDescending {
+        merchantsIn300Miles.sortByDescending {
             it.discountAmount
         }
 
-        merchantsNotIn50Miles.sortByDescending {
+        merchantsNotIn300Miles.sortByDescending {
             it.ifLoyalty
         }
 
-        merchantsNotIn50Miles.sortByDescending {
+        merchantsNotIn300Miles.sortByDescending {
             it.discountAmount
         }
 
-        return ArrayList(merchantsIn50Miles.plus(merchantsNotIn50Miles))
+        return ArrayList(merchantsIn300Miles.plus(merchantsNotIn300Miles))
     }
 
     fun calculateDistance(merchantLat: Float, merchantLng: Float): Double {

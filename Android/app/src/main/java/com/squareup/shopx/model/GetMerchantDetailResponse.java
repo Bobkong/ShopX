@@ -145,6 +145,15 @@ public class GetMerchantDetailResponse implements Serializable {
         }
 
         public float getItemDiscountPrice(AllMerchantsResponse.ShopXMerchant merchantInfo) {
+            // if all, just return the discount price
+            if (merchantInfo.getDiscountProducts().equals("all")) {
+                if (merchantInfo.getDiscountType().equals("FIXED_PERCENTAGE")) {
+                    return getItemPrice() * (100 - merchantInfo.getDiscountAmount()) / 100F;
+                } else if (merchantInfo.getDiscountType().equals("FIXED_AMOUNT")) {
+                    return getItemPrice() - merchantInfo.getDiscountAmount() * 100;
+                }
+            }
+
             List<String> discountItems = Arrays.asList(merchantInfo.getDiscountProducts().split("\\|"));
 
             if (merchantInfo.getDiscountType() == null || merchantInfo.getDiscountType().isEmpty() || !discountItems.contains(getItemId())) {

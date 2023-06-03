@@ -185,9 +185,15 @@ class MainFragment : Fragment() {
 
     private val loyaltyResponses = HashMap<ShopXMerchant, GetLoyaltyInfoResponse>()
     private fun requestAllLoyaltyResponse() {
-        for (merchant in AllMerchants.getRecommendMerchants(ShopXMerchant.RECOMMEND_LOYALTY)) {
-            requestLoyaltyInfo(merchant)
+        if (AllMerchants.getRecommendMerchants(ShopXMerchant.RECOMMEND_LOYALTY).size == 0) {
+            loadingView.visibility = View.GONE
+            loyaltyList.visibility = View.GONE
+        } else {
+            for (merchant in AllMerchants.getRecommendMerchants(ShopXMerchant.RECOMMEND_LOYALTY)) {
+                requestLoyaltyInfo(merchant)
+            }
         }
+
     }
 
     private fun requestLoyaltyInfo(merchant: ShopXMerchant) {

@@ -171,6 +171,10 @@ public class RetrieveMerchant {
                             }
                             merchant.setDiscountProducts(discountProducts.toString());
                         }
+
+                        if (catalogObject.getType().equals("PRODUCT_SET") && catalogObject.getProductSetData() != null && catalogObject.getProductSetData().getAllProducts()) {
+                            merchant.setDiscountProducts("all");
+                        }
                     }
 
                     for (CatalogObject catalogObject :
