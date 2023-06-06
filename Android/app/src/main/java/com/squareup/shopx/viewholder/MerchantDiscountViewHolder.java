@@ -51,12 +51,6 @@ public class MerchantDiscountViewHolder extends RecyclerView.ViewHolder {
     public void setData(Activity activity, AllMerchantsResponse.ShopXMerchant merchantInfo, GetLoyaltyInfoResponse loyaltyInfo) {
         this.activity = activity;
 
-        if (loyaltyInfo == null) {
-            loyaltyCl.setVisibility(View.GONE);
-            discountCl.setVisibility(View.GONE);
-            return;
-        }
-
         if (merchantInfo.getIfLoyalty() == 1) {
             loyaltyCl.setVisibility(View.VISIBLE);
             loyaltyTitle.setText("Redeem rewards to get " + loyaltyInfo.getLoyaltyInfo().getProgram().getRewardTiers().get(0).getName());
