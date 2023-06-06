@@ -23,4 +23,4 @@ By enabling the notification, Within a one-mile radius of merchants that offers 
 ### Social Sharing
 Guess what? ShopX also allows you to share your shopping experiences using delightful AR filters. You can share your experiences via Instagram or Facebook, recommending the merchants and items you adore and spreading the remarkable offers. ShopX makes sharing become an enjoyable and influential experience.
 
-Check out the <a href="https://youtu.be/MDhNy26Co7g" title="Youtube Demo Video"></a> to learn more about the ShopX features!
+Check out the <a href="https://youtu.be/MDhNy26Co7g">Youtube Demo Video</a> to learn more about the ShopX features!
